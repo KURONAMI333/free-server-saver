@@ -7,7 +7,7 @@ import com.kuronami.heapguardian.monitor.HeapMonitor;
 import com.kuronami.heapguardian.modules.ChunkUnloadModule;
 import com.kuronami.heapguardian.modules.DespawnModule;
 import com.kuronami.heapguardian.modules.DiscordWebhookModule;
-import com.kuronami.heapguardian.modules.RandomTickModule;
+import com.kuronami.heapguardian.modules.EntityTickThrottleModule;
 import com.kuronami.heapguardian.modules.SpawnThrottleModule;
 import com.kuronami.heapguardian.modules.TickRateModule;
 import com.kuronami.heapguardian.monitor.HeapHistoryTracker;
@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
  * <ul>
  *   <li>{@link HeapMonitor} — polling + tier classification</li>
  *   <li>{@link HeapHistoryTracker} — ring buffer of recent transitions</li>
- *   <li>{@link RandomTickModule} — gamerule throttling (L1+)</li>
+ *   <li>{@link EntityTickThrottleModule} — distance-bucketed AI tick throttling (L1+)</li>
  *   <li>{@link SpawnThrottleModule} — mob spawn cancellation (L1+)</li>
  *   <li>{@link ChunkUnloadModule} — view/simulation distance scaling (L3+)</li>
  *   <li>{@link DespawnModule} — emergency mob sweep on L4 entry</li>
@@ -67,7 +67,7 @@ public class HeapGuardian {
         // the same instances the bus is feeding events to.
         HeapMonitor monitor = new HeapMonitor();
         HeapHistoryTracker history = new HeapHistoryTracker();
-        RandomTickModule randomTick = new RandomTickModule();
+        EntityTickThrottleModule entityTick = new EntityTickThrottleModule();
         SpawnThrottleModule spawnThrottle = new SpawnThrottleModule();
         ChunkUnloadModule chunkUnload = new ChunkUnloadModule();
         DespawnModule despawn = new DespawnModule();
@@ -80,7 +80,7 @@ public class HeapGuardian {
         // bus. Mod bus is for registry/loader events only.
         NeoForge.EVENT_BUS.register(monitor);
         NeoForge.EVENT_BUS.register(history);
-        NeoForge.EVENT_BUS.register(randomTick);
+        NeoForge.EVENT_BUS.register(entityTick);
         NeoForge.EVENT_BUS.register(spawnThrottle);
         NeoForge.EVENT_BUS.register(chunkUnload);
         NeoForge.EVENT_BUS.register(despawn);

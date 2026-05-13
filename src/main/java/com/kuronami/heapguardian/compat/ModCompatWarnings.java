@@ -51,7 +51,26 @@ public final class ModCompatWarnings {
         "adaptive_performance_tweaks_core",
         "adaptive_performance_tweaks_spawn",
         "tickdynamic",
-        "tick_tweaks"
+        "tick_tweaks",
+        // DAB / WMB also throttles AI ticks by distance — running both at
+        // once works but doubles the cancel overhead with no extra benefit.
+        "wheres_my_brain",
+        "immersive_optimization",
+        "optimizemod"
+    );
+
+    /**
+     * Internal-optimization mods that are STRONGLY recommended as
+     * companions. We don't try to do their job (allocation reduction,
+     * data structure replacement, etc.) — those land squarely in
+     * Lithium / FerriteCore / ModernFix territory. When the user has
+     * Heap Guardian without these, log a hint that the stack is
+     * incomplete.
+     */
+    private static final List<String> RECOMMENDED_COMPANION_MODS = List.of(
+        "lithium",
+        "ferritecore",
+        "modernfix"
     );
 
     private ModCompatWarnings() {}
@@ -78,10 +97,27 @@ public final class ModCompatWarnings {
             if (list.isLoaded(id)) {
                 HeapGuardian.LOGGER.warn(
                     "Detected adaptive perf mod '{}' — runs alongside Heap Guardian "
-                    + "without conflict, but both may adjust mob spawns / random "
+                    + "without conflict, but both may adjust mob spawns / entity "
                     + "ticks. If you see surprising behavior, try disabling one.",
                     id);
             }
+        }
+
+        // Hint about missing companion mods. Logged at INFO (not WARN)
+        // because Heap Guardian works without them — they're just the
+        // standard "static optimization" layer it doesn't try to cover.
+        List<String> missing = new java.util.ArrayList<>();
+        for (String id : RECOMMENDED_COMPANION_MODS) {
+            if (!list.isLoaded(id)) {
+                missing.add(id);
+            }
+        }
+        if (!missing.isEmpty()) {
+            HeapGuardian.LOGGER.info(
+                "Heap Guardian focuses on heap-pressure-adaptive throttling. "
+                + "For complete coverage, consider also installing: {} "
+                + "(allocation reduction / memory dedup — different scope than HG).",
+                String.join(", ", missing));
         }
     }
 }
