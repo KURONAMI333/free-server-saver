@@ -1,9 +1,9 @@
-package com.kuronami.heapguardian.modules;
+package com.kuronami.aternosguardian.modules;
 
-import com.kuronami.heapguardian.HeapGuardian;
-import com.kuronami.heapguardian.config.HeapGuardianConfig;
-import com.kuronami.heapguardian.monitor.ThrottleLevel;
-import com.kuronami.heapguardian.monitor.ThrottleLevelChangedEvent;
+import com.kuronami.aternosguardian.HeapGuardian;
+import com.kuronami.aternosguardian.config.HeapGuardianConfig;
+import com.kuronami.aternosguardian.monitor.ThrottleLevel;
+import com.kuronami.aternosguardian.monitor.ThrottleLevelChangedEvent;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.MinecraftServer;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -35,7 +35,7 @@ import net.neoforged.neoforge.event.server.ServerStoppingEvent;
  * <p>This module is the most user-visible intervention — players will
  * absolutely notice 10 TPS. Logged at WARN level (not DEBUG) so the
  * server operator can correlate "the game went slow" with "heap was at
- * 85%". Players who notice can run {@code /heapguardian status} to see
+ * 85%". Players who notice can run {@code /aternosguardian status} to see
  * why.
  */
 public class TickRateModule {

@@ -1,9 +1,9 @@
-package com.kuronami.heapguardian.command;
+package com.kuronami.aternosguardian.command;
 
-import com.kuronami.heapguardian.HeapGuardian;
-import com.kuronami.heapguardian.monitor.HeapHistoryTracker;
-import com.kuronami.heapguardian.monitor.HeapMonitor;
-import com.kuronami.heapguardian.monitor.ThrottleLevel;
+import com.kuronami.aternosguardian.HeapGuardian;
+import com.kuronami.aternosguardian.monitor.HeapHistoryTracker;
+import com.kuronami.aternosguardian.monitor.HeapMonitor;
+import com.kuronami.aternosguardian.monitor.ThrottleLevel;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -19,7 +19,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 
 /**
- * {@code /heapguardian} command tree.
+ * {@code /aternosguardian} command tree.
  *
  * <p>Subcommands:
  * <ul>

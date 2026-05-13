@@ -1,4 +1,4 @@
-package com.kuronami.heapguardian.command;
+package com.kuronami.aternosguardian.command;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import net.minecraft.server.level.ServerLevel;
 
 /**
  * Diagnostic snapshot of chunk state across every loaded dimension.
- * Invoked by {@code /heapguardian inspect chunks}.
+ * Invoked by {@code /aternosguardian inspect chunks}.
  *
  * <p>This is the read-only sibling of the originally planned "prune"
  * command. True chunk eviction requires touching {@code ChunkMap}'s
@@ -15,7 +15,7 @@ import net.minecraft.server.level.ServerLevel;
  * transformer — both add a non-trivial mod-loader-side risk surface
  * that doesn't pay off in v0.1.
  *
- * <p>For now, {@link com.kuronami.heapguardian.modules.ChunkUnloadModule}'s
+ * <p>For now, {@link com.kuronami.aternosguardian.modules.ChunkUnloadModule}'s
  * view-distance approach handles the automatic case (heap pressure
  * causes vanilla to unload chunks via its own ticket system). This
  * inspect command lets an operator see the resulting numbers and

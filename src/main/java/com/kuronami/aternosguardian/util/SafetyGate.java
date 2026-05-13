@@ -1,4 +1,4 @@
-package com.kuronami.heapguardian.util;
+package com.kuronami.aternosguardian.util;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ExperienceOrb;

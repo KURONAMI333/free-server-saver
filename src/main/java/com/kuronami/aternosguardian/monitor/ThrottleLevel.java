@@ -1,4 +1,4 @@
-package com.kuronami.heapguardian.monitor;
+package com.kuronami.aternosguardian.monitor;
 
 /**
  * Five-tier throttle scale based on heap usage percentage.

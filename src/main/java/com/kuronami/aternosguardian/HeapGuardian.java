@@ -1,16 +1,16 @@
-package com.kuronami.heapguardian;
+package com.kuronami.aternosguardian;
 
-import com.kuronami.heapguardian.command.HeapGuardianCommand;
-import com.kuronami.heapguardian.compat.ModCompatWarnings;
-import com.kuronami.heapguardian.config.HeapGuardianConfig;
-import com.kuronami.heapguardian.monitor.HeapMonitor;
-import com.kuronami.heapguardian.modules.ChunkUnloadModule;
-import com.kuronami.heapguardian.modules.DespawnModule;
-import com.kuronami.heapguardian.modules.DiscordWebhookModule;
-import com.kuronami.heapguardian.modules.EntityTickThrottleModule;
-import com.kuronami.heapguardian.modules.SpawnThrottleModule;
-import com.kuronami.heapguardian.modules.TickRateModule;
-import com.kuronami.heapguardian.monitor.HeapHistoryTracker;
+import com.kuronami.aternosguardian.command.HeapGuardianCommand;
+import com.kuronami.aternosguardian.compat.ModCompatWarnings;
+import com.kuronami.aternosguardian.config.HeapGuardianConfig;
+import com.kuronami.aternosguardian.monitor.HeapMonitor;
+import com.kuronami.aternosguardian.modules.ChunkUnloadModule;
+import com.kuronami.aternosguardian.modules.DespawnModule;
+import com.kuronami.aternosguardian.modules.DiscordWebhookModule;
+import com.kuronami.aternosguardian.modules.EntityTickThrottleModule;
+import com.kuronami.aternosguardian.modules.SpawnThrottleModule;
+import com.kuronami.aternosguardian.modules.TickRateModule;
+import com.kuronami.aternosguardian.monitor.HeapHistoryTracker;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
  *   <li>{@link TickRateModule} — emergency tick-rate halving on L4</li>
  *   <li>{@link DiscordWebhookModule} — async Discord notifications</li>
  *   <li>{@link ModCompatWarnings} — startup warnings for overlapping mods</li>
- *   <li>{@link HeapGuardianCommand} — {@code /heapguardian status|history|metrics|inspect}</li>
+ *   <li>{@link HeapGuardianCommand} — {@code /aternosguardian status|history|metrics|inspect}</li>
  * </ul>
  *
  * <p>See {@code claude-memory/kuronami-mods/knowledge/HEAP_GUARDIAN_NOTES.md}
@@ -49,14 +49,14 @@ import org.slf4j.LoggerFactory;
 @Mod(HeapGuardian.MOD_ID)
 public class HeapGuardian {
 
-    public static final String MOD_ID = "heapguardian";
+    public static final String MOD_ID = "aternosguardian";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     public HeapGuardian(IEventBus modBus, ModContainer container) {
         LOGGER.info("Heap Guardian starting (Phase 1+2+3).");
 
         // Config is loaded via the mod container; it lives in
-        // serverconfig/heapguardian-server.toml once a world has been
+        // serverconfig/aternosguardian-server.toml once a world has been
         // started, but the spec itself has to be registered here, on the
         // mod bus, during construction.
         container.registerConfig(ModConfig.Type.SERVER, HeapGuardianConfig.SPEC);

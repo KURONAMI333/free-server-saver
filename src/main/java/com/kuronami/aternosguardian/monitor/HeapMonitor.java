@@ -1,6 +1,6 @@
-package com.kuronami.heapguardian.monitor;
+package com.kuronami.aternosguardian.monitor;
 
-import com.kuronami.heapguardian.HeapGuardian;
+import com.kuronami.aternosguardian.HeapGuardian;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.lang.management.MemoryUsage;
