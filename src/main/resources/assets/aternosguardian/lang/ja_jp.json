@@ -8,9 +8,18 @@
   "aternosguardian.help.entry.topentities": "  /aternosguardian top entities — エンティティ数上位10種類（ディメンション別）",
   "aternosguardian.help.entry.inspect": "  /aternosguardian inspect chunks — ディメンション別のロード済み/強制ロード/プレイヤー数",
   "aternosguardian.help.entry.tuning": "  /aternosguardian tuning — AutoTunerの現在の閾値オフセット",
+  "aternosguardian.help.entry.prune": "  /aternosguardian prune — 到達不能なロード済みチャンクを特定（flood-fill）",
+  "aternosguardian.help.entry.storage": "  /aternosguardian storage — ワールドディレクトリ容量とAternos 4GB制限の比較",
 
   "aternosguardian.tuning.title": "Heap Guardian AutoTuner:",
   "aternosguardian.tuning.offset": "  閾値オフセット: %s ポイント",
+
+  "aternosguardian.prune.result": "チャンク剪定: %s 個の孤立チャンクを特定。約10ティック以内にvanilla側でアンロードされます。",
+
+  "aternosguardian.storage.error": "ワールドディレクトリ容量を読み取れませんでした。",
+  "aternosguardian.storage.result": "ワールド容量: %s MB / 4096 MB （Aternos上限）",
+
+  "aternosguardian.idle.first_join": "ようこそ — あなたがログインしている間、Aternosのアイドルタイマーはリセットされます。"
 
   "aternosguardian.status.title": "Heap Guardian ステータス:",
   "aternosguardian.status.line": "  ティア: %s  |  ヒープ: %s%%",

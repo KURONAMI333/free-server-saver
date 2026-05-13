@@ -8,9 +8,18 @@
   "aternosguardian.help.entry.topentities": "  /aternosguardian top entities — Топ 10 типов сущностей по количеству, с разбивкой по измерениям.",
   "aternosguardian.help.entry.inspect": "  /aternosguardian inspect chunks — По измерениям: загружены / принудительно / игроки.",
   "aternosguardian.help.entry.tuning": "  /aternosguardian tuning — Текущий сдвиг порогов AutoTuner.",
+  "aternosguardian.help.entry.prune": "  /aternosguardian prune — Определить недостижимые загруженные чанки (flood-fill).",
+  "aternosguardian.help.entry.storage": "  /aternosguardian storage — Размер директории мира vs лимит 4GB Aternos.",
 
   "aternosguardian.tuning.title": "Heap Guardian AutoTuner:",
   "aternosguardian.tuning.offset": "  Сдвиг порога: %s процентных пунктов",
+
+  "aternosguardian.prune.result": "Обрезка чанков: определено %s изолированных чанков. Vanilla выгрузит их через ~10 тиков.",
+
+  "aternosguardian.storage.error": "Не удалось прочитать размер директории мира.",
+  "aternosguardian.storage.result": "Директория мира: %s MB / 4096 MB (лимит Aternos)",
+
+  "aternosguardian.idle.first_join": "Добро пожаловать — таймер бездействия Aternos сброшен пока вы онлайн."
 
   "aternosguardian.status.title": "Статус Heap Guardian:",
   "aternosguardian.status.line": "  Уровень: %s  |  Куча: %s%%",

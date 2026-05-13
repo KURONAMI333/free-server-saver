@@ -8,9 +8,18 @@
   "aternosguardian.help.entry.topentities": "  /aternosguardian top entities — 实体数量前10种类（按维度分类）",
   "aternosguardian.help.entry.inspect": "  /aternosguardian inspect chunks — 各维度的加载/强制加载/玩家数",
   "aternosguardian.help.entry.tuning": "  /aternosguardian tuning — AutoTuner 当前阈值偏移",
+  "aternosguardian.help.entry.prune": "  /aternosguardian prune — 识别无法到达的已加载区块（flood-fill）",
+  "aternosguardian.help.entry.storage": "  /aternosguardian storage — 世界目录大小 vs Aternos 4GB 上限",
 
   "aternosguardian.tuning.title": "Heap Guardian AutoTuner:",
   "aternosguardian.tuning.offset": "  阈值偏移: %s 个百分点",
+
+  "aternosguardian.prune.result": "区块清理: 识别到 %s 个孤立区块。vanilla 将在约 10 tick 内卸载。",
+
+  "aternosguardian.storage.error": "无法读取世界目录大小。",
+  "aternosguardian.storage.result": "世界目录: %s MB / 4096 MB (Aternos 上限)",
+
+  "aternosguardian.idle.first_join": "欢迎 — 你在线期间 Aternos 空闲计时器已重置。"
 
   "aternosguardian.status.title": "Heap Guardian 状态：",
   "aternosguardian.status.line": "  级别: %s  |  堆: %s%%",
