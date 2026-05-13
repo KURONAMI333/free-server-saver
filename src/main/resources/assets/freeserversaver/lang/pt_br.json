@@ -1,0 +1,61 @@
+{
+  "freeserversaver.help.title": "Aternos Heap Guardian — comandos:",
+  "freeserversaver.help.entry.status": "  /freeserversaver status — Nível atual e porcentagem da heap.",
+  "freeserversaver.help.entry.history": "  /freeserversaver history — Últimas 20 transições de nível, com cores.",
+  "freeserversaver.help.entry.metrics": "  /freeserversaver metrics — Heap, nível, jogadores, chunks carregados, distância de visão.",
+  "freeserversaver.help.entry.env": "  /freeserversaver env — Snapshot de heap/CPU da JVM no início do servidor (detecção de RAM Boost).",
+  "freeserversaver.help.entry.lagspikes": "  /freeserversaver lagspikes — Ticks recentes acima de 100 ms com o estado da heap no momento.",
+  "freeserversaver.help.entry.topentities": "  /freeserversaver top entities — Top 10 tipos de entidades por contagem, com detalhes por dimensão.",
+  "freeserversaver.help.entry.inspect": "  /freeserversaver inspect chunks — Por dimensão: carregados / forçados / contagem de jogadores.",
+  "freeserversaver.help.entry.tuning": "  /freeserversaver tuning — Offset atual dos limiares do AutoTuner.",
+  "freeserversaver.help.entry.prune": "  /freeserversaver prune — Identifica chunks carregados inacessíveis (flood-fill).",
+  "freeserversaver.help.entry.storage": "  /freeserversaver storage — Tamanho do diretório do mundo vs limite 4GB do Aternos.",
+  "freeserversaver.help.entry.pregen": "  /freeserversaver pregen <raio> — Pré-gera chunks ao redor sincronamente (raio máx 16).",
+
+  "freeserversaver.tuning.title": "Heap Guardian AutoTuner:",
+  "freeserversaver.tuning.offset": "  Offset do limiar: %s pontos percentuais",
+
+  "freeserversaver.prune.result": "Poda de chunks: %s chunks isolados identificados. Vanilla os descarregará em ~10 ticks.",
+
+  "freeserversaver.storage.error": "Não foi possível ler o tamanho do diretório do mundo.",
+  "freeserversaver.storage.result": "Diretório do mundo: %s MB / 4096 MB (limite do Aternos)",
+
+  "freeserversaver.idle.first_join": "Bem-vindo — o timer de inatividade do Aternos foi resetado enquanto você estiver online.",
+
+  "freeserversaver.pregen.yielded": "Chunky instalado — use /chunky. O pregen do Aternos Heap Guardian cede para ele.",
+  "freeserversaver.pregen.result": "%s chunks pré-gerados (raio %s)."
+
+  "freeserversaver.status.title": "Status do Heap Guardian:",
+  "freeserversaver.status.line": "  Nível: %s  |  Heap: %s%%",
+
+  "freeserversaver.history.empty": "Histórico do Heap Guardian: (nenhuma transição registrada ainda)",
+  "freeserversaver.history.title": "Histórico do Heap Guardian (%s entradas, mais recentes primeiro):",
+  "freeserversaver.history.entry": "  [%s] %s -> %s (heap %s%%)",
+  "freeserversaver.history.more": "  ... %s entradas mais antigas não exibidas",
+
+  "freeserversaver.metrics.title": "Métricas do Heap Guardian:",
+  "freeserversaver.metrics.line.heap": "  Heap: %s%%  |  Nível: %s",
+  "freeserversaver.metrics.line.players": "  Jogadores: %s  |  Chunks carregados: %s  |  Forçados: %s",
+  "freeserversaver.metrics.line.distance": "  Distância de visão: %s  |  Distância de simulação: %s",
+
+  "freeserversaver.env.notyet": "Snapshot do ambiente ainda não capturado (servidor não totalmente iniciado).",
+  "freeserversaver.env.title": "Snapshot do ambiente Aternos (capturado no início):",
+  "freeserversaver.env.line.heap": "  Heap máx.: %s MB  |  Heap no boot: %s MB",
+  "freeserversaver.env.line.cpu": "  Núcleos da CPU: %s  |  JVM: %s (Java %s)",
+  "freeserversaver.env.line.captured": "  Capturado: %s",
+  "freeserversaver.env.hint.low": "  Heap < 2 GB — verifique a configuração do Aternos, o nível base deveria fornecer ~2.5 GB.",
+  "freeserversaver.env.hint.boost": "  RAM Boost parece estar ativo (> 3.5 GB).",
+  "freeserversaver.env.hint.standard": "  Heap padrão do Aternos.",
+
+  "freeserversaver.lagspikes.empty": "Nenhum pico de lag registrado — o servidor está rodando suavemente.",
+  "freeserversaver.lagspikes.title": "Picos de lag recentes (%s entradas, mais recentes primeiro):",
+  "freeserversaver.lagspikes.entry": "  [%s] %s ms tick (heap %s%%, nível %s, %s jogadores)",
+  "freeserversaver.lagspikes.more": "  ... %s picos mais antigos não exibidos",
+
+  "freeserversaver.topentities.empty": "Nenhuma entidade carregada.",
+  "freeserversaver.topentities.title": "Top tipos de entidades (todas as dimensões, top 10):",
+  "freeserversaver.topentities.entry": "  %s  %s  (%s)",
+
+  "freeserversaver.inspect.chunks.title": "Inspeção de chunks (%s dimensões):",
+  "freeserversaver.inspect.chunks.entry": "  %s: carregados=%s, forçados=%s, jogadores=%s"
+}

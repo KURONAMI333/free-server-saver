@@ -1,0 +1,61 @@
+{
+  "freeserversaver.help.title": "Aternos Heap Guardian — Befehle:",
+  "freeserversaver.help.entry.status": "  /freeserversaver status — Aktuelle Stufe und Heap-Auslastung.",
+  "freeserversaver.help.entry.history": "  /freeserversaver history — Letzte 20 Stufenübergänge, farbcodiert.",
+  "freeserversaver.help.entry.metrics": "  /freeserversaver metrics — Heap, Stufe, Spieler, geladene Chunks, Sichtweite.",
+  "freeserversaver.help.entry.env": "  /freeserversaver env — JVM-Heap/CPU-Schnappschuss vom Serverstart (RAM-Boost-Erkennung).",
+  "freeserversaver.help.entry.lagspikes": "  /freeserversaver lagspikes — Letzte Ticks über 100 ms mit dem Heap-Zustand zu dem Zeitpunkt.",
+  "freeserversaver.help.entry.topentities": "  /freeserversaver top entities — Top 10 Entity-Typen nach Anzahl, mit Dimensionsaufschlüsselung.",
+  "freeserversaver.help.entry.inspect": "  /freeserversaver inspect chunks — Pro Dimension: geladen / erzwungen / Spielerzahl.",
+  "freeserversaver.help.entry.tuning": "  /freeserversaver tuning — Aktueller Schwellenwert-Offset des AutoTuners.",
+  "freeserversaver.help.entry.prune": "  /freeserversaver prune — Identifiziert nicht erreichbare geladene Chunks (Flood-Fill).",
+  "freeserversaver.help.entry.storage": "  /freeserversaver storage — Welt-Verzeichnisgröße vs. Aternos 4GB-Limit.",
+  "freeserversaver.help.entry.pregen": "  /freeserversaver pregen <radius> — Chunks synchron im Umkreis vorgenerieren (max. 16).",
+
+  "freeserversaver.tuning.title": "Heap Guardian AutoTuner:",
+  "freeserversaver.tuning.offset": "  Schwellenwert-Offset: %s Prozentpunkte",
+
+  "freeserversaver.prune.result": "Chunk-Bereinigung: %s isolierte Chunks identifiziert. Vanilla entlädt sie innerhalb von ~10 Ticks.",
+
+  "freeserversaver.storage.error": "Welt-Verzeichnisgröße konnte nicht gelesen werden.",
+  "freeserversaver.storage.result": "Welt-Verzeichnis: %s MB / 4096 MB (Aternos-Limit)",
+
+  "freeserversaver.idle.first_join": "Willkommen — der Aternos-Idle-Timer ist zurückgesetzt, solange du online bist.",
+
+  "freeserversaver.pregen.yielded": "Chunky ist installiert — nutze stattdessen /chunky. Aternos Heap Guardians Pregen weicht zurück.",
+  "freeserversaver.pregen.result": "%s Chunks vorgeneriert (Radius %s)."
+
+  "freeserversaver.status.title": "Heap Guardian Status:",
+  "freeserversaver.status.line": "  Stufe: %s  |  Heap: %s%%",
+
+  "freeserversaver.history.empty": "Heap Guardian Verlauf: (noch keine Übergänge aufgezeichnet)",
+  "freeserversaver.history.title": "Heap Guardian Verlauf (%s Einträge, neueste zuerst):",
+  "freeserversaver.history.entry": "  [%s] %s -> %s (Heap %s%%)",
+  "freeserversaver.history.more": "  ... %s ältere Einträge nicht angezeigt",
+
+  "freeserversaver.metrics.title": "Heap Guardian Metriken:",
+  "freeserversaver.metrics.line.heap": "  Heap: %s%%  |  Stufe: %s",
+  "freeserversaver.metrics.line.players": "  Spieler: %s  |  Geladene Chunks: %s  |  Erzwungen geladen: %s",
+  "freeserversaver.metrics.line.distance": "  Sichtweite: %s  |  Simulationsdistanz: %s",
+
+  "freeserversaver.env.notyet": "Umgebungs-Schnappschuss noch nicht erfasst (Server noch nicht vollständig gestartet).",
+  "freeserversaver.env.title": "Aternos-Umgebungs-Schnappschuss (beim Start erfasst):",
+  "freeserversaver.env.line.heap": "  Max. Heap: %s MB  |  Heap beim Start: %s MB",
+  "freeserversaver.env.line.cpu": "  CPU-Kerne: %s  |  JVM: %s (Java %s)",
+  "freeserversaver.env.line.captured": "  Erfasst: %s",
+  "freeserversaver.env.hint.low": "  Heap < 2 GB — prüfe Aternos-Konfiguration, Basisstufe sollte ~2,5 GB liefern.",
+  "freeserversaver.env.hint.boost": "  RAM-Boost scheint aktiv zu sein (> 3,5 GB).",
+  "freeserversaver.env.hint.standard": "  Standard-Aternos-Heap.",
+
+  "freeserversaver.lagspikes.empty": "Keine Lag-Spitzen aufgezeichnet — der Server läuft reibungslos.",
+  "freeserversaver.lagspikes.title": "Letzte Lag-Spitzen (%s Einträge, neueste zuerst):",
+  "freeserversaver.lagspikes.entry": "  [%s] %s ms Tick (Heap %s%%, Stufe %s, %s Spieler)",
+  "freeserversaver.lagspikes.more": "  ... %s ältere Spitzen nicht angezeigt",
+
+  "freeserversaver.topentities.empty": "Keine Entities geladen.",
+  "freeserversaver.topentities.title": "Top Entity-Typen (alle Dimensionen kombiniert, Top 10):",
+  "freeserversaver.topentities.entry": "  %s  %s  (%s)",
+
+  "freeserversaver.inspect.chunks.title": "Chunk-Inspektion (%s Dimensionen):",
+  "freeserversaver.inspect.chunks.entry": "  %s: geladen=%s, erzwungen=%s, Spieler=%s"
+}
