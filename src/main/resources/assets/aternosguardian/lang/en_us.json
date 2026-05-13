@@ -7,6 +7,10 @@
   "aternosguardian.help.entry.lagspikes": "  /aternosguardian lagspikes — Recent ticks over 100 ms with the heap state at the time.",
   "aternosguardian.help.entry.topentities": "  /aternosguardian top entities — Top 10 entity types by count, with dimension breakdown.",
   "aternosguardian.help.entry.inspect": "  /aternosguardian inspect chunks — Per-dimension loaded / forced / player counts.",
+  "aternosguardian.help.entry.tuning": "  /aternosguardian tuning — Current AutoTuner threshold offset.",
+
+  "aternosguardian.tuning.title": "Heap Guardian AutoTuner:",
+  "aternosguardian.tuning.offset": "  Threshold offset: %s percentage points",
 
   "aternosguardian.status.title": "Heap Guardian status:",
   "aternosguardian.status.line": "  Tier: %s  |  Heap: %s%%",

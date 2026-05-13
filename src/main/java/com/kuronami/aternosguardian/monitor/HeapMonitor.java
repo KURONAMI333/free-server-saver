@@ -52,6 +52,18 @@ public class HeapMonitor {
     private ThrottleLevel currentLevel = ThrottleLevel.NORMAL;
     private double lastHeapPercent = 0.0;
 
+    /**
+     * Optional dynamic shift to all tier thresholds. AutoTuner sets this
+     * to a value in [-10, +10]; a value of +5 means "treat the L1 entry
+     * threshold (60%) as if it were 65%." Read on every poll, so changes
+     * take effect within 2 seconds of being set.
+     *
+     * <p>Volatile because AutoTuner runs on the server tick thread and
+     * HeapMonitor's poll() can run on different ticks; the cheapest
+     * coordination is the JMM volatile ordering guarantee.
+     */
+    private volatile double thresholdOffset = 0.0;
+
     @SubscribeEvent
     public void onServerStarted(ServerStartedEvent event) {
         // Reset counters: a server-stop / server-start cycle (e.g. in dev
@@ -109,16 +121,25 @@ public class HeapMonitor {
 
         double pct = (double) used / max * 100.0;
         lastHeapPercent = pct;
-        ThrottleLevel rising = ThrottleLevel.forHeapPercent(pct);
+
+        // Apply AutoTuner offset to the percentage we classify against.
+        // Subtracting the offset is equivalent to raising every threshold
+        // by the same amount — pct=70%, offset=+5 means "treat as 65%,"
+        // which keeps the mob at one tier lower than the static thresholds
+        // would have placed it.
+        double offset = thresholdOffset;
+        double effectivePct = pct - offset;
+        ThrottleLevel rising = ThrottleLevel.forHeapPercent(effectivePct);
 
         // Falling-edge check: only release the current level if we've dropped
-        // strictly below its entry threshold by the hysteresis margin.
+        // strictly below its (also offset-adjusted) entry threshold by the
+        // hysteresis margin.
         ThrottleLevel newLevel = currentLevel;
         if (rising.ordinal() > currentLevel.ordinal()) {
             newLevel = rising;
         } else if (rising.ordinal() < currentLevel.ordinal()) {
             double releaseAt = currentLevel.enterAt() - ThrottleLevel.HYSTERESIS_MARGIN;
-            if (pct < releaseAt) {
+            if (effectivePct < releaseAt) {
                 newLevel = rising;
             }
         }
@@ -149,5 +170,14 @@ public class HeapMonitor {
     /** Last polled heap percentage — exposed for the status command. */
     public double lastHeapPercent() {
         return lastHeapPercent;
+    }
+
+    /**
+     * Set the AutoTuner-controlled offset applied to all tier thresholds.
+     * Plus = throttle later, minus = throttle earlier. Volatile write —
+     * the next poll() in this tick or the next will pick it up.
+     */
+    public void setThresholdOffset(double offset) {
+        this.thresholdOffset = offset;
     }
 }

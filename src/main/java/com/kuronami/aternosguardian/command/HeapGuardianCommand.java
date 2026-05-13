@@ -6,6 +6,7 @@ import com.kuronami.aternosguardian.monitor.HeapHistoryTracker;
 import com.kuronami.aternosguardian.monitor.HeapMonitor;
 import com.kuronami.aternosguardian.monitor.LagSpikeDetector;
 import com.kuronami.aternosguardian.monitor.ThrottleLevel;
+import com.kuronami.aternosguardian.tuning.AutoTuner;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -50,12 +51,14 @@ public class HeapGuardianCommand {
     private final HeapMonitor monitor;
     private final HeapHistoryTracker history;
     private final LagSpikeDetector lagSpikes;
+    private final AutoTuner autoTuner;
 
     public HeapGuardianCommand(HeapMonitor monitor, HeapHistoryTracker history,
-                               LagSpikeDetector lagSpikes) {
+                               LagSpikeDetector lagSpikes, AutoTuner autoTuner) {
         this.monitor = monitor;
         this.history = history;
         this.lagSpikes = lagSpikes;
+        this.autoTuner = autoTuner;
     }
 
     @SubscribeEvent
@@ -68,6 +71,7 @@ public class HeapGuardianCommand {
             .literal(HeapGuardian.MOD_ID)
             .requires(src -> src.hasPermission(2))
             .then(Commands.literal("help").executes(this::help))
+            .then(Commands.literal("tuning").executes(this::tuning))
             .then(Commands.literal("status").executes(this::status))
             .then(Commands.literal("history").executes(this::history))
             .then(Commands.literal("metrics").executes(this::metrics))
@@ -100,6 +104,7 @@ public class HeapGuardianCommand {
             "aternosguardian.help.entry.lagspikes",
             "aternosguardian.help.entry.topentities",
             "aternosguardian.help.entry.inspect",
+            "aternosguardian.help.entry.tuning",
         };
         for (String key : keys) {
             ctx.getSource().sendSuccess(() -> Component.translatable(key), false);
@@ -139,6 +144,25 @@ public class HeapGuardianCommand {
                 "aternosguardian.lagspikes.more", more).withStyle(ChatFormatting.GRAY),
                 false);
         }
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private int tuning(CommandContext<CommandSourceStack> ctx) {
+        // Show the current AutoTuner state. There's no "/aternosguardian
+        // config set <key> <value>" because runtime mutation of config
+        // values is supported by NeoForge's ModConfigSpec but the API
+        // surface is fragile across loader versions. Read-only inspection
+        // via this command, persistent edits via the toml file + reload.
+        double offset = autoTuner.currentOffset();
+        ChatFormatting color = offset < 0 ? ChatFormatting.RED
+            : offset > 0 ? ChatFormatting.GREEN
+            : ChatFormatting.YELLOW;
+        ctx.getSource().sendSuccess(() -> Component.translatable(
+            "aternosguardian.tuning.title").withStyle(ChatFormatting.BOLD), false);
+        ctx.getSource().sendSuccess(() -> Component.translatable(
+            "aternosguardian.tuning.offset",
+            String.format("%+.1f", offset)).withStyle(color),
+            false);
         return Command.SINGLE_SUCCESS;
     }
 
