@@ -2,8 +2,10 @@ package com.kuronami.aternosguardian.command;
 
 import com.kuronami.aternosguardian.HeapGuardian;
 import com.kuronami.aternosguardian.environment.EnvironmentInspector;
+import com.kuronami.aternosguardian.modules.ChunkPreGenModule;
 import com.kuronami.aternosguardian.modules.ChunkPruningModule;
 import com.kuronami.aternosguardian.modules.StorageMonitor;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.kuronami.aternosguardian.monitor.HeapHistoryTracker;
 import com.kuronami.aternosguardian.monitor.HeapMonitor;
 import com.kuronami.aternosguardian.monitor.LagSpikeDetector;
@@ -56,16 +58,19 @@ public class HeapGuardianCommand {
     private final AutoTuner autoTuner;
     private final ChunkPruningModule chunkPruning;
     private final StorageMonitor storage;
+    private final ChunkPreGenModule chunkPregen;
 
     public HeapGuardianCommand(HeapMonitor monitor, HeapHistoryTracker history,
                                LagSpikeDetector lagSpikes, AutoTuner autoTuner,
-                               ChunkPruningModule chunkPruning, StorageMonitor storage) {
+                               ChunkPruningModule chunkPruning, StorageMonitor storage,
+                               ChunkPreGenModule chunkPregen) {
         this.monitor = monitor;
         this.history = history;
         this.lagSpikes = lagSpikes;
         this.autoTuner = autoTuner;
         this.chunkPruning = chunkPruning;
         this.storage = storage;
+        this.chunkPregen = chunkPregen;
     }
 
     @SubscribeEvent
@@ -88,6 +93,9 @@ public class HeapGuardianCommand {
                 .then(Commands.literal("entities").executes(this::topEntities)))
             .then(Commands.literal("prune").executes(this::prune))
             .then(Commands.literal("storage").executes(this::storageCmd))
+            .then(Commands.literal("pregen")
+                .then(Commands.argument("radius", IntegerArgumentType.integer(1, ChunkPreGenModule.MAX_RADIUS_CHUNKS))
+                    .executes(this::pregen)))
             .then(Commands.literal("inspect")
                 .then(Commands.literal("chunks").executes(this::inspectChunks)));
 
@@ -116,6 +124,7 @@ public class HeapGuardianCommand {
             "aternosguardian.help.entry.tuning",
             "aternosguardian.help.entry.prune",
             "aternosguardian.help.entry.storage",
+            "aternosguardian.help.entry.pregen",
         };
         for (String key : keys) {
             ctx.getSource().sendSuccess(() -> Component.translatable(key), false);
@@ -325,6 +334,30 @@ public class HeapGuardianCommand {
             : ChatFormatting.GREEN;
         ctx.getSource().sendSuccess(() -> Component.translatable(
             "aternosguardian.storage.result", mb).withStyle(color), false);
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private int pregen(CommandContext<CommandSourceStack> ctx) {
+        int radius = IntegerArgumentType.getInteger(ctx, "radius");
+        var src = ctx.getSource();
+        var level = src.getLevel();
+        // Center at command source's current chunk. Players run from their
+        // position; rcon / console runs from world spawn.
+        var centerPos = src.getPosition();
+        var centerChunk = new net.minecraft.world.level.ChunkPos(
+            ((int) centerPos.x) >> 4, ((int) centerPos.z) >> 4);
+
+        int generated = chunkPregen.pregen(level, centerChunk, radius);
+        if (generated < 0) {
+            // Yielded to a competitor mod (Chunky) — message already
+            // logged by the module.
+            ctx.getSource().sendSuccess(() -> Component.translatable(
+                "aternosguardian.pregen.yielded").withStyle(ChatFormatting.YELLOW), false);
+            return Command.SINGLE_SUCCESS;
+        }
+        ctx.getSource().sendSuccess(() -> Component.translatable(
+            "aternosguardian.pregen.result", generated, radius)
+            .withStyle(ChatFormatting.GREEN), false);
         return Command.SINGLE_SUCCESS;
     }
 
