@@ -4,8 +4,10 @@ import com.kuronami.heapguardian.HeapGuardian;
 import com.kuronami.heapguardian.config.HeapGuardianConfig;
 import com.kuronami.heapguardian.monitor.ThrottleLevel;
 import com.kuronami.heapguardian.monitor.ThrottleLevelChangedEvent;
+import com.kuronami.heapguardian.util.BossDetection;
 import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -110,14 +112,16 @@ public class SpawnThrottleModule {
             return;
         }
         Entity entity = event.getEntity();
-        if (entity.hasCustomName()) {
-            return;
-        }
         // Only intercept "living entity" subclasses. Item drops, XP orbs,
         // arrows, etc. join the level constantly and shouldn't be filtered
         // by a spawn-throttle module — those are not the source of the
         // allocation pressure we're trying to reduce.
-        if (!(entity instanceof net.minecraft.world.entity.Mob)) {
+        if (!(entity instanceof Mob mob)) {
+            return;
+        }
+        // Same exemptions as FinalizeSpawn — bosses and player-protected
+        // mobs must never be cancelled here either.
+        if (BossDetection.shouldNeverTouch(mob)) {
             return;
         }
 
@@ -128,6 +132,12 @@ public class SpawnThrottleModule {
     }
 
     private boolean shouldAlwaysAllow(Entity entity, MobSpawnType spawnType) {
+        // Boss / important NPC / player-protected — never cancel.
+        // BossDetection only operates on Mob; non-Mob entities (items,
+        // arrows, etc.) shouldn't reach here anyway, but we guard.
+        if (entity instanceof Mob mob && BossDetection.shouldNeverTouch(mob)) {
+            return true;
+        }
         if (entity.hasCustomName()) {
             return true;
         }

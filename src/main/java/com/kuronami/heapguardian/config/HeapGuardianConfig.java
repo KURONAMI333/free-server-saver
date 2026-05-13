@@ -21,7 +21,7 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 public final class HeapGuardianConfig {
 
     public static final ModConfigSpec SPEC;
-    public static final ModConfigSpec.BooleanValue ENABLE_RANDOM_TICK_THROTTLE;
+    public static final ModConfigSpec.BooleanValue ENABLE_ENTITY_TICK_THROTTLE;
     public static final ModConfigSpec.BooleanValue ENABLE_SPAWN_THROTTLE;
     public static final ModConfigSpec.BooleanValue ENABLE_CHUNK_UNLOAD;
     public static final ModConfigSpec.BooleanValue ENABLE_DESPAWN_SWEEP;
@@ -42,13 +42,21 @@ public final class HeapGuardianConfig {
 
         b.push("modules");
 
-        ENABLE_RANDOM_TICK_THROTTLE = b
+        ENABLE_ENTITY_TICK_THROTTLE = b
             .comment(
-                "Reduce randomTickSpeed gamerule as heap pressure rises.",
-                "L1 (60%+): 3 -> 1   |   L2+ (70%+): -> 0",
-                "Restored to vanilla default (3) when heap recovers."
+                "Throttle far-away mob AI ticks based on player distance.",
+                "L1+: skip a fraction of ticks for FAR/DISTANT mobs.",
+                "L4: aggressive interval (32x) at DISTANT bucket.",
+                "Bosses, named mobs, leashed/tamed/persistent mobs always",
+                "run full ticks. Starvation floor of every 20 ticks ensures",
+                "no mob is fully frozen.",
+                "",
+                "This replaces the older RandomTickModule (removed in 0.1.1)",
+                "because vanilla random ticks are allocation-cheap; the real",
+                "heap pressure comes from per-entity AI ticks. Install",
+                "Lithium for the random-tick allocation optimization."
             )
-            .define("enableRandomTickThrottle", true);
+            .define("enableEntityTickThrottle", true);
 
         ENABLE_SPAWN_THROTTLE = b
             .comment(
