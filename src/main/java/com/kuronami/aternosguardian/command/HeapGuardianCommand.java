@@ -2,6 +2,8 @@ package com.kuronami.aternosguardian.command;
 
 import com.kuronami.aternosguardian.HeapGuardian;
 import com.kuronami.aternosguardian.environment.EnvironmentInspector;
+import com.kuronami.aternosguardian.modules.ChunkPruningModule;
+import com.kuronami.aternosguardian.modules.StorageMonitor;
 import com.kuronami.aternosguardian.monitor.HeapHistoryTracker;
 import com.kuronami.aternosguardian.monitor.HeapMonitor;
 import com.kuronami.aternosguardian.monitor.LagSpikeDetector;
@@ -52,13 +54,18 @@ public class HeapGuardianCommand {
     private final HeapHistoryTracker history;
     private final LagSpikeDetector lagSpikes;
     private final AutoTuner autoTuner;
+    private final ChunkPruningModule chunkPruning;
+    private final StorageMonitor storage;
 
     public HeapGuardianCommand(HeapMonitor monitor, HeapHistoryTracker history,
-                               LagSpikeDetector lagSpikes, AutoTuner autoTuner) {
+                               LagSpikeDetector lagSpikes, AutoTuner autoTuner,
+                               ChunkPruningModule chunkPruning, StorageMonitor storage) {
         this.monitor = monitor;
         this.history = history;
         this.lagSpikes = lagSpikes;
         this.autoTuner = autoTuner;
+        this.chunkPruning = chunkPruning;
+        this.storage = storage;
     }
 
     @SubscribeEvent
@@ -79,6 +86,8 @@ public class HeapGuardianCommand {
             .then(Commands.literal("lagspikes").executes(this::lagspikes))
             .then(Commands.literal("top")
                 .then(Commands.literal("entities").executes(this::topEntities)))
+            .then(Commands.literal("prune").executes(this::prune))
+            .then(Commands.literal("storage").executes(this::storageCmd))
             .then(Commands.literal("inspect")
                 .then(Commands.literal("chunks").executes(this::inspectChunks)));
 
@@ -105,6 +114,8 @@ public class HeapGuardianCommand {
             "aternosguardian.help.entry.topentities",
             "aternosguardian.help.entry.inspect",
             "aternosguardian.help.entry.tuning",
+            "aternosguardian.help.entry.prune",
+            "aternosguardian.help.entry.storage",
         };
         for (String key : keys) {
             ctx.getSource().sendSuccess(() -> Component.translatable(key), false);
@@ -288,6 +299,32 @@ public class HeapGuardianCommand {
                 // so each locale can decide alignment.
                 tc.typeId(), tc.count(), tc.dimensionId()), false);
         }
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private int prune(CommandContext<CommandSourceStack> ctx) {
+        int released = chunkPruning.runPruneNow();
+        ctx.getSource().sendSuccess(() -> Component.translatable(
+            "aternosguardian.prune.result", released).withStyle(ChatFormatting.BOLD),
+            false);
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private int storageCmd(CommandContext<CommandSourceStack> ctx) {
+        long bytes = storage.runScan();
+        if (bytes < 0) {
+            ctx.getSource().sendSuccess(() -> Component.translatable(
+                "aternosguardian.storage.error").withStyle(ChatFormatting.RED), false);
+            return Command.SINGLE_SUCCESS;
+        }
+        long mb = bytes / 1_048_576L;
+        // Color-code by Aternos's 4GB cap proximity.
+        ChatFormatting color = mb >= 4000 ? ChatFormatting.DARK_RED
+            : mb >= 3500 ? ChatFormatting.RED
+            : mb >= 3000 ? ChatFormatting.YELLOW
+            : ChatFormatting.GREEN;
+        ctx.getSource().sendSuccess(() -> Component.translatable(
+            "aternosguardian.storage.result", mb).withStyle(color), false);
         return Command.SINGLE_SUCCESS;
     }
 

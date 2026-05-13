@@ -29,6 +29,9 @@ public final class HeapGuardianConfig {
     public static final ModConfigSpec.BooleanValue ENABLE_ITEM_THROTTLE;
     public static final ModConfigSpec.BooleanValue ENABLE_MOB_DENSITY_DETECTION;
     public static final ModConfigSpec.BooleanValue ENABLE_AUTO_TUNING;
+    public static final ModConfigSpec.BooleanValue ENABLE_CHUNK_PRUNING;
+    public static final ModConfigSpec.BooleanValue ENABLE_STORAGE_MONITOR;
+    public static final ModConfigSpec.BooleanValue ENABLE_IDLE_NOTIFIER;
     public static final ModConfigSpec.BooleanValue ENABLE_MOD_COMPAT_WARNINGS;
     public static final ModConfigSpec.BooleanValue VERBOSE_LOGGING;
 
@@ -140,6 +143,35 @@ public final class HeapGuardianConfig {
                 "see the benefit."
             )
             .define("enableAutoTuning", false);
+
+        ENABLE_CHUNK_PRUNING = b
+            .comment(
+                "Auto-prune unreachable loaded chunks via flood-fill from",
+                "player and force-load anchors. Engaged on rising edge into",
+                "L3/L4 tier. Manual on-demand: /aternosguardian prune.",
+                "Diagnostic-grade in v0.1 — identifies count, vanilla's",
+                "ticket lifecycle handles the actual unload."
+            )
+            .define("enableChunkPruning", true);
+
+        ENABLE_STORAGE_MONITOR = b
+            .comment(
+                "Every 30 minutes, scan the world directory size against",
+                "Aternos's 4GB cap. WARN at 3.5GB; ERROR at 4GB. Initial",
+                "scan runs 30 seconds after server start to catch the",
+                "'already over the cap' case immediately. No deletes."
+            )
+            .define("enableStorageMonitor", true);
+
+        ENABLE_IDLE_NOTIFIER = b
+            .comment(
+                "On player-count transitions to/from zero, log a note about",
+                "Aternos's idle-shutdown timer. Server-empty -> 'countdown",
+                "starts'. First-rejoin -> 'timer reset'. Purely informational",
+                "— does NOT keep the server alive. Doing that would be the",
+                "fake-player tactic Aternos bans (Carpet)."
+            )
+            .define("enableIdleNotifier", true);
 
         ENABLE_MOD_COMPAT_WARNINGS = b
             .comment(

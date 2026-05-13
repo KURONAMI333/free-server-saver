@@ -71,6 +71,25 @@ Heap Guardian focuses on the _adaptive_ side — adjusting behavior under pressu
 
 The startup log will hint about these if you're missing any.
 
+## What it solves vs what it doesn't
+
+Aternos players report a small, well-known set of pain points. Honest scope statement:
+
+**What HG addresses:**
+- Mobs teleporting / players disconnecting (GC pause → TPS death) ✓
+- "Out of Memory" crashes ✓
+- General lag from entity tick budget ✓
+- Villager / iron farm dying from over-aggressive despawn ✓
+- Mobs not attacking (AI freeze from low TPS) ✓
+- 4GB world-size cap (via `prune` command and `storage` monitor) ✓
+- Idle-shutdown awareness (informational notifications, NOT bypassing) ✓
+
+**What HG does NOT do:**
+- The 10-minute startup timeout — that's a mod-loading problem; HG can't run before mods load. Install ModernFix as a companion.
+- New-chunk generation slowness — Lithium's chunk optimization + Chunky's pre-generation handle that.
+- Network latency / ping issues — server-region geographical problem.
+- Bypass Aternos's idle timer with fake players — that's what Aternos bans (Carpet). HG works within Aternos's rules.
+
 ## Status
 
 **v0.1.0 — built, not yet in-game verified.** The mod compiles cleanly and the design is internally consistent, but no `runClient` session has happened yet. See `VERIFICATION_CHECKLIST.md` for the test plan to run before declaring v0.1.0 released.
