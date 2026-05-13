@@ -1,6 +1,7 @@
 package com.kuronami.aternosguardian.modules;
 
 import com.kuronami.aternosguardian.HeapGuardian;
+import com.kuronami.aternosguardian.compat.CompatibilityCoordinator;
 import com.kuronami.aternosguardian.config.HeapGuardianConfig;
 import com.kuronami.aternosguardian.monitor.ThrottleLevel;
 import com.kuronami.aternosguardian.monitor.ThrottleLevelChangedEvent;
@@ -78,6 +79,10 @@ public class SpawnThrottleModule {
         if (Boolean.FALSE.equals(HeapGuardianConfig.ENABLE_SPAWN_THROTTLE.get())) {
             return;
         }
+        // APT-Spawn covers this lane with finer-grained rules; defer to it.
+        if (CompatibilityCoordinator.yieldSpawnThrottle()) {
+            return;
+        }
         if (event.isSpawnCancelled()) {
             return;
         }
@@ -103,6 +108,9 @@ public class SpawnThrottleModule {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onEntityJoinLevel(EntityJoinLevelEvent event) {
         if (Boolean.FALSE.equals(HeapGuardianConfig.ENABLE_SPAWN_THROTTLE.get())) {
+            return;
+        }
+        if (CompatibilityCoordinator.yieldSpawnThrottle()) {
             return;
         }
         if (event.isCanceled()) {
