@@ -130,18 +130,38 @@ public class DiscordWebhookModule {
         return "{\"content\":\"" + escaped + "\"}";
     }
 
+    /** After this many consecutive failures, stop trying to spam the operator's log. */
+    private static final int MAX_CONSECUTIVE_FAILURES = 5;
+
+    /** Number of failures in a row. Reset on success. */
+    private final java.util.concurrent.atomic.AtomicInteger consecutiveFailures =
+        new java.util.concurrent.atomic.AtomicInteger(0);
+
     /**
      * Fire-and-forget POST. We don't await the response — if Discord
      * returns 4xx/5xx, log it; if the network is down, log that. The
      * server tick is never blocked.
+     *
+     * <p>Circuit breaker: after MAX_CONSECUTIVE_FAILURES in a row, we
+     * stop logging further failures (the operator already has the info
+     * and we don't want to fill server.log with the same warning every
+     * 5 minutes). The first successful POST resets the counter.
      */
     private void sendAsync(String url, String payload) {
+        if (consecutiveFailures.get() >= MAX_CONSECUTIVE_FAILURES) {
+            // Skip silently — operator has been notified enough times.
+            // The next manual /aternosguardian status etc. will not be
+            // confused by missing Discord notifications, since we still
+            // log at the source (HeapMonitor's tier-change log line).
+            return;
+        }
+
         HttpClient client = ensureClient();
         HttpRequest req = HttpRequest.newBuilder()
             .uri(URI.create(url))
             .timeout(HTTP_TIMEOUT)
             .header("Content-Type", "application/json")
-            .header("User-Agent", "HeapGuardian/0.1.0")
+            .header("User-Agent", "AternosHeapGuardian/0.1.0")
             .POST(HttpRequest.BodyPublishers.ofString(payload, StandardCharsets.UTF_8))
             .build();
 
@@ -150,13 +170,33 @@ public class DiscordWebhookModule {
                 if (err != null) {
                     // Don't log the URL — it's a secret. The failure type
                     // is enough for an operator to debug.
-                    HeapGuardian.LOGGER.warn(
-                        "[Webhook] Discord notification failed: {}", err.getClass().getSimpleName());
+                    int n = consecutiveFailures.incrementAndGet();
+                    if (n <= MAX_CONSECUTIVE_FAILURES) {
+                        HeapGuardian.LOGGER.warn(
+                            "[Webhook] Discord notification failed ({}/{} consecutive): {}",
+                            n, MAX_CONSECUTIVE_FAILURES, err.getClass().getSimpleName());
+                        if (n == MAX_CONSECUTIVE_FAILURES) {
+                            HeapGuardian.LOGGER.warn(
+                                "[Webhook] Suppressing further failure logs until a request succeeds. "
+                                + "Check webhook URL and network.");
+                        }
+                    }
                     return;
                 }
                 int status = resp.statusCode();
                 if (status >= 400) {
-                    HeapGuardian.LOGGER.warn("[Webhook] Discord responded HTTP {}", status);
+                    int n = consecutiveFailures.incrementAndGet();
+                    if (n <= MAX_CONSECUTIVE_FAILURES) {
+                        HeapGuardian.LOGGER.warn(
+                            "[Webhook] Discord responded HTTP {} ({}/{} consecutive)",
+                            status, n, MAX_CONSECUTIVE_FAILURES);
+                    }
+                } else {
+                    // 2xx — success. Reset the counter; resume normal logging.
+                    if (consecutiveFailures.getAndSet(0) > 0) {
+                        HeapGuardian.LOGGER.info(
+                            "[Webhook] Discord notifications recovered.");
+                    }
                 }
             });
     }

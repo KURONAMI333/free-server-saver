@@ -40,9 +40,15 @@ When the heap drops back down, every intervention reverses automatically. **5% h
 
 Heap Guardian works **within** Aternos's rules. That's why it's allowed on the mod list.
 
-## Discord notifications
+## Discord notifications (opt-in)
 
-Set a webhook URL in `serverconfig/aternosguardian-server.toml` and get a ping in Discord when your server hits L3 or L4. You don't have to sit watching the Aternos console — Heap Guardian tells you when things are getting tight.
+Set `enableDiscordWebhook = true` and a webhook URL in `serverconfig/aternosguardian-server.toml`, get a ping in Discord when your server hits L3 or L4. You don't have to sit watching the Aternos console — Heap Guardian tells you when things are getting tight.
+
+## Languages
+
+Aternos Heap Guardian's chat output is translated into 9 languages: English, 日本語, Deutsch, Português (BR), Español, 简体中文, 한국어, Français, Русский. A Japanese client sees Japanese, a German client sees German — same server, no recompilation.
+
+**The translations are machine-generated** as a starting point. Native-speaker corrections are very welcome — open a PR or issue with a fixed `lang/{locale}.json`.
 
 ## Commands
 
@@ -64,6 +70,10 @@ Heap Guardian focuses on the _adaptive_ side — adjusting behavior under pressu
 - **ModernFix** — Mod-loading speedup; helps you fit inside Aternos's 10-minute boot limit.
 
 The startup log will hint about these if you're missing any.
+
+## Status
+
+**v0.1.0 — built, not yet in-game verified.** The mod compiles cleanly and the design is internally consistent, but no `runClient` session has happened yet. See `VERIFICATION_CHECKLIST.md` for the test plan to run before declaring v0.1.0 released.
 
 ## Building
 
