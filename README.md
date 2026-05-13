@@ -83,12 +83,14 @@ Aternos players report a small, well-known set of pain points. Honest scope stat
 - Mobs not attacking (AI freeze from low TPS) ✓
 - 4GB world-size cap (via `prune` command and `storage` monitor) ✓
 - Idle-shutdown awareness (informational notifications, NOT bypassing) ✓
+- 10-min startup timeout awareness (boot-time history + early warning) ✓
+- Chunk-generation lag from new exploration (`/pregen <radius>`, yields to Chunky) ✓
 
 **What HG does NOT do:**
-- The 10-minute startup timeout — that's a mod-loading problem; HG can't run before mods load. Install ModernFix as a companion.
-- New-chunk generation slowness — Lithium's chunk optimization + Chunky's pre-generation handle that.
 - Network latency / ping issues — server-region geographical problem.
 - Bypass Aternos's idle timer with fake players — that's what Aternos bans (Carpet). HG works within Aternos's rules.
+
+**Cooperates rather than competes.** If you've already installed Chunky / Lithium / FerriteCore / ModernFix / Adaptive Performance Tweaks / Where's my Brain / Immersive Optimization / OptimizeMod / Tick Dynamic / Tick Tweaks, Heap Guardian detects them at startup and yields its overlapping modules. You get HG's heap-pressure-adaptive logic on top of whatever you already have, with no double-throttling and no `/tick rate` fights.
 
 ## Status
 

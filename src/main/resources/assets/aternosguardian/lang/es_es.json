@@ -10,6 +10,7 @@
   "aternosguardian.help.entry.tuning": "  /aternosguardian tuning — Offset actual de umbrales del AutoTuner.",
   "aternosguardian.help.entry.prune": "  /aternosguardian prune — Identifica chunks cargados inalcanzables (flood-fill).",
   "aternosguardian.help.entry.storage": "  /aternosguardian storage — Tamaño del directorio del mundo vs el límite de 4GB de Aternos.",
+  "aternosguardian.help.entry.pregen": "  /aternosguardian pregen <radio> — Pre-genera chunks alrededor de forma sincrónica (radio máx 16).",
 
   "aternosguardian.tuning.title": "Heap Guardian AutoTuner:",
   "aternosguardian.tuning.offset": "  Offset de umbral: %s puntos porcentuales",
@@ -19,7 +20,10 @@
   "aternosguardian.storage.error": "No se pudo leer el tamaño del directorio del mundo.",
   "aternosguardian.storage.result": "Directorio del mundo: %s MB / 4096 MB (límite de Aternos)",
 
-  "aternosguardian.idle.first_join": "Bienvenido — el timer de inactividad de Aternos se reseteó mientras estés online."
+  "aternosguardian.idle.first_join": "Bienvenido — el timer de inactividad de Aternos se reseteó mientras estés online.",
+
+  "aternosguardian.pregen.yielded": "Chunky está instalado — usa /chunky. El pregen de Aternos Heap Guardian cede ante él.",
+  "aternosguardian.pregen.result": "%s chunks pre-generados (radio %s)."
 
   "aternosguardian.status.title": "Estado de Heap Guardian:",
   "aternosguardian.status.line": "  Nivel: %s  |  Heap: %s%%",

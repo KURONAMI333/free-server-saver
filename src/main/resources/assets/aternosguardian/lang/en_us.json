@@ -10,6 +10,7 @@
   "aternosguardian.help.entry.tuning": "  /aternosguardian tuning — Current AutoTuner threshold offset.",
   "aternosguardian.help.entry.prune": "  /aternosguardian prune — Identify unreachable loaded chunks (anchored flood-fill).",
   "aternosguardian.help.entry.storage": "  /aternosguardian storage — World directory size vs the Aternos 4GB cap.",
+  "aternosguardian.help.entry.pregen": "  /aternosguardian pregen <radius> — Synchronously pre-generate chunks around your position. Max radius 16.",
 
   "aternosguardian.tuning.title": "Heap Guardian AutoTuner:",
   "aternosguardian.tuning.offset": "  Threshold offset: %s percentage points",
@@ -19,7 +20,10 @@
   "aternosguardian.storage.error": "Could not read world directory size.",
   "aternosguardian.storage.result": "World directory: %s MB / 4096 MB (Aternos cap)",
 
-  "aternosguardian.idle.first_join": "Welcome — Aternos idle timer reset for as long as you stay online."
+  "aternosguardian.idle.first_join": "Welcome — Aternos idle timer reset for as long as you stay online.",
+
+  "aternosguardian.pregen.yielded": "Chunky is installed — use /chunky instead. Aternos Heap Guardian's pregen yields to it.",
+  "aternosguardian.pregen.result": "Pre-generated %s chunks (radius %s)."
 
   "aternosguardian.status.title": "Heap Guardian status:",
   "aternosguardian.status.line": "  Tier: %s  |  Heap: %s%%",

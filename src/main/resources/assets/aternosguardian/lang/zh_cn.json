@@ -10,6 +10,7 @@
   "aternosguardian.help.entry.tuning": "  /aternosguardian tuning — AutoTuner 当前阈值偏移",
   "aternosguardian.help.entry.prune": "  /aternosguardian prune — 识别无法到达的已加载区块（flood-fill）",
   "aternosguardian.help.entry.storage": "  /aternosguardian storage — 世界目录大小 vs Aternos 4GB 上限",
+  "aternosguardian.help.entry.pregen": "  /aternosguardian pregen <半径> — 同步预生成你周围的区块（半径最大16）",
 
   "aternosguardian.tuning.title": "Heap Guardian AutoTuner:",
   "aternosguardian.tuning.offset": "  阈值偏移: %s 个百分点",
@@ -19,7 +20,10 @@
   "aternosguardian.storage.error": "无法读取世界目录大小。",
   "aternosguardian.storage.result": "世界目录: %s MB / 4096 MB (Aternos 上限)",
 
-  "aternosguardian.idle.first_join": "欢迎 — 你在线期间 Aternos 空闲计时器已重置。"
+  "aternosguardian.idle.first_join": "欢迎 — 你在线期间 Aternos 空闲计时器已重置。",
+
+  "aternosguardian.pregen.yielded": "Chunky 已安装 — 请使用 /chunky。Aternos Heap Guardian 的 pregen 让位。",
+  "aternosguardian.pregen.result": "预生成 %s 个区块（半径 %s）。"
 
   "aternosguardian.status.title": "Heap Guardian 状态：",
   "aternosguardian.status.line": "  级别: %s  |  堆: %s%%",
