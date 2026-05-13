@@ -4,6 +4,7 @@ import com.kuronami.aternosguardian.HeapGuardian;
 import com.kuronami.aternosguardian.environment.EnvironmentInspector;
 import com.kuronami.aternosguardian.monitor.HeapHistoryTracker;
 import com.kuronami.aternosguardian.monitor.HeapMonitor;
+import com.kuronami.aternosguardian.monitor.LagSpikeDetector;
 import com.kuronami.aternosguardian.monitor.ThrottleLevel;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
@@ -48,10 +49,13 @@ public class HeapGuardianCommand {
 
     private final HeapMonitor monitor;
     private final HeapHistoryTracker history;
+    private final LagSpikeDetector lagSpikes;
 
-    public HeapGuardianCommand(HeapMonitor monitor, HeapHistoryTracker history) {
+    public HeapGuardianCommand(HeapMonitor monitor, HeapHistoryTracker history,
+                               LagSpikeDetector lagSpikes) {
         this.monitor = monitor;
         this.history = history;
+        this.lagSpikes = lagSpikes;
     }
 
     @SubscribeEvent
@@ -63,14 +67,75 @@ public class HeapGuardianCommand {
         LiteralArgumentBuilder<CommandSourceStack> root = Commands
             .literal(HeapGuardian.MOD_ID)
             .requires(src -> src.hasPermission(2))
+            .then(Commands.literal("help").executes(this::help))
             .then(Commands.literal("status").executes(this::status))
             .then(Commands.literal("history").executes(this::history))
             .then(Commands.literal("metrics").executes(this::metrics))
             .then(Commands.literal("env").executes(this::env))
+            .then(Commands.literal("lagspikes").executes(this::lagspikes))
             .then(Commands.literal("inspect")
                 .then(Commands.literal("chunks").executes(this::inspectChunks)));
 
         dispatcher.register(root);
+    }
+
+    private int help(CommandContext<CommandSourceStack> ctx) {
+        // Single source of truth for "what does this mod do." Reachable
+        // via /aternosguardian help without arguments — important because
+        // tab completion can show subcommand names but not what they DO.
+        ctx.getSource().sendSuccess(() -> Component.literal(
+            "Aternos Heap Guardian — commands:").withStyle(ChatFormatting.BOLD), false);
+        String[][] entries = {
+            {"status", "Current tier and heap percentage."},
+            {"history", "Last 20 tier transitions, color-coded."},
+            {"metrics", "Heap, tier, players, loaded chunks, view distance."},
+            {"env", "JVM heap/CPU snapshot from server start (RAM Boost detection)."},
+            {"lagspikes", "Recent ticks over 100 ms with the heap state at the time."},
+            {"inspect chunks", "Per-dimension loaded / forced / player counts."},
+        };
+        for (String[] e : entries) {
+            String line = String.format("  /aternosguardian %s — %s", e[0], e[1]);
+            ctx.getSource().sendSuccess(() -> Component.literal(line), false);
+        }
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private int lagspikes(CommandContext<CommandSourceStack> ctx) {
+        List<LagSpikeDetector.Entry> spikes = lagSpikes.snapshot();
+        if (spikes.isEmpty()) {
+            ctx.getSource().sendSuccess(() -> Component.literal(
+                "No lag spikes recorded yet — server is running smoothly.")
+                .withStyle(ChatFormatting.GREEN), false);
+            return Command.SINGLE_SUCCESS;
+        }
+        ctx.getSource().sendSuccess(() -> Component.literal(
+            "Recent lag spikes (" + spikes.size() + " entries, newest first):")
+            .withStyle(ChatFormatting.BOLD), false);
+        // Show top 15 — beyond that chat becomes a wall of text.
+        int shown = Math.min(spikes.size(), 15);
+        for (int i = 0; i < shown; i++) {
+            LagSpikeDetector.Entry e = spikes.get(i);
+            String time = HISTORY_TIME.format(new Date(e.timestampMs()));
+            String line = String.format(
+                "  [%s] %d ms tick (heap %.1f%%, tier %s, %d players)",
+                time,
+                e.msptObserved(),
+                e.heapPercent(),
+                e.throttleAtSpike().name(),
+                e.playerCount());
+            // Color severity by tier at the time of the spike — gives
+            // an at-a-glance read on whether HG had already kicked in.
+            ChatFormatting color = colorFor(e.throttleAtSpike());
+            ctx.getSource().sendSuccess(
+                () -> Component.literal(line).withStyle(color), false);
+        }
+        if (spikes.size() > shown) {
+            int more = spikes.size() - shown;
+            ctx.getSource().sendSuccess(() -> Component.literal(
+                "  ... " + more + " older spikes not shown").withStyle(ChatFormatting.GRAY),
+                false);
+        }
+        return Command.SINGLE_SUCCESS;
     }
 
     private int status(CommandContext<CommandSourceStack> ctx) {
