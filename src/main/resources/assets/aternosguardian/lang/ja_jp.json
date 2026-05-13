@@ -1,0 +1,44 @@
+{
+  "aternosguardian.help.title": "Aternos Heap Guardian — コマンド一覧:",
+  "aternosguardian.help.entry.status": "  /aternosguardian status — 現在のティアとヒープ使用率",
+  "aternosguardian.help.entry.history": "  /aternosguardian history — 直近20件のティア遷移履歴（色分け表示）",
+  "aternosguardian.help.entry.metrics": "  /aternosguardian metrics — ヒープ・ティア・プレイヤー数・チャンク数・描画距離",
+  "aternosguardian.help.entry.env": "  /aternosguardian env — サーバー起動時のJVMヒープ/CPU情報（RAMブースト検出）",
+  "aternosguardian.help.entry.lagspikes": "  /aternosguardian lagspikes — 100ms超のラグスパイク履歴とその時のヒープ状態",
+  "aternosguardian.help.entry.topentities": "  /aternosguardian top entities — エンティティ数上位10種類（ディメンション別）",
+  "aternosguardian.help.entry.inspect": "  /aternosguardian inspect chunks — ディメンション別のロード済み/強制ロード/プレイヤー数",
+
+  "aternosguardian.status.title": "Heap Guardian ステータス:",
+  "aternosguardian.status.line": "  ティア: %s  |  ヒープ: %s%%",
+
+  "aternosguardian.history.empty": "Heap Guardian 履歴: （遷移はまだ記録されていません）",
+  "aternosguardian.history.title": "Heap Guardian 履歴（%s件、新しい順）:",
+  "aternosguardian.history.entry": "  [%s] %s -> %s （ヒープ %s%%）",
+  "aternosguardian.history.more": "  ... 古い %s 件は省略",
+
+  "aternosguardian.metrics.title": "Heap Guardian メトリクス:",
+  "aternosguardian.metrics.line.heap": "  ヒープ: %s%%  |  ティア: %s",
+  "aternosguardian.metrics.line.players": "  プレイヤー: %s人  |  ロード済みチャンク: %s  |  強制ロード: %s",
+  "aternosguardian.metrics.line.distance": "  描画距離: %s  |  シミュレーション距離: %s",
+
+  "aternosguardian.env.notyet": "環境スナップショットはまだ取得されていません（サーバー起動完了前）",
+  "aternosguardian.env.title": "Aternos環境スナップショット（起動時取得）:",
+  "aternosguardian.env.line.heap": "  ヒープ最大: %s MB  |  起動時使用量: %s MB",
+  "aternosguardian.env.line.cpu": "  CPUコア: %s  |  JVM: %s（Java %s）",
+  "aternosguardian.env.line.captured": "  取得日時: %s",
+  "aternosguardian.env.hint.low": "  ヒープが2GB未満です — Aternos設定を確認してください（基本ティアで約2.5GB のはず）",
+  "aternosguardian.env.hint.boost": "  RAMブーストが有効のようです（3.5GB超）",
+  "aternosguardian.env.hint.standard": "  Aternos標準のヒープサイズです",
+
+  "aternosguardian.lagspikes.empty": "ラグスパイクは記録されていません — サーバーは順調です",
+  "aternosguardian.lagspikes.title": "最近のラグスパイク（%s件、新しい順）:",
+  "aternosguardian.lagspikes.entry": "  [%s] %s msティック（ヒープ %s%%、ティア %s、%s人）",
+  "aternosguardian.lagspikes.more": "  ... 古い %s 件は省略",
+
+  "aternosguardian.topentities.empty": "ロード済みエンティティなし",
+  "aternosguardian.topentities.title": "エンティティ数上位（全ディメンション合計、上位10件）:",
+  "aternosguardian.topentities.entry": "  %s  %s  (%s)",
+
+  "aternosguardian.inspect.chunks.title": "チャンク調査（%s ディメンション）:",
+  "aternosguardian.inspect.chunks.entry": "  %s: ロード済み=%s, 強制=%s, プレイヤー=%s"
+}
