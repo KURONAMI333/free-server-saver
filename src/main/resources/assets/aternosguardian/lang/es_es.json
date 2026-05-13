@@ -7,6 +7,10 @@
   "aternosguardian.help.entry.lagspikes": "  /aternosguardian lagspikes — Ticks recientes por encima de 100 ms con el estado de la heap en ese momento.",
   "aternosguardian.help.entry.topentities": "  /aternosguardian top entities — Top 10 tipos de entidades por cantidad, con desglose por dimensión.",
   "aternosguardian.help.entry.inspect": "  /aternosguardian inspect chunks — Por dimensión: cargados / forzados / jugadores.",
+  "aternosguardian.help.entry.tuning": "  /aternosguardian tuning — Offset actual de umbrales del AutoTuner.",
+
+  "aternosguardian.tuning.title": "Heap Guardian AutoTuner:",
+  "aternosguardian.tuning.offset": "  Offset de umbral: %s puntos porcentuales",
 
   "aternosguardian.status.title": "Estado de Heap Guardian:",
   "aternosguardian.status.line": "  Nivel: %s  |  Heap: %s%%",

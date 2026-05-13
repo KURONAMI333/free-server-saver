@@ -7,6 +7,10 @@
   "aternosguardian.help.entry.lagspikes": "  /aternosguardian lagspikes — Последние тики свыше 100 мс с состоянием кучи в этот момент.",
   "aternosguardian.help.entry.topentities": "  /aternosguardian top entities — Топ 10 типов сущностей по количеству, с разбивкой по измерениям.",
   "aternosguardian.help.entry.inspect": "  /aternosguardian inspect chunks — По измерениям: загружены / принудительно / игроки.",
+  "aternosguardian.help.entry.tuning": "  /aternosguardian tuning — Текущий сдвиг порогов AutoTuner.",
+
+  "aternosguardian.tuning.title": "Heap Guardian AutoTuner:",
+  "aternosguardian.tuning.offset": "  Сдвиг порога: %s процентных пунктов",
 
   "aternosguardian.status.title": "Статус Heap Guardian:",
   "aternosguardian.status.line": "  Уровень: %s  |  Куча: %s%%",
