@@ -4,15 +4,12 @@ import com.kuronami.heapguardian.HeapGuardian;
 import com.kuronami.heapguardian.config.HeapGuardianConfig;
 import com.kuronami.heapguardian.monitor.ThrottleLevel;
 import com.kuronami.heapguardian.monitor.ThrottleLevelChangedEvent;
+import com.kuronami.heapguardian.util.BossDetection;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.animal.IronGolem;
-import net.minecraft.world.entity.animal.SnowGolem;
-import net.minecraft.world.entity.npc.Villager;
-import net.minecraft.world.entity.npc.WanderingTrader;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
@@ -141,21 +138,14 @@ public class DespawnModule {
     /**
      * Apply the always-spare exception list. Returns {@code true} if the
      * mob can be discarded without breaking gameplay in a surprising way.
+     *
+     * <p>Delegates to {@link BossDetection#shouldNeverTouch} so the
+     * exemption list stays consistent with {@code SpawnThrottleModule}
+     * and {@code EntityTickThrottleModule} — adding a new boss class in
+     * one place takes effect everywhere.
      */
     private boolean isSafeToDespawn(Mob mob) {
-        if (mob.hasCustomName()) {
-            return false;
-        }
-        if (mob.isPersistenceRequired()) {
-            return false;
-        }
-        if (mob instanceof Villager || mob instanceof WanderingTrader) {
-            return false;
-        }
-        if (mob instanceof IronGolem || mob instanceof SnowGolem) {
-            return false;
-        }
-        return true;
+        return !BossDetection.shouldNeverTouch(mob);
     }
 
     private boolean isFarFromAllPlayers(Mob mob, Vec3[] playerPositions) {
