@@ -115,9 +115,14 @@ public final class HeapGuardianConfig {
                 "single chunk contains 30+ mobs of the same type — the",
                 "signature of a mob farm. Diagnostic only; doesn't modify",
                 "behavior (the existing throttle modules already apply).",
-                "Repeat warnings are suppressed for 5 min per (chunk, type)."
+                "Repeat warnings are suppressed for 5 min per (chunk, type).",
+                "",
+                "DEFAULT: false. Enable after you've validated the rest of",
+                "Heap Guardian works on your server — the scan iterates",
+                "getAllEntities() and is the only module here that's not",
+                "strictly free."
             )
-            .define("enableMobDensityDetection", true);
+            .define("enableMobDensityDetection", false);
 
         ENABLE_AUTO_TUNING = b
             .comment(
@@ -126,9 +131,15 @@ public final class HeapGuardianConfig {
                 "lower thresholds (start throttling earlier). If heap is",
                 "consistently elevated but no spikes, raise thresholds",
                 "(throttle was too aggressive). Clamps at ±10 percentage",
-                "points from the static defaults. Step size: 2 points/cycle."
+                "points from the static defaults. Step size: 2 points/cycle.",
+                "",
+                "DEFAULT: false. Static thresholds work well for typical",
+                "Aternos workloads. Enable only if /aternosguardian status",
+                "shows you're consistently in the wrong tier — the",
+                "adjustment is slow (5-minute cycle) and most users won't",
+                "see the benefit."
             )
-            .define("enableAutoTuning", true);
+            .define("enableAutoTuning", false);
 
         ENABLE_MOD_COMPAT_WARNINGS = b
             .comment(
