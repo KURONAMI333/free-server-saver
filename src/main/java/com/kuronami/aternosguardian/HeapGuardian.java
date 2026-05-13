@@ -1,6 +1,7 @@
 package com.kuronami.aternosguardian;
 
 import com.kuronami.aternosguardian.command.HeapGuardianCommand;
+import com.kuronami.aternosguardian.compat.CompatibilityCoordinator;
 import com.kuronami.aternosguardian.compat.ModCompatWarnings;
 import com.kuronami.aternosguardian.config.HeapGuardianConfig;
 import com.kuronami.aternosguardian.monitor.HeapMonitor;
@@ -103,8 +104,13 @@ public class HeapGuardian {
         NeoForge.EVENT_BUS.register(autoTuner);
         NeoForge.EVENT_BUS.register(command);
 
-        // ModCompatWarnings is a static utility (no per-instance state),
-        // so register the class itself.
+        // ModCompatWarnings and CompatibilityCoordinator are static
+        // utilities (no per-instance state), so register the class itself.
+        // CompatibilityCoordinator must register before any throttle
+        // module fires its first event — practically guaranteed because
+        // its setup uses ServerStartingEvent, which fires before any
+        // tick / spawn event.
         NeoForge.EVENT_BUS.register(ModCompatWarnings.class);
+        NeoForge.EVENT_BUS.register(CompatibilityCoordinator.class);
     }
 }
