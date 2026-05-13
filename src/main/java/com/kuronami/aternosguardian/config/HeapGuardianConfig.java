@@ -26,6 +26,7 @@ public final class HeapGuardianConfig {
     public static final ModConfigSpec.BooleanValue ENABLE_CHUNK_UNLOAD;
     public static final ModConfigSpec.BooleanValue ENABLE_DESPAWN_SWEEP;
     public static final ModConfigSpec.BooleanValue ENABLE_TICK_RATE_THROTTLE;
+    public static final ModConfigSpec.BooleanValue ENABLE_ITEM_THROTTLE;
     public static final ModConfigSpec.BooleanValue ENABLE_MOD_COMPAT_WARNINGS;
     public static final ModConfigSpec.BooleanValue VERBOSE_LOGGING;
 
@@ -94,6 +95,17 @@ public final class HeapGuardianConfig {
                 "all other interventions have failed to recover the heap."
             )
             .define("enableTickRateThrottle", true);
+
+        ENABLE_ITEM_THROTTLE = b
+            .comment(
+                "Throttle ticks of ground-resting items and XP orbs that",
+                "are far from any player. Mob farms produce huge piles of",
+                "these and they're often >20% of entity tick cost. Items",
+                "in motion / in the air / near a player are NEVER throttled.",
+                "Despawn timer still progresses (every 40-tick starvation",
+                "floor) so this doesn't leave trash piling up forever."
+            )
+            .define("enableItemThrottle", true);
 
         ENABLE_MOD_COMPAT_WARNINGS = b
             .comment(
