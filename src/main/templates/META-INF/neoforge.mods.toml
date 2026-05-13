@@ -14,7 +14,7 @@ ${mod_description}
 # Mixin configuration: ChunkMapAccessor exposes ChunkMap.getChunks()
 # so ChunkPruningModule can do its flood-fill walk of loaded chunks.
 [[mixins]]
-config="aternosguardian.mixins.json"
+config="freeserversaver.mixins.json"
 
 # Hard dependency on NeoForge runtime
 [[dependencies.${mod_id}]]

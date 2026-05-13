@@ -1,6 +1,6 @@
 # Third-Party Notices
 
-Aternos Heap Guardian builds on patterns established by an excellent
+Free Server Saver builds on patterns established by an excellent
 ecosystem of free, open-source performance mods. This document records
 both **direct attribution** (where copyright applies because we adapted
 identifiable patterns at the same level of detail) and **study
@@ -107,4 +107,4 @@ The clean-room rule we followed: each pattern was either described in
 the source mod's public documentation, identifiable by reading its
 overall architecture, or so universal to the problem space (e.g.
 hysteresis on a threshold) that it isn't owned by any single mod. The
-actual code in `aternos-heap-guardian/` is original.
+actual code in `free-server-saver/` is original.
