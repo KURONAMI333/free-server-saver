@@ -1,30 +1,69 @@
-# Heap Guardian
+# Aternos Heap Guardian
 
-Heap-aware adaptive throttle for low-RAM Minecraft servers (NeoForge 1.21.1).
+**Lag reducer purpose-built for Aternos free Minecraft servers.**
 
-Polls JVM heap usage every 2 seconds and progressively scales back
-random ticks, mob spawns, and chunk loads when memory pressure rises —
-preventing the long GC pauses that look like network lag on
-Aternos-grade hardware.
+If you play on Aternos, you've seen it:
 
-> **Status: v0.1.0 PoC** — heap monitor + log output only. No actual
-> throttling yet. See `claude-memory/kuronami-mods/knowledge/HEAP_GUARDIAN_NOTES.md`
-> for the phased plan.
+- Mobs teleporting 5-10 blocks instead of moving smoothly
+- You and one friend get disconnected when nobody else is even online
+- The server "freezes" for half a second every few minutes
+- "Server crashed because it ran out of memory" after running fine for an hour
 
-## Why this exists
+Those aren't ping problems. They're **garbage collection pauses** — Aternos gives you ~2.5GB of RAM, modpacks push that to the limit, the JVM panics and stops the entire server for hundreds of milliseconds to clean up. To the player, that looks identical to network lag.
 
-Existing performance mods (Lithium, FerriteCore, Adaptive Performance
-Tweaks, ModernFix, etc.) cover almost every angle of Minecraft server
-optimization — but none of them trigger on the metric that actually
-matters on a 2-4GB heap: **the heap percentage itself**.
+**Aternos Heap Guardian polls your server's heap usage every 2 seconds and gradually scales back AI ticks, mob spawns, and view distance _before_ the heap fills up.** No GC pause, no rubber-banding, no disconnects.
 
-When a small Aternos server fills its heap, G1GC starts running aggressive
-collection cycles that consume tens of percent of available CPU and
-produce 100-500ms pauses. Players see "rubber-banding", "mobs teleporting
-5-10 blocks", or get disconnected entirely. Tick-time-based adaptive mods
-react after the pauses have already happened. Heap Guardian reacts
-*before*, by reducing the rate at which the server allocates new objects
-the moment heap occupancy crosses tier thresholds.
+## How it works
+
+| Heap | Tier | What changes |
+|------|------|--------------|
+| < 60% | NORMAL | Nothing — vanilla behavior |
+| 60-70% | L1 | Far-away mob AI ticks every other tick; 50% of natural mob spawns rejected |
+| 70-80% | L2 | Distant mob AI ticks 1/8 rate; all natural spawns rejected |
+| 80-85% | L3 | View distance compressed to 6 chunks; aggressive |
+| ≥ 85% | L4 EMERGENCY | Distant mobs force-discarded; server tick rate halved (10 TPS) |
+
+When the heap drops back down, every intervention reverses automatically. **5% hysteresis** prevents the tier from flapping on the boundary.
+
+### What's protected
+- **Bosses** (EnderDragon, WitherBoss, Warden, ElderGuardian, Ravager, Hoglin, or any mob with > 80 max HP) — never throttled, never despawned
+- **Villagers, traders, golems** — never despawned (your iron farms keep working)
+- **Named, leashed, tamed, persistent mobs** — never touched
+- **Combat-engaged mobs** (`getTarget() != null`) — keep ticking at full rate even at L4
+- **Newly spawned (< 10s old) mobs** — grace period before throttling
+- **Crops, leaves, snow, fire** — random ticks are NEVER touched (use Lithium for those)
+
+### What it doesn't do (and won't ever)
+- ❌ Spawn fake players to bypass Aternos's idle timer (that's Carpet, and Aternos bans it)
+- ❌ Skip the queue or fake server stats
+- ❌ Make your storage bigger or extend the 10-minute boot limit
+
+Heap Guardian works **within** Aternos's rules. That's why it's allowed on the mod list.
+
+## Discord notifications
+
+Set a webhook URL in `serverconfig/aternosguardian-server.toml` and get a ping in Discord when your server hits L3 or L4. You don't have to sit watching the Aternos console — Heap Guardian tells you when things are getting tight.
+
+## Commands
+
+| Command | What it shows |
+|---------|---------------|
+| `/aternosguardian status` | Current tier + heap percentage |
+| `/aternosguardian history` | Last 20 tier transitions, color-coded |
+| `/aternosguardian metrics` | Heap, tier, players, loaded chunks, view distance |
+| `/aternosguardian inspect chunks` | Per-dimension chunk load counts |
+
+All require op (permission level 2).
+
+## Companion mods (strongly recommended)
+
+Heap Guardian focuses on the _adaptive_ side — adjusting behavior under pressure. It doesn't try to do what the _static_ optimization mods already do beautifully. **For a complete low-RAM stack**:
+
+- **Lithium** — Allocation reduction across the whole engine. Pair this with Heap Guardian first.
+- **FerriteCore** — 40-50% reduction in block-state memory.
+- **ModernFix** — Mod-loading speedup; helps you fit inside Aternos's 10-minute boot limit.
+
+The startup log will hint about these if you're missing any.
 
 ## Building
 
@@ -32,11 +71,17 @@ the moment heap occupancy crosses tier thresholds.
 ./gradlew build
 ```
 
-Requires JDK 21.
+Requires JDK 21. NeoForge 1.21.1 only — random tick logic changed in 1.21.2+ in a way we can't safely auto-detect.
 
 ## License
 
 MIT — see `LICENSE`.
 
-Implementation patterns adapted from three MIT-licensed projects.
-Attribution and original copyright notices: see `NOTICE.md`.
+Design patterns adapted (study, not copy) from these MIT/LGPL/GPL mods (full attribution in `NOTICE.md`):
+
+- Adaptive Performance Tweaks (Markus Bordihn) — polling/hysteresis/event-bus + spawn-cancel patterns
+- ChunkPurge (Francis) — flood-fill chunk anchoring
+- Server Stasis (Robert Sundström) — command-driven tick control
+- ServerCore (Wesley1808) — Paper-style Entity Activation Range safety gates
+- DAB / Where's my Brain — distance-bucket AI throttling
+- Immersive Optimization (Luke100000) — tick scheduler model

@@ -1,7 +1,7 @@
-package com.kuronami.heapguardian.compat;
+package com.kuronami.aternosguardian.compat;
 
-import com.kuronami.heapguardian.HeapGuardian;
-import com.kuronami.heapguardian.config.HeapGuardianConfig;
+import com.kuronami.aternosguardian.HeapGuardian;
+import com.kuronami.aternosguardian.config.HeapGuardianConfig;
 import java.util.List;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;

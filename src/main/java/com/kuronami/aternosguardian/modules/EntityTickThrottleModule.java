@@ -1,10 +1,10 @@
-package com.kuronami.heapguardian.modules;
+package com.kuronami.aternosguardian.modules;
 
-import com.kuronami.heapguardian.config.HeapGuardianConfig;
-import com.kuronami.heapguardian.monitor.ThrottleLevel;
-import com.kuronami.heapguardian.monitor.ThrottleLevelChangedEvent;
-import com.kuronami.heapguardian.util.BossDetection;
-import com.kuronami.heapguardian.util.SafetyGate;
+import com.kuronami.aternosguardian.config.HeapGuardianConfig;
+import com.kuronami.aternosguardian.monitor.ThrottleLevel;
+import com.kuronami.aternosguardian.monitor.ThrottleLevelChangedEvent;
+import com.kuronami.aternosguardian.util.BossDetection;
+import com.kuronami.aternosguardian.util.SafetyGate;
 import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.server.MinecraftServer;
