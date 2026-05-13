@@ -6,13 +6,16 @@ import com.kuronami.aternosguardian.compat.ModCompatWarnings;
 import com.kuronami.aternosguardian.config.HeapGuardianConfig;
 import com.kuronami.aternosguardian.monitor.HeapMonitor;
 import com.kuronami.aternosguardian.environment.EnvironmentInspector;
+import com.kuronami.aternosguardian.modules.ChunkPruningModule;
 import com.kuronami.aternosguardian.modules.ChunkUnloadModule;
 import com.kuronami.aternosguardian.modules.DespawnModule;
 import com.kuronami.aternosguardian.modules.DiscordWebhookModule;
 import com.kuronami.aternosguardian.modules.EntityTickThrottleModule;
+import com.kuronami.aternosguardian.modules.IdleTimerNotifier;
 import com.kuronami.aternosguardian.modules.ItemEntityThrottleModule;
 import com.kuronami.aternosguardian.modules.MobDensityDetector;
 import com.kuronami.aternosguardian.modules.SpawnThrottleModule;
+import com.kuronami.aternosguardian.modules.StorageMonitor;
 import com.kuronami.aternosguardian.modules.TickRateModule;
 import com.kuronami.aternosguardian.monitor.HeapHistoryTracker;
 import com.kuronami.aternosguardian.monitor.LagSpikeDetector;
@@ -84,7 +87,11 @@ public class HeapGuardian {
         DiscordWebhookModule webhook = new DiscordWebhookModule();
         MobDensityDetector mobDensity = new MobDensityDetector();
         AutoTuner autoTuner = new AutoTuner(monitor, lagSpikes);
-        HeapGuardianCommand command = new HeapGuardianCommand(monitor, history, lagSpikes, autoTuner);
+        ChunkPruningModule chunkPruning = new ChunkPruningModule();
+        StorageMonitor storage = new StorageMonitor();
+        IdleTimerNotifier idleNotifier = new IdleTimerNotifier();
+        HeapGuardianCommand command = new HeapGuardianCommand(
+            monitor, history, lagSpikes, autoTuner, chunkPruning, storage);
 
         // Game-bus subscriptions: everything that listens to server tick
         // / spawn / level events lives on NeoForge.EVENT_BUS, not the mod
@@ -102,6 +109,9 @@ public class HeapGuardian {
         NeoForge.EVENT_BUS.register(webhook);
         NeoForge.EVENT_BUS.register(mobDensity);
         NeoForge.EVENT_BUS.register(autoTuner);
+        NeoForge.EVENT_BUS.register(chunkPruning);
+        NeoForge.EVENT_BUS.register(storage);
+        NeoForge.EVENT_BUS.register(idleNotifier);
         NeoForge.EVENT_BUS.register(command);
 
         // ModCompatWarnings and CompatibilityCoordinator are static
