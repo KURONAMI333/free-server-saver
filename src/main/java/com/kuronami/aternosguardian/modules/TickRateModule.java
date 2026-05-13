@@ -1,6 +1,7 @@
 package com.kuronami.aternosguardian.modules;
 
 import com.kuronami.aternosguardian.HeapGuardian;
+import com.kuronami.aternosguardian.compat.CompatibilityCoordinator;
 import com.kuronami.aternosguardian.config.HeapGuardianConfig;
 import com.kuronami.aternosguardian.monitor.ThrottleLevel;
 import com.kuronami.aternosguardian.monitor.ThrottleLevelChangedEvent;
@@ -69,6 +70,11 @@ public class TickRateModule {
     @SubscribeEvent
     public void onThrottleChanged(ThrottleLevelChangedEvent event) {
         if (server == null) {
+            return;
+        }
+        // /tick rate is a single global setting — two mods writing to it
+        // race each other. Yield to anything else that manages it.
+        if (CompatibilityCoordinator.yieldTickRate()) {
             return;
         }
         if (Boolean.FALSE.equals(HeapGuardianConfig.ENABLE_TICK_RATE_THROTTLE.get())) {

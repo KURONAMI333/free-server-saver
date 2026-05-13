@@ -1,5 +1,6 @@
 package com.kuronami.aternosguardian.modules;
 
+import com.kuronami.aternosguardian.compat.CompatibilityCoordinator;
 import com.kuronami.aternosguardian.config.HeapGuardianConfig;
 import com.kuronami.aternosguardian.monitor.ThrottleLevel;
 import com.kuronami.aternosguardian.monitor.ThrottleLevelChangedEvent;
@@ -162,6 +163,19 @@ public class EntityTickThrottleModule {
     @SubscribeEvent
     public void onEntityTickPre(EntityTickEvent.Pre event) {
         if (Boolean.FALSE.equals(HeapGuardianConfig.ENABLE_ENTITY_TICK_THROTTLE.get())) {
+            return;
+        }
+        // Competitor mod check: if a distance-bucket mob-throttle mod
+        // (DAB / WMB / Immersive Optimization / OptimizeMod / etc.) is
+        // installed, we step out of the lane entirely. See
+        // CompatibilityCoordinator for rationale.
+        if (CompatibilityCoordinator.yieldEntityTickThrottle()) {
+            return;
+        }
+        // Another handler may have already cancelled this event. Don't
+        // duplicate the distance compute — and don't reverse their
+        // decision either.
+        if (event.isCanceled()) {
             return;
         }
         // Throttling is opt-in at NORMAL — we don't want to introduce
