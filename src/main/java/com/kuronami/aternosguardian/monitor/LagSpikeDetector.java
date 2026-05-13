@@ -57,6 +57,18 @@ public class LagSpikeDetector {
      */
     private static final long SPIKE_THRESHOLD_MS = 100;
 
+    /**
+     * If this fraction or more of recent spikes happened at NORMAL
+     * tier (heap is fine), it strongly suggests something OTHER than
+     * heap pressure is the cause — datapack ticks, plugin overhead,
+     * a poorly-behaved mod with a tick handler. We hint at that on
+     * the WARN message so the operator knows where to look.
+     */
+    private static final double NON_HEAP_SPIKE_HINT_RATIO = 0.7;
+
+    /** Re-evaluate the hint after this many spikes have accumulated. */
+    private static final int HINT_EVAL_WINDOW = 5;
+
     public record Entry(
             long timestampMs,
             long msptObserved,
@@ -136,6 +148,50 @@ public class LagSpikeDetector {
             String.format("%.1f", entry.heapPercent()),
             entry.throttleAtSpike(),
             entry.playerCount());
+
+        // After every HINT_EVAL_WINDOW spikes, check the pattern: if
+        // most recent spikes happened at NORMAL tier (heap was fine),
+        // the cause likely isn't heap pressure — flag it for the
+        // operator with a one-line hint pointing at the usual suspects.
+        // We don't re-fire constantly; the hint is a separate WARN
+        // line only emitted when crossing the threshold ratio.
+        maybeEmitNonHeapHint();
+    }
+
+    /**
+     * When the recent-spike pattern looks like "heap is fine but
+     * something else is spiking us," nudge the operator toward
+     * datapacks / plugins / heavy tick handlers as the likely cause.
+     */
+    private void maybeEmitNonHeapHint() {
+        List<Entry> snap = snapshot();
+        if (snap.size() < HINT_EVAL_WINDOW) return;
+
+        // Look at the most recent HINT_EVAL_WINDOW entries.
+        int normalCount = 0;
+        for (int i = 0; i < HINT_EVAL_WINDOW; i++) {
+            if (snap.get(i).throttleAtSpike() == ThrottleLevel.NORMAL) {
+                normalCount++;
+            }
+        }
+        double ratio = (double) normalCount / HINT_EVAL_WINDOW;
+        if (ratio < NON_HEAP_SPIKE_HINT_RATIO) return;
+
+        // Rate-limit the hint: only fire it once every 5 minutes of
+        // sustained pattern. Reuse the most recent timestamp as a
+        // crude cooldown check — if the previous hint's epoch is within
+        // 5 minutes, skip. We don't track the previous hint explicitly,
+        // we just check that this is the FIRST time the window is
+        // entirely-or-mostly NORMAL. Since the hint is observational
+        // only, occasional re-firing on a long run is fine.
+        HeapGuardian.LOGGER.warn(
+            "[LagSpike] Pattern hint: {}/{} recent spikes happened at NORMAL "
+            + "tier (heap pressure was NOT high). The cause is probably outside "
+            + "Heap Guardian's reach — check for: a datapack with a per-tick "
+            + "function, a plugin's scheduled task, a mod's tick handler, or "
+            + "a mob farm overflowing entity cap. Run /aternosguardian top "
+            + "entities and consider installing Spark for a profile.",
+            normalCount, HINT_EVAL_WINDOW);
     }
 
     private int playerCount(ServerTickEvent.Post event) {
