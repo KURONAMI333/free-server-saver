@@ -21,6 +21,7 @@ import com.kuronami.aternosguardian.modules.TickRateModule;
 import com.kuronami.aternosguardian.monitor.BootTimeTracker;
 import com.kuronami.aternosguardian.monitor.HeapHistoryTracker;
 import com.kuronami.aternosguardian.monitor.LagSpikeDetector;
+import com.kuronami.aternosguardian.monitor.MetaspaceWatcher;
 import com.kuronami.aternosguardian.tuning.AutoTuner;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -98,6 +99,7 @@ public class HeapGuardian {
         IdleTimerNotifier idleNotifier = new IdleTimerNotifier();
         BootTimeTracker bootTimer = new BootTimeTracker();
         ChunkPreGenModule chunkPregen = new ChunkPreGenModule();
+        MetaspaceWatcher metaspace = new MetaspaceWatcher();
         HeapGuardianCommand command = new HeapGuardianCommand(
             monitor, history, lagSpikes, autoTuner, chunkPruning, storage, chunkPregen);
 
@@ -122,6 +124,7 @@ public class HeapGuardian {
         NeoForge.EVENT_BUS.register(idleNotifier);
         NeoForge.EVENT_BUS.register(bootTimer);
         NeoForge.EVENT_BUS.register(chunkPregen);
+        NeoForge.EVENT_BUS.register(metaspace);
         NeoForge.EVENT_BUS.register(command);
 
         // ModCompatWarnings and CompatibilityCoordinator are static

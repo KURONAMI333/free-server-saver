@@ -34,6 +34,7 @@ public final class HeapGuardianConfig {
     public static final ModConfigSpec.BooleanValue ENABLE_IDLE_NOTIFIER;
     public static final ModConfigSpec.BooleanValue ENABLE_BOOT_TIME_TRACKER;
     public static final ModConfigSpec.BooleanValue ENABLE_CHUNK_PREGEN;
+    public static final ModConfigSpec.BooleanValue ENABLE_METASPACE_WATCHER;
     public static final ModConfigSpec.BooleanValue ENABLE_MOD_COMPAT_WARNINGS;
     public static final ModConfigSpec.BooleanValue VERBOSE_LOGGING;
 
@@ -195,6 +196,18 @@ public final class HeapGuardianConfig {
                 "is the right tool for any non-trivial pregen job."
             )
             .define("enableChunkPregen", true);
+
+        ENABLE_METASPACE_WATCHER = b
+            .comment(
+                "Watch JVM Metaspace (class metadata) for crashes the heap",
+                "monitor can't see. Large modpacks (Craftoria, ATM10) sometimes",
+                "exhaust Metaspace BEFORE heap, producing 'OutOfMemoryError:",
+                "Metaspace' that spark reports as 'memory empty'. Aternos's",
+                "RAM Boost via Medal does NOT help this — it only extends",
+                "heap. The watcher WARNs at 80%, ERRORs at 95%, giving the",
+                "operator time to trim mods before the OOM crash."
+            )
+            .define("enableMetaspaceWatcher", true);
 
         ENABLE_MOD_COMPAT_WARNINGS = b
             .comment(
