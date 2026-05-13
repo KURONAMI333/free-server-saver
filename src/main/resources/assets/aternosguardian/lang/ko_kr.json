@@ -1,0 +1,44 @@
+{
+  "aternosguardian.help.title": "Aternos Heap Guardian — 명령어:",
+  "aternosguardian.help.entry.status": "  /aternosguardian status — 현재 등급과 힙 사용률.",
+  "aternosguardian.help.entry.history": "  /aternosguardian history — 최근 20개 등급 전환, 색상 구분.",
+  "aternosguardian.help.entry.metrics": "  /aternosguardian metrics — 힙, 등급, 플레이어, 로드된 청크, 시야 거리.",
+  "aternosguardian.help.entry.env": "  /aternosguardian env — 서버 시작 시 JVM 힙/CPU 스냅샷 (RAM 부스트 감지).",
+  "aternosguardian.help.entry.lagspikes": "  /aternosguardian lagspikes — 100ms 초과 틱과 당시 힙 상태.",
+  "aternosguardian.help.entry.topentities": "  /aternosguardian top entities — 엔티티 수 상위 10종 (차원별 분류).",
+  "aternosguardian.help.entry.inspect": "  /aternosguardian inspect chunks — 차원별 로드/강제 로드/플레이어 수.",
+
+  "aternosguardian.status.title": "Heap Guardian 상태:",
+  "aternosguardian.status.line": "  등급: %s  |  힙: %s%%",
+
+  "aternosguardian.history.empty": "Heap Guardian 기록: (전환 기록 없음)",
+  "aternosguardian.history.title": "Heap Guardian 기록 (총 %s개, 최신순):",
+  "aternosguardian.history.entry": "  [%s] %s -> %s (힙 %s%%)",
+  "aternosguardian.history.more": "  ... %s개 이전 기록 생략",
+
+  "aternosguardian.metrics.title": "Heap Guardian 지표:",
+  "aternosguardian.metrics.line.heap": "  힙: %s%%  |  등급: %s",
+  "aternosguardian.metrics.line.players": "  플레이어: %s  |  로드된 청크: %s  |  강제 로드: %s",
+  "aternosguardian.metrics.line.distance": "  시야 거리: %s  |  시뮬레이션 거리: %s",
+
+  "aternosguardian.env.notyet": "환경 스냅샷이 아직 캡처되지 않았습니다 (서버 시작 미완료)",
+  "aternosguardian.env.title": "Aternos 환경 스냅샷 (시작 시 캡처):",
+  "aternosguardian.env.line.heap": "  힙 최대: %s MB  |  시작 시 사용량: %s MB",
+  "aternosguardian.env.line.cpu": "  CPU 코어: %s  |  JVM: %s (Java %s)",
+  "aternosguardian.env.line.captured": "  캡처 시각: %s",
+  "aternosguardian.env.hint.low": "  힙 < 2 GB — Aternos 설정을 확인하세요. 기본 등급은 약 2.5 GB여야 합니다.",
+  "aternosguardian.env.hint.boost": "  RAM 부스트가 활성화된 것 같습니다 (> 3.5 GB).",
+  "aternosguardian.env.hint.standard": "  표준 Aternos 힙 크기.",
+
+  "aternosguardian.lagspikes.empty": "랙 스파이크가 기록되지 않았습니다 — 서버가 원활하게 실행 중입니다",
+  "aternosguardian.lagspikes.title": "최근 랙 스파이크 (총 %s개, 최신순):",
+  "aternosguardian.lagspikes.entry": "  [%s] %s ms 틱 (힙 %s%%, 등급 %s, %s명)",
+  "aternosguardian.lagspikes.more": "  ... %s개 이전 스파이크 생략",
+
+  "aternosguardian.topentities.empty": "로드된 엔티티 없음",
+  "aternosguardian.topentities.title": "엔티티 유형 순위 (모든 차원 합산, 상위 10):",
+  "aternosguardian.topentities.entry": "  %s  %s  (%s)",
+
+  "aternosguardian.inspect.chunks.title": "청크 조사 (%s 차원):",
+  "aternosguardian.inspect.chunks.entry": "  %s: 로드=%s, 강제=%s, 플레이어=%s"
+}

@@ -23,13 +23,15 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 /**
  * {@code /aternosguardian} command tree.
  *
- * <p>Subcommands:
- * <ul>
- *   <li>{@code status} — current tier + heap percentage. Always cheap.</li>
- *   <li>{@code history} — recent throttle-level transitions, newest first.</li>
- *   <li>{@code inspect chunks} — per-dimension loaded/forced/player counts.</li>
- *   <li>{@code metrics} — combined summary: heap, tier, chunks, players.</li>
- * </ul>
+ * <p>All player-visible chat output goes through {@link Component#translatable}.
+ * The keys are defined in {@code assets/aternosguardian/lang/en_us.json}
+ * (and the 8 other locales we ship). The client resolves the translation
+ * based on the player's selected language — a Japanese client sees
+ * Japanese, a German client sees German, etc., even though the server
+ * is identical for all.
+ *
+ * <p>Server-console output (admin running commands from the console)
+ * falls back to en_us since the console has no locale.
  *
  * <p>All require permission level 2 (server op). The diagnostic data
  * isn't really sensitive, but exposing these to all players invites
@@ -38,9 +40,7 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
  *
  * <p>Implementation note: the command instance is stateful — it holds
  * references to the live {@link HeapMonitor} and {@link HeapHistoryTracker}
- * so the subcommands can read fresh data on every invocation. The
- * dispatcher itself only sees the {@link com.mojang.brigadier.Command}
- * lambdas, which close over those references.
+ * so the subcommands can read fresh data on every invocation.
  */
 public class HeapGuardianCommand {
 
@@ -81,24 +81,28 @@ public class HeapGuardianCommand {
         dispatcher.register(root);
     }
 
+    /** Shorthand to format a double to 1 decimal place — the value all our percentages use. */
+    private static String fmt1(double d) {
+        return String.format("%.1f", d);
+    }
+
     private int help(CommandContext<CommandSourceStack> ctx) {
-        // Single source of truth for "what does this mod do." Reachable
-        // via /aternosguardian help without arguments — important because
-        // tab completion can show subcommand names but not what they DO.
-        ctx.getSource().sendSuccess(() -> Component.literal(
-            "Aternos Heap Guardian — commands:").withStyle(ChatFormatting.BOLD), false);
-        String[][] entries = {
-            {"status", "Current tier and heap percentage."},
-            {"history", "Last 20 tier transitions, color-coded."},
-            {"metrics", "Heap, tier, players, loaded chunks, view distance."},
-            {"env", "JVM heap/CPU snapshot from server start (RAM Boost detection)."},
-            {"lagspikes", "Recent ticks over 100 ms with the heap state at the time."},
-            {"top entities", "Top 10 entity types by count, with dimension breakdown."},
-            {"inspect chunks", "Per-dimension loaded / forced / player counts."},
+        ctx.getSource().sendSuccess(
+            () -> Component.translatable("aternosguardian.help.title").withStyle(ChatFormatting.BOLD),
+            false);
+        // Each entry is its own translation key — translators can adjust
+        // descriptions per language without needing to know all of them.
+        String[] keys = {
+            "aternosguardian.help.entry.status",
+            "aternosguardian.help.entry.history",
+            "aternosguardian.help.entry.metrics",
+            "aternosguardian.help.entry.env",
+            "aternosguardian.help.entry.lagspikes",
+            "aternosguardian.help.entry.topentities",
+            "aternosguardian.help.entry.inspect",
         };
-        for (String[] e : entries) {
-            String line = String.format("  /aternosguardian %s — %s", e[0], e[1]);
-            ctx.getSource().sendSuccess(() -> Component.literal(line), false);
+        for (String key : keys) {
+            ctx.getSource().sendSuccess(() -> Component.translatable(key), false);
         }
         return Command.SINGLE_SUCCESS;
     }
@@ -106,36 +110,33 @@ public class HeapGuardianCommand {
     private int lagspikes(CommandContext<CommandSourceStack> ctx) {
         List<LagSpikeDetector.Entry> spikes = lagSpikes.snapshot();
         if (spikes.isEmpty()) {
-            ctx.getSource().sendSuccess(() -> Component.literal(
-                "No lag spikes recorded yet — server is running smoothly.")
-                .withStyle(ChatFormatting.GREEN), false);
+            ctx.getSource().sendSuccess(() -> Component.translatable(
+                "aternosguardian.lagspikes.empty").withStyle(ChatFormatting.GREEN), false);
             return Command.SINGLE_SUCCESS;
         }
-        ctx.getSource().sendSuccess(() -> Component.literal(
-            "Recent lag spikes (" + spikes.size() + " entries, newest first):")
-            .withStyle(ChatFormatting.BOLD), false);
-        // Show top 15 — beyond that chat becomes a wall of text.
+        ctx.getSource().sendSuccess(() -> Component.translatable(
+            "aternosguardian.lagspikes.title", spikes.size()).withStyle(ChatFormatting.BOLD), false);
         int shown = Math.min(spikes.size(), 15);
         for (int i = 0; i < shown; i++) {
             LagSpikeDetector.Entry e = spikes.get(i);
             String time = HISTORY_TIME.format(new Date(e.timestampMs()));
-            String line = String.format(
-                "  [%s] %d ms tick (heap %.1f%%, tier %s, %d players)",
-                time,
-                e.msptObserved(),
-                e.heapPercent(),
-                e.throttleAtSpike().name(),
-                e.playerCount());
-            // Color severity by tier at the time of the spike — gives
-            // an at-a-glance read on whether HG had already kicked in.
+            // Component.translatable takes Object[] args; we pass String
+            // representations of the numbers because the translation
+            // template uses %s placeholders (consistent across locales).
             ChatFormatting color = colorFor(e.throttleAtSpike());
             ctx.getSource().sendSuccess(
-                () -> Component.literal(line).withStyle(color), false);
+                () -> Component.translatable("aternosguardian.lagspikes.entry",
+                    time,
+                    e.msptObserved(),
+                    fmt1(e.heapPercent()),
+                    e.throttleAtSpike().name(),
+                    e.playerCount()).withStyle(color),
+                false);
         }
         if (spikes.size() > shown) {
             int more = spikes.size() - shown;
-            ctx.getSource().sendSuccess(() -> Component.literal(
-                "  ... " + more + " older spikes not shown").withStyle(ChatFormatting.GRAY),
+            ctx.getSource().sendSuccess(() -> Component.translatable(
+                "aternosguardian.lagspikes.more", more).withStyle(ChatFormatting.GRAY),
                 false);
         }
         return Command.SINGLE_SUCCESS;
@@ -146,39 +147,37 @@ public class HeapGuardianCommand {
         double pct = monitor.lastHeapPercent();
         ChatFormatting color = colorFor(level);
 
-        ctx.getSource().sendSuccess(() -> Component.literal("Heap Guardian status:")
-            .withStyle(ChatFormatting.BOLD), false);
-        ctx.getSource().sendSuccess(() -> Component.literal(
-            String.format("  Tier: %s  |  Heap: %.1f%%", level.name(), pct))
-            .withStyle(color), false);
+        ctx.getSource().sendSuccess(() -> Component.translatable(
+            "aternosguardian.status.title").withStyle(ChatFormatting.BOLD), false);
+        ctx.getSource().sendSuccess(() -> Component.translatable(
+            "aternosguardian.status.line", level.name(), fmt1(pct)).withStyle(color), false);
         return Command.SINGLE_SUCCESS;
     }
 
     private int history(CommandContext<CommandSourceStack> ctx) {
         List<HeapHistoryTracker.Entry> entries = history.snapshot();
         if (entries.isEmpty()) {
-            ctx.getSource().sendSuccess(() -> Component.literal(
-                "Heap Guardian history: (no transitions recorded yet)"), false);
+            ctx.getSource().sendSuccess(() -> Component.translatable(
+                "aternosguardian.history.empty"), false);
             return Command.SINGLE_SUCCESS;
         }
-        ctx.getSource().sendSuccess(() -> Component.literal(
-            "Heap Guardian history (" + entries.size() + " entries, newest first):")
-            .withStyle(ChatFormatting.BOLD), false);
-        // Cap displayed rows so a 1000-entry history doesn't spam chat.
+        ctx.getSource().sendSuccess(() -> Component.translatable(
+            "aternosguardian.history.title", entries.size()).withStyle(ChatFormatting.BOLD), false);
         int shown = Math.min(entries.size(), 20);
         for (int i = 0; i < shown; i++) {
             HeapHistoryTracker.Entry e = entries.get(i);
             String time = HISTORY_TIME.format(new Date(e.timestampMs()));
-            String line = String.format("  [%s] %s -> %s (heap %.1f%%)",
-                time, e.previous().name(), e.current().name(), e.heapPercent());
             ChatFormatting color = colorFor(e.current());
             ctx.getSource().sendSuccess(
-                () -> Component.literal(line).withStyle(color), false);
+                () -> Component.translatable("aternosguardian.history.entry",
+                    time, e.previous().name(), e.current().name(), fmt1(e.heapPercent()))
+                    .withStyle(color),
+                false);
         }
         if (entries.size() > shown) {
             int more = entries.size() - shown;
-            ctx.getSource().sendSuccess(() -> Component.literal(
-                "  ... " + more + " older entries not shown").withStyle(ChatFormatting.GRAY),
+            ctx.getSource().sendSuccess(() -> Component.translatable(
+                "aternosguardian.history.more", more).withStyle(ChatFormatting.GRAY),
                 false);
         }
         return Command.SINGLE_SUCCESS;
@@ -193,58 +192,57 @@ public class HeapGuardianCommand {
         int totalLoaded = chunkStats.stream().mapToInt(ChunkInspectTask.DimensionStats::loadedChunks).sum();
         int totalForced = chunkStats.stream().mapToInt(ChunkInspectTask.DimensionStats::forcedChunks).sum();
 
-        ctx.getSource().sendSuccess(() -> Component.literal(
-            "Heap Guardian metrics:").withStyle(ChatFormatting.BOLD), false);
-        ctx.getSource().sendSuccess(() -> Component.literal(
-            String.format("  Heap: %.1f%%  |  Tier: %s", pct, level.name()))
-            .withStyle(colorFor(level)), false);
-        ctx.getSource().sendSuccess(() -> Component.literal(
-            String.format("  Players: %d  |  Loaded chunks: %d  |  Force-loaded: %d",
-                totalPlayers, totalLoaded, totalForced)), false);
-        ctx.getSource().sendSuccess(() -> Component.literal(
-            String.format("  View distance: %d  |  Simulation distance: %d",
-                server.getPlayerList().getViewDistance(),
-                server.getPlayerList().getSimulationDistance())), false);
+        ctx.getSource().sendSuccess(() -> Component.translatable(
+            "aternosguardian.metrics.title").withStyle(ChatFormatting.BOLD), false);
+        ctx.getSource().sendSuccess(() -> Component.translatable(
+            "aternosguardian.metrics.line.heap", fmt1(pct), level.name()).withStyle(colorFor(level)),
+            false);
+        ctx.getSource().sendSuccess(() -> Component.translatable(
+            "aternosguardian.metrics.line.players", totalPlayers, totalLoaded, totalForced),
+            false);
+        ctx.getSource().sendSuccess(() -> Component.translatable(
+            "aternosguardian.metrics.line.distance",
+            server.getPlayerList().getViewDistance(),
+            server.getPlayerList().getSimulationDistance()),
+            false);
         return Command.SINGLE_SUCCESS;
     }
 
     private int env(CommandContext<CommandSourceStack> ctx) {
         EnvironmentInspector.EnvironmentSnapshot snap = EnvironmentInspector.lastSnapshot();
         if (snap == null) {
-            ctx.getSource().sendSuccess(() -> Component.literal(
-                "Environment snapshot not captured yet (server not fully started)."),
-                false);
+            ctx.getSource().sendSuccess(() -> Component.translatable(
+                "aternosguardian.env.notyet"), false);
             return Command.SINGLE_SUCCESS;
         }
 
-        ctx.getSource().sendSuccess(() -> Component.literal(
-            "Aternos environment snapshot (captured at start):")
-            .withStyle(ChatFormatting.BOLD), false);
-        ctx.getSource().sendSuccess(() -> Component.literal(
-            String.format("  Heap max: %d MB  |  Heap used at boot: %d MB",
-                snap.heapMaxMB(), snap.heapUsedMB())), false);
-        ctx.getSource().sendSuccess(() -> Component.literal(
-            String.format("  CPU cores: %d  |  JVM: %s (Java %s)",
-                snap.availableProcessors(), snap.jvmVersion(), snap.javaSpecVersion())),
+        ctx.getSource().sendSuccess(() -> Component.translatable(
+            "aternosguardian.env.title").withStyle(ChatFormatting.BOLD), false);
+        ctx.getSource().sendSuccess(() -> Component.translatable(
+            "aternosguardian.env.line.heap", snap.heapMaxMB(), snap.heapUsedMB()), false);
+        ctx.getSource().sendSuccess(() -> Component.translatable(
+            "aternosguardian.env.line.cpu",
+            snap.availableProcessors(), snap.jvmVersion(), snap.javaSpecVersion()),
             false);
-        ctx.getSource().sendSuccess(() -> Component.literal(
-            "  Captured: " + snap.startedAt()), false);
+        ctx.getSource().sendSuccess(() -> Component.translatable(
+            "aternosguardian.env.line.captured", snap.startedAt()), false);
 
-        // Quick interpretation hint for Aternos players.
+        // Heap-tier hint: same logic as the boot-time log, but the
+        // translation key gives translators control over phrasing.
         long heapMB = snap.heapMaxMB();
-        final String hint;
+        final String hintKey;
         final ChatFormatting hintColor;
         if (heapMB < 2_000) {
-            hint = "Heap < 2 GB — check Aternos config, base tier should give ~2.5 GB.";
+            hintKey = "aternosguardian.env.hint.low";
             hintColor = ChatFormatting.RED;
         } else if (heapMB > 3_500) {
-            hint = "RAM Boost looks active (> 3.5 GB).";
+            hintKey = "aternosguardian.env.hint.boost";
             hintColor = ChatFormatting.GREEN;
         } else {
-            hint = "Standard Aternos-grade heap.";
+            hintKey = "aternosguardian.env.hint.standard";
             hintColor = ChatFormatting.YELLOW;
         }
-        ctx.getSource().sendSuccess(() -> Component.literal("  " + hint).withStyle(hintColor), false);
+        ctx.getSource().sendSuccess(() -> Component.translatable(hintKey).withStyle(hintColor), false);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -252,17 +250,19 @@ public class HeapGuardianCommand {
         var server = ctx.getSource().getServer();
         List<EntityCountTask.TypeCount> top = EntityCountTask.run(server, 10);
         if (top.isEmpty()) {
-            ctx.getSource().sendSuccess(() -> Component.literal(
-                "No entities loaded.").withStyle(ChatFormatting.GRAY), false);
+            ctx.getSource().sendSuccess(() -> Component.translatable(
+                "aternosguardian.topentities.empty").withStyle(ChatFormatting.GRAY), false);
             return Command.SINGLE_SUCCESS;
         }
-        ctx.getSource().sendSuccess(() -> Component.literal(
-            "Top entity types (combined across dimensions, capped at 10):")
-            .withStyle(ChatFormatting.BOLD), false);
+        ctx.getSource().sendSuccess(() -> Component.translatable(
+            "aternosguardian.topentities.title").withStyle(ChatFormatting.BOLD), false);
         for (EntityCountTask.TypeCount tc : top) {
-            String line = String.format(
-                "  %-30s  %4d  (%s)", tc.typeId(), tc.count(), tc.dimensionId());
-            ctx.getSource().sendSuccess(() -> Component.literal(line), false);
+            ctx.getSource().sendSuccess(() -> Component.translatable(
+                "aternosguardian.topentities.entry",
+                // Type IDs aren't localized — they're internal ids — but
+                // the surrounding label IS. Padding moves into translation
+                // so each locale can decide alignment.
+                tc.typeId(), tc.count(), tc.dimensionId()), false);
         }
         return Command.SINGLE_SUCCESS;
     }
@@ -271,14 +271,14 @@ public class HeapGuardianCommand {
         var server = ctx.getSource().getServer();
         List<ChunkInspectTask.DimensionStats> stats = ChunkInspectTask.run(server);
 
-        ctx.getSource().sendSuccess(() -> Component.literal(
-            "Chunk inspection (" + stats.size() + " dimensions):")
-            .withStyle(ChatFormatting.BOLD), false);
+        ctx.getSource().sendSuccess(() -> Component.translatable(
+            "aternosguardian.inspect.chunks.title", stats.size()).withStyle(ChatFormatting.BOLD),
+            false);
         for (ChunkInspectTask.DimensionStats s : stats) {
-            String line = String.format(
-                "  %s: loaded=%d, forced=%d, players=%d",
-                s.dimension(), s.loadedChunks(), s.forcedChunks(), s.playerCount());
-            ctx.getSource().sendSuccess(() -> Component.literal(line), false);
+            ctx.getSource().sendSuccess(() -> Component.translatable(
+                "aternosguardian.inspect.chunks.entry",
+                s.dimension(), s.loadedChunks(), s.forcedChunks(), s.playerCount()),
+                false);
         }
         return Command.SINGLE_SUCCESS;
     }
