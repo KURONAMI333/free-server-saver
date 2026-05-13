@@ -6,6 +6,7 @@ import com.kuronami.aternosguardian.compat.ModCompatWarnings;
 import com.kuronami.aternosguardian.config.HeapGuardianConfig;
 import com.kuronami.aternosguardian.monitor.HeapMonitor;
 import com.kuronami.aternosguardian.environment.EnvironmentInspector;
+import com.kuronami.aternosguardian.modules.ChunkPreGenModule;
 import com.kuronami.aternosguardian.modules.ChunkPruningModule;
 import com.kuronami.aternosguardian.modules.ChunkUnloadModule;
 import com.kuronami.aternosguardian.modules.DespawnModule;
@@ -17,6 +18,7 @@ import com.kuronami.aternosguardian.modules.MobDensityDetector;
 import com.kuronami.aternosguardian.modules.SpawnThrottleModule;
 import com.kuronami.aternosguardian.modules.StorageMonitor;
 import com.kuronami.aternosguardian.modules.TickRateModule;
+import com.kuronami.aternosguardian.monitor.BootTimeTracker;
 import com.kuronami.aternosguardian.monitor.HeapHistoryTracker;
 import com.kuronami.aternosguardian.monitor.LagSpikeDetector;
 import com.kuronami.aternosguardian.tuning.AutoTuner;
@@ -62,6 +64,10 @@ public class HeapGuardian {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     public HeapGuardian(IEventBus modBus, ModContainer container) {
+        // Record JVM-uptime-at-mod-construct. BootTimeTracker uses this
+        // (vs ServerStartedEvent fire time) to compute boot duration.
+        BootTimeTracker.recordModConstructed();
+
         LOGGER.info("Heap Guardian starting (Phase 1+2+3).");
 
         // Config is loaded via the mod container; it lives in
@@ -90,8 +96,10 @@ public class HeapGuardian {
         ChunkPruningModule chunkPruning = new ChunkPruningModule();
         StorageMonitor storage = new StorageMonitor();
         IdleTimerNotifier idleNotifier = new IdleTimerNotifier();
+        BootTimeTracker bootTimer = new BootTimeTracker();
+        ChunkPreGenModule chunkPregen = new ChunkPreGenModule();
         HeapGuardianCommand command = new HeapGuardianCommand(
-            monitor, history, lagSpikes, autoTuner, chunkPruning, storage);
+            monitor, history, lagSpikes, autoTuner, chunkPruning, storage, chunkPregen);
 
         // Game-bus subscriptions: everything that listens to server tick
         // / spawn / level events lives on NeoForge.EVENT_BUS, not the mod
@@ -112,6 +120,8 @@ public class HeapGuardian {
         NeoForge.EVENT_BUS.register(chunkPruning);
         NeoForge.EVENT_BUS.register(storage);
         NeoForge.EVENT_BUS.register(idleNotifier);
+        NeoForge.EVENT_BUS.register(bootTimer);
+        NeoForge.EVENT_BUS.register(chunkPregen);
         NeoForge.EVENT_BUS.register(command);
 
         // ModCompatWarnings and CompatibilityCoordinator are static
