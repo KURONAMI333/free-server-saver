@@ -12,6 +12,7 @@ import com.kuronami.aternosguardian.modules.EntityTickThrottleModule;
 import com.kuronami.aternosguardian.modules.SpawnThrottleModule;
 import com.kuronami.aternosguardian.modules.TickRateModule;
 import com.kuronami.aternosguardian.monitor.HeapHistoryTracker;
+import com.kuronami.aternosguardian.monitor.LagSpikeDetector;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -69,13 +70,14 @@ public class HeapGuardian {
         HeapMonitor monitor = new HeapMonitor();
         HeapHistoryTracker history = new HeapHistoryTracker();
         EnvironmentInspector envInspector = new EnvironmentInspector();
+        LagSpikeDetector lagSpikes = new LagSpikeDetector(monitor);
         EntityTickThrottleModule entityTick = new EntityTickThrottleModule();
         SpawnThrottleModule spawnThrottle = new SpawnThrottleModule();
         ChunkUnloadModule chunkUnload = new ChunkUnloadModule();
         DespawnModule despawn = new DespawnModule();
         TickRateModule tickRate = new TickRateModule();
         DiscordWebhookModule webhook = new DiscordWebhookModule();
-        HeapGuardianCommand command = new HeapGuardianCommand(monitor, history);
+        HeapGuardianCommand command = new HeapGuardianCommand(monitor, history, lagSpikes);
 
         // Game-bus subscriptions: everything that listens to server tick
         // / spawn / level events lives on NeoForge.EVENT_BUS, not the mod
@@ -83,6 +85,7 @@ public class HeapGuardian {
         NeoForge.EVENT_BUS.register(monitor);
         NeoForge.EVENT_BUS.register(history);
         NeoForge.EVENT_BUS.register(envInspector);
+        NeoForge.EVENT_BUS.register(lagSpikes);
         NeoForge.EVENT_BUS.register(entityTick);
         NeoForge.EVENT_BUS.register(spawnThrottle);
         NeoForge.EVENT_BUS.register(chunkUnload);

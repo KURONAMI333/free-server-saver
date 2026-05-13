@@ -36,6 +36,8 @@ public final class HeapGuardianConfig {
 
     // ─── History / observability ──────────────────────────────────
     public static final ModConfigSpec.IntValue HISTORY_SIZE;
+    public static final ModConfigSpec.BooleanValue ENABLE_LAG_SPIKE_DETECTION;
+    public static final ModConfigSpec.IntValue LAG_SPIKE_HISTORY_SIZE;
 
     static {
         ModConfigSpec.Builder b = new ModConfigSpec.Builder();
@@ -144,6 +146,20 @@ public final class HeapGuardianConfig {
                 "`/aternosguardian history`. Bounded ring buffer; oldest evicted."
             )
             .defineInRange("historySize", 50, 1, 1000);
+
+        ENABLE_LAG_SPIKE_DETECTION = b
+            .comment(
+                "Capture a breadcrumb (mspt, heap%, tier, players) whenever",
+                "a server tick exceeds 100 ms. Visible via /aternosguardian",
+                "lagspikes. Adds two nanoTime() calls per tick — negligible."
+            )
+            .define("enableLagSpikeDetection", true);
+
+        LAG_SPIKE_HISTORY_SIZE = b
+            .comment(
+                "Maximum lag-spike breadcrumbs kept in memory."
+            )
+            .defineInRange("lagSpikeHistorySize", 50, 1, 500);
 
         b.pop(); // observability
 
