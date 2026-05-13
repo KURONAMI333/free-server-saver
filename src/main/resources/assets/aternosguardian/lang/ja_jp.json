@@ -7,6 +7,10 @@
   "aternosguardian.help.entry.lagspikes": "  /aternosguardian lagspikes — 100ms超のラグスパイク履歴とその時のヒープ状態",
   "aternosguardian.help.entry.topentities": "  /aternosguardian top entities — エンティティ数上位10種類（ディメンション別）",
   "aternosguardian.help.entry.inspect": "  /aternosguardian inspect chunks — ディメンション別のロード済み/強制ロード/プレイヤー数",
+  "aternosguardian.help.entry.tuning": "  /aternosguardian tuning — AutoTunerの現在の閾値オフセット",
+
+  "aternosguardian.tuning.title": "Heap Guardian AutoTuner:",
+  "aternosguardian.tuning.offset": "  閾値オフセット: %s ポイント",
 
   "aternosguardian.status.title": "Heap Guardian ステータス:",
   "aternosguardian.status.line": "  ティア: %s  |  ヒープ: %s%%",

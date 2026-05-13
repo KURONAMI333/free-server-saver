@@ -27,6 +27,8 @@ public final class HeapGuardianConfig {
     public static final ModConfigSpec.BooleanValue ENABLE_DESPAWN_SWEEP;
     public static final ModConfigSpec.BooleanValue ENABLE_TICK_RATE_THROTTLE;
     public static final ModConfigSpec.BooleanValue ENABLE_ITEM_THROTTLE;
+    public static final ModConfigSpec.BooleanValue ENABLE_MOB_DENSITY_DETECTION;
+    public static final ModConfigSpec.BooleanValue ENABLE_AUTO_TUNING;
     public static final ModConfigSpec.BooleanValue ENABLE_MOD_COMPAT_WARNINGS;
     public static final ModConfigSpec.BooleanValue VERBOSE_LOGGING;
 
@@ -106,6 +108,27 @@ public final class HeapGuardianConfig {
                 "floor) so this doesn't leave trash piling up forever."
             )
             .define("enableItemThrottle", true);
+
+        ENABLE_MOB_DENSITY_DETECTION = b
+            .comment(
+                "Every 30s, scan loaded chunks and log a warning when a",
+                "single chunk contains 30+ mobs of the same type — the",
+                "signature of a mob farm. Diagnostic only; doesn't modify",
+                "behavior (the existing throttle modules already apply).",
+                "Repeat warnings are suppressed for 5 min per (chunk, type)."
+            )
+            .define("enableMobDensityDetection", true);
+
+        ENABLE_AUTO_TUNING = b
+            .comment(
+                "Every 5 minutes, adjust tier thresholds based on observed",
+                "lag-spike patterns. If spikes happen at NORMAL/L1 tier,",
+                "lower thresholds (start throttling earlier). If heap is",
+                "consistently elevated but no spikes, raise thresholds",
+                "(throttle was too aggressive). Clamps at ±10 percentage",
+                "points from the static defaults. Step size: 2 points/cycle."
+            )
+            .define("enableAutoTuning", true);
 
         ENABLE_MOD_COMPAT_WARNINGS = b
             .comment(

@@ -10,10 +10,12 @@ import com.kuronami.aternosguardian.modules.DespawnModule;
 import com.kuronami.aternosguardian.modules.DiscordWebhookModule;
 import com.kuronami.aternosguardian.modules.EntityTickThrottleModule;
 import com.kuronami.aternosguardian.modules.ItemEntityThrottleModule;
+import com.kuronami.aternosguardian.modules.MobDensityDetector;
 import com.kuronami.aternosguardian.modules.SpawnThrottleModule;
 import com.kuronami.aternosguardian.modules.TickRateModule;
 import com.kuronami.aternosguardian.monitor.HeapHistoryTracker;
 import com.kuronami.aternosguardian.monitor.LagSpikeDetector;
+import com.kuronami.aternosguardian.tuning.AutoTuner;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -79,7 +81,9 @@ public class HeapGuardian {
         DespawnModule despawn = new DespawnModule();
         TickRateModule tickRate = new TickRateModule();
         DiscordWebhookModule webhook = new DiscordWebhookModule();
-        HeapGuardianCommand command = new HeapGuardianCommand(monitor, history, lagSpikes);
+        MobDensityDetector mobDensity = new MobDensityDetector();
+        AutoTuner autoTuner = new AutoTuner(monitor, lagSpikes);
+        HeapGuardianCommand command = new HeapGuardianCommand(monitor, history, lagSpikes, autoTuner);
 
         // Game-bus subscriptions: everything that listens to server tick
         // / spawn / level events lives on NeoForge.EVENT_BUS, not the mod
@@ -95,6 +99,8 @@ public class HeapGuardian {
         NeoForge.EVENT_BUS.register(despawn);
         NeoForge.EVENT_BUS.register(tickRate);
         NeoForge.EVENT_BUS.register(webhook);
+        NeoForge.EVENT_BUS.register(mobDensity);
+        NeoForge.EVENT_BUS.register(autoTuner);
         NeoForge.EVENT_BUS.register(command);
 
         // ModCompatWarnings is a static utility (no per-instance state),
