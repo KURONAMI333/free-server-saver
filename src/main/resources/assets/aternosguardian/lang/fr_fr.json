@@ -8,9 +8,18 @@
   "aternosguardian.help.entry.topentities": "  /aternosguardian top entities — Top 10 types d'entités par nombre, avec détail par dimension.",
   "aternosguardian.help.entry.inspect": "  /aternosguardian inspect chunks — Par dimension : chargés / forcés / nombre de joueurs.",
   "aternosguardian.help.entry.tuning": "  /aternosguardian tuning — Offset actuel des seuils de l'AutoTuner.",
+  "aternosguardian.help.entry.prune": "  /aternosguardian prune — Identifie les chunks chargés inaccessibles (flood-fill).",
+  "aternosguardian.help.entry.storage": "  /aternosguardian storage — Taille du répertoire monde vs la limite 4GB d'Aternos.",
 
   "aternosguardian.tuning.title": "Heap Guardian AutoTuner :",
   "aternosguardian.tuning.offset": "  Offset des seuils : %s points de pourcentage",
+
+  "aternosguardian.prune.result": "Élagage des chunks : %s chunks isolés identifiés. Vanilla les déchargera dans ~10 ticks.",
+
+  "aternosguardian.storage.error": "Impossible de lire la taille du répertoire monde.",
+  "aternosguardian.storage.result": "Répertoire monde : %s MB / 4096 MB (limite Aternos)",
+
+  "aternosguardian.idle.first_join": "Bienvenue — le timer d'inactivité Aternos est réinitialisé tant que tu restes en ligne."
 
   "aternosguardian.status.title": "Statut de Heap Guardian :",
   "aternosguardian.status.line": "  Niveau : %s  |  Tas : %s%%",
