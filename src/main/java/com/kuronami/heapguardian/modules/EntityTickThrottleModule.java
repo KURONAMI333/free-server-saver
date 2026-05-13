@@ -4,6 +4,7 @@ import com.kuronami.heapguardian.config.HeapGuardianConfig;
 import com.kuronami.heapguardian.monitor.ThrottleLevel;
 import com.kuronami.heapguardian.monitor.ThrottleLevelChangedEvent;
 import com.kuronami.heapguardian.util.BossDetection;
+import com.kuronami.heapguardian.util.SafetyGate;
 import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.server.MinecraftServer;
@@ -166,6 +167,12 @@ public class EntityTickThrottleModule {
         // Throttling is opt-in at NORMAL — we don't want to introduce
         // any behavior change at all when the heap is fine.
         if (currentLevel == ThrottleLevel.NORMAL) {
+            return;
+        }
+        // First gate: SafetyGate handles non-Mob always-excluded classes
+        // (players, projectiles, lightning, TNT, EnderDragonPart, etc.)
+        // and transient critical state. Cheap checks, short-circuit hard.
+        if (SafetyGate.shouldSkipThrottle(event.getEntity())) {
             return;
         }
         if (!(event.getEntity() instanceof Mob mob)) {
