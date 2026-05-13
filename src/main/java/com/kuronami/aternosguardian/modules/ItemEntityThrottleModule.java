@@ -1,5 +1,6 @@
 package com.kuronami.aternosguardian.modules;
 
+import com.kuronami.aternosguardian.compat.CompatibilityCoordinator;
 import com.kuronami.aternosguardian.config.HeapGuardianConfig;
 import com.kuronami.aternosguardian.monitor.ThrottleLevel;
 import com.kuronami.aternosguardian.monitor.ThrottleLevelChangedEvent;
@@ -80,6 +81,12 @@ public class ItemEntityThrottleModule {
     @SubscribeEvent
     public void onEntityTickPre(EntityTickEvent.Pre event) {
         if (Boolean.FALSE.equals(HeapGuardianConfig.ENABLE_ITEM_THROTTLE.get())) {
+            return;
+        }
+        if (CompatibilityCoordinator.yieldItemThrottle()) {
+            return;
+        }
+        if (event.isCanceled()) {
             return;
         }
         if (currentLevel == ThrottleLevel.NORMAL) {
