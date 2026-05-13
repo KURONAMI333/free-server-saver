@@ -1,6 +1,6 @@
-package com.kuronami.heapguardian.monitor;
+package com.kuronami.aternosguardian.monitor;
 
-import com.kuronami.heapguardian.config.HeapGuardianConfig;
+import com.kuronami.aternosguardian.config.HeapGuardianConfig;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -9,7 +9,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 
 /**
  * Ring buffer of recent {@link ThrottleLevelChangedEvent}s for the
- * {@code /heapguardian history} command.
+ * {@code /aternosguardian history} command.
  *
  * <p>Why bother keeping history? Two reasons:
  * <ol>
@@ -17,7 +17,7 @@ import net.neoforged.bus.api.SubscribeEvent;
  *       to "the server crashed earlier" wants to see whether the heap
  *       was already climbing before the crash — was Heap Guardian
  *       intervening, did it reach L4? The vanilla logs answer that but
- *       are awkward to grep. In-game `/heapguardian history` answers it
+ *       are awkward to grep. In-game `/aternosguardian history` answers it
  *       in one command.</li>
  *   <li><strong>Tuning feedback.</strong> If the user sees the heap
  *       flapping NORMAL↔L1 every minute, the modpack probably needs

@@ -1,9 +1,9 @@
-package com.kuronami.heapguardian.modules;
+package com.kuronami.aternosguardian.modules;
 
-import com.kuronami.heapguardian.HeapGuardian;
-import com.kuronami.heapguardian.config.HeapGuardianConfig;
-import com.kuronami.heapguardian.monitor.ThrottleLevel;
-import com.kuronami.heapguardian.monitor.ThrottleLevelChangedEvent;
+import com.kuronami.aternosguardian.HeapGuardian;
+import com.kuronami.aternosguardian.config.HeapGuardianConfig;
+import com.kuronami.aternosguardian.monitor.ThrottleLevel;
+import com.kuronami.aternosguardian.monitor.ThrottleLevelChangedEvent;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;

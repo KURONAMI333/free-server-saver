@@ -1,4 +1,4 @@
-package com.kuronami.heapguardian.config;
+package com.kuronami.aternosguardian.config;
 
 import net.neoforged.neoforge.common.ModConfigSpec;
 
@@ -9,7 +9,7 @@ import net.neoforged.neoforge.common.ModConfigSpec;
  * then enable spawn throttling, etc.
  *
  * <p>Defaults are aimed at a 2-4 GB Aternos-grade server. The thresholds
- * themselves live on {@link com.kuronami.heapguardian.monitor.ThrottleLevel}
+ * themselves live on {@link com.kuronami.aternosguardian.monitor.ThrottleLevel}
  * — we intentionally don't expose them as config in v0.1 because tuning
  * them well requires understanding G1GC's allocation rate behavior, and a
  * misconfigured threshold (e.g. 95% trigger) defeats the whole point of
@@ -141,7 +141,7 @@ public final class HeapGuardianConfig {
         HISTORY_SIZE = b
             .comment(
                 "How many throttle-level transitions to keep in memory for",
-                "`/heapguardian history`. Bounded ring buffer; oldest evicted."
+                "`/aternosguardian history`. Bounded ring buffer; oldest evicted."
             )
             .defineInRange("historySize", 50, 1, 1000);
 
