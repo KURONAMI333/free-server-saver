@@ -73,6 +73,8 @@ public class HeapGuardianCommand {
             .then(Commands.literal("metrics").executes(this::metrics))
             .then(Commands.literal("env").executes(this::env))
             .then(Commands.literal("lagspikes").executes(this::lagspikes))
+            .then(Commands.literal("top")
+                .then(Commands.literal("entities").executes(this::topEntities)))
             .then(Commands.literal("inspect")
                 .then(Commands.literal("chunks").executes(this::inspectChunks)));
 
@@ -91,6 +93,7 @@ public class HeapGuardianCommand {
             {"metrics", "Heap, tier, players, loaded chunks, view distance."},
             {"env", "JVM heap/CPU snapshot from server start (RAM Boost detection)."},
             {"lagspikes", "Recent ticks over 100 ms with the heap state at the time."},
+            {"top entities", "Top 10 entity types by count, with dimension breakdown."},
             {"inspect chunks", "Per-dimension loaded / forced / player counts."},
         };
         for (String[] e : entries) {
@@ -242,6 +245,25 @@ public class HeapGuardianCommand {
             hintColor = ChatFormatting.YELLOW;
         }
         ctx.getSource().sendSuccess(() -> Component.literal("  " + hint).withStyle(hintColor), false);
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private int topEntities(CommandContext<CommandSourceStack> ctx) {
+        var server = ctx.getSource().getServer();
+        List<EntityCountTask.TypeCount> top = EntityCountTask.run(server, 10);
+        if (top.isEmpty()) {
+            ctx.getSource().sendSuccess(() -> Component.literal(
+                "No entities loaded.").withStyle(ChatFormatting.GRAY), false);
+            return Command.SINGLE_SUCCESS;
+        }
+        ctx.getSource().sendSuccess(() -> Component.literal(
+            "Top entity types (combined across dimensions, capped at 10):")
+            .withStyle(ChatFormatting.BOLD), false);
+        for (EntityCountTask.TypeCount tc : top) {
+            String line = String.format(
+                "  %-30s  %4d  (%s)", tc.typeId(), tc.count(), tc.dimensionId());
+            ctx.getSource().sendSuccess(() -> Component.literal(line), false);
+        }
         return Command.SINGLE_SUCCESS;
     }
 

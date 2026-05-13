@@ -9,6 +9,7 @@ import com.kuronami.aternosguardian.modules.ChunkUnloadModule;
 import com.kuronami.aternosguardian.modules.DespawnModule;
 import com.kuronami.aternosguardian.modules.DiscordWebhookModule;
 import com.kuronami.aternosguardian.modules.EntityTickThrottleModule;
+import com.kuronami.aternosguardian.modules.ItemEntityThrottleModule;
 import com.kuronami.aternosguardian.modules.SpawnThrottleModule;
 import com.kuronami.aternosguardian.modules.TickRateModule;
 import com.kuronami.aternosguardian.monitor.HeapHistoryTracker;
@@ -72,6 +73,7 @@ public class HeapGuardian {
         EnvironmentInspector envInspector = new EnvironmentInspector();
         LagSpikeDetector lagSpikes = new LagSpikeDetector(monitor);
         EntityTickThrottleModule entityTick = new EntityTickThrottleModule();
+        ItemEntityThrottleModule itemThrottle = new ItemEntityThrottleModule();
         SpawnThrottleModule spawnThrottle = new SpawnThrottleModule();
         ChunkUnloadModule chunkUnload = new ChunkUnloadModule();
         DespawnModule despawn = new DespawnModule();
@@ -87,6 +89,7 @@ public class HeapGuardian {
         NeoForge.EVENT_BUS.register(envInspector);
         NeoForge.EVENT_BUS.register(lagSpikes);
         NeoForge.EVENT_BUS.register(entityTick);
+        NeoForge.EVENT_BUS.register(itemThrottle);
         NeoForge.EVENT_BUS.register(spawnThrottle);
         NeoForge.EVENT_BUS.register(chunkUnload);
         NeoForge.EVENT_BUS.register(despawn);
