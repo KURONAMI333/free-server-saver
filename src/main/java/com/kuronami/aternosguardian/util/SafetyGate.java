@@ -47,6 +47,9 @@ public final class SafetyGate {
     /** Minimum movement delta to consider an entity "actively moving." */
     private static final double MOVING_THRESHOLD = 0.001;
 
+    /** Mob is considered "in motion" when its delta-movement squared exceeds this. */
+    private static final double MOB_MOTION_THRESHOLD_SQ = 0.005 * 0.005;
+
     /** Newly spawned entities (under this tickCount) always run full ticks. */
     private static final int NEW_ENTITY_TICK_FLOOR = 200; // ~10 seconds
 
@@ -137,6 +140,19 @@ public final class SafetyGate {
             if (living instanceof Mob mob) {
                 // Combat: an aggro'd mob must respond in real time.
                 if (mob.getTarget() != null) {
+                    return true;
+                }
+                // Pathfinding in progress — WMB's "requireNoPath" gate.
+                // A mob actively navigating shouldn't have its tick
+                // interval expanded, or the path will visibly stutter.
+                if (mob.getNavigation().isInProgress()) {
+                    return true;
+                }
+                // Active motion (WMB's "requireLowMotion" inverted).
+                // A mob with significant velocity is jumping, falling,
+                // being knocked back, or running — none of which
+                // tolerate skipped ticks gracefully.
+                if (mob.getDeltaMovement().lengthSqr() > MOB_MOTION_THRESHOLD_SQ) {
                     return true;
                 }
                 // Creeper with lit fuse — the explosion timer is the

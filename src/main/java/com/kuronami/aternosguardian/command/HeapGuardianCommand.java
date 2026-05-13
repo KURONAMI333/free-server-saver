@@ -1,6 +1,7 @@
 package com.kuronami.aternosguardian.command;
 
 import com.kuronami.aternosguardian.HeapGuardian;
+import com.kuronami.aternosguardian.environment.EnvironmentInspector;
 import com.kuronami.aternosguardian.monitor.HeapHistoryTracker;
 import com.kuronami.aternosguardian.monitor.HeapMonitor;
 import com.kuronami.aternosguardian.monitor.ThrottleLevel;
@@ -65,6 +66,7 @@ public class HeapGuardianCommand {
             .then(Commands.literal("status").executes(this::status))
             .then(Commands.literal("history").executes(this::history))
             .then(Commands.literal("metrics").executes(this::metrics))
+            .then(Commands.literal("env").executes(this::env))
             .then(Commands.literal("inspect")
                 .then(Commands.literal("chunks").executes(this::inspectChunks)));
 
@@ -135,6 +137,46 @@ public class HeapGuardianCommand {
             String.format("  View distance: %d  |  Simulation distance: %d",
                 server.getPlayerList().getViewDistance(),
                 server.getPlayerList().getSimulationDistance())), false);
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private int env(CommandContext<CommandSourceStack> ctx) {
+        EnvironmentInspector.EnvironmentSnapshot snap = EnvironmentInspector.lastSnapshot();
+        if (snap == null) {
+            ctx.getSource().sendSuccess(() -> Component.literal(
+                "Environment snapshot not captured yet (server not fully started)."),
+                false);
+            return Command.SINGLE_SUCCESS;
+        }
+
+        ctx.getSource().sendSuccess(() -> Component.literal(
+            "Aternos environment snapshot (captured at start):")
+            .withStyle(ChatFormatting.BOLD), false);
+        ctx.getSource().sendSuccess(() -> Component.literal(
+            String.format("  Heap max: %d MB  |  Heap used at boot: %d MB",
+                snap.heapMaxMB(), snap.heapUsedMB())), false);
+        ctx.getSource().sendSuccess(() -> Component.literal(
+            String.format("  CPU cores: %d  |  JVM: %s (Java %s)",
+                snap.availableProcessors(), snap.jvmVersion(), snap.javaSpecVersion())),
+            false);
+        ctx.getSource().sendSuccess(() -> Component.literal(
+            "  Captured: " + snap.startedAt()), false);
+
+        // Quick interpretation hint for Aternos players.
+        long heapMB = snap.heapMaxMB();
+        final String hint;
+        final ChatFormatting hintColor;
+        if (heapMB < 2_000) {
+            hint = "Heap < 2 GB — check Aternos config, base tier should give ~2.5 GB.";
+            hintColor = ChatFormatting.RED;
+        } else if (heapMB > 3_500) {
+            hint = "RAM Boost looks active (> 3.5 GB).";
+            hintColor = ChatFormatting.GREEN;
+        } else {
+            hint = "Standard Aternos-grade heap.";
+            hintColor = ChatFormatting.YELLOW;
+        }
+        ctx.getSource().sendSuccess(() -> Component.literal("  " + hint).withStyle(hintColor), false);
         return Command.SINGLE_SUCCESS;
     }
 

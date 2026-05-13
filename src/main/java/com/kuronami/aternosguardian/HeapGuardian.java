@@ -4,6 +4,7 @@ import com.kuronami.aternosguardian.command.HeapGuardianCommand;
 import com.kuronami.aternosguardian.compat.ModCompatWarnings;
 import com.kuronami.aternosguardian.config.HeapGuardianConfig;
 import com.kuronami.aternosguardian.monitor.HeapMonitor;
+import com.kuronami.aternosguardian.environment.EnvironmentInspector;
 import com.kuronami.aternosguardian.modules.ChunkUnloadModule;
 import com.kuronami.aternosguardian.modules.DespawnModule;
 import com.kuronami.aternosguardian.modules.DiscordWebhookModule;
@@ -67,6 +68,7 @@ public class HeapGuardian {
         // the same instances the bus is feeding events to.
         HeapMonitor monitor = new HeapMonitor();
         HeapHistoryTracker history = new HeapHistoryTracker();
+        EnvironmentInspector envInspector = new EnvironmentInspector();
         EntityTickThrottleModule entityTick = new EntityTickThrottleModule();
         SpawnThrottleModule spawnThrottle = new SpawnThrottleModule();
         ChunkUnloadModule chunkUnload = new ChunkUnloadModule();
@@ -80,6 +82,7 @@ public class HeapGuardian {
         // bus. Mod bus is for registry/loader events only.
         NeoForge.EVENT_BUS.register(monitor);
         NeoForge.EVENT_BUS.register(history);
+        NeoForge.EVENT_BUS.register(envInspector);
         NeoForge.EVENT_BUS.register(entityTick);
         NeoForge.EVENT_BUS.register(spawnThrottle);
         NeoForge.EVENT_BUS.register(chunkUnload);
