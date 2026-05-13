@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Aternos Heap Guardian.
+All notable changes to Free Server Saver.
 
 ## [0.1.0] — Unreleased
 
@@ -45,15 +45,15 @@ verification (see `VERIFICATION_CHECKLIST.md`).
 ### Added — Observability
 - **LagSpikeDetector**: breadcrumb trail of ticks exceeding 100ms,
   with heap%, tier, and player count captured at the moment of the
-  spike. Logged to WARN and accessible via `/aternosguardian lagspikes`.
+  spike. Logged to WARN and accessible via `/freeserversaver lagspikes`.
 - **HeapHistoryTracker**: ring buffer (default 50) of tier transitions
-  for `/aternosguardian history`.
+  for `/freeserversaver history`.
 - **EnvironmentInspector**: at server start, logs and stores a snapshot
   of heap max, heap used, CPU count, JVM details. Interprets the heap
   size: "< 2GB = misconfigured", "2-3.5GB = standard Aternos",
-  "> 3.5GB = RAM Boost active". Accessible via `/aternosguardian env`.
+  "> 3.5GB = RAM Boost active". Accessible via `/freeserversaver env`.
 
-### Added — Commands (`/aternosguardian *`, permission level 2)
+### Added — Commands (`/freeserversaver *`, permission level 2)
 - `status` — current tier and heap %.
 - `help` — full subcommand list.
 - `history` — recent tier transitions.
@@ -81,7 +81,7 @@ verification (see `VERIFICATION_CHECKLIST.md`).
     dedup); they're complementary
 
 ### Added — Internationalization
-- 9 locale files in `assets/aternosguardian/lang/`:
+- 9 locale files in `assets/freeserversaver/lang/`:
   - `en_us` (baseline), `ja_jp`, `de_de`, `pt_br`, `es_es`,
   - `zh_cn`, `ko_kr`, `fr_fr`, `ru_ru`
 - All player-visible chat output goes through `Component.translatable()`,
@@ -94,7 +94,7 @@ verification (see `VERIFICATION_CHECKLIST.md`).
 ### Added — Optional modules (default OFF in v0.1)
 - **AutoTuner**: every 5 minutes, adjusts the threshold offset by
   ±2pp based on observed spike-vs-heap patterns. Clamped to ±10pp.
-  *Enable via config if /aternosguardian status shows you're
+  *Enable via config if /freeserversaver status shows you're
   consistently in the wrong tier.*
 - **MobDensityDetector**: every 30s, scans loaded chunks and warns
   about 30+ same-type mob concentrations (mob-farm signature).
@@ -110,7 +110,7 @@ verification (see `VERIFICATION_CHECKLIST.md`).
   `VERIFICATION_CHECKLIST.md`.
 - **NeoForge 1.21.1 only.** Random tick logic changed in 1.21.2; we
   haven't validated against it.
-- **No JEI / config GUI.** Edit `serverconfig/aternosguardian-
+- **No JEI / config GUI.** Edit `serverconfig/freeserversaver-
   server.toml` directly.
 - **Translations are machine-translated.** Likely fine for the
   technical core terms but may read unnaturally to native speakers.

@@ -11,9 +11,9 @@ moving on — issues compound otherwise.
 ## Tier 1 — does the mod load at all
 
 - [ ] `./gradlew runClient` starts without exception
-- [ ] No "Failed to load mod 'aternosguardian'" in the log
+- [ ] No "Failed to load mod 'freeserversaver'" in the log
 - [ ] The boot snapshot from `EnvironmentInspector` appears in the log
-      (`=== Aternos Heap Guardian: environment snapshot ===`)
+      (`=== Free Server Saver: environment snapshot ===`)
 - [ ] If a `lithium`, `ferritecore`, or `modernfix` mod is loaded, the
       "consider also installing" hint does NOT fire; if those are
       missing, it does fire
@@ -21,17 +21,17 @@ moving on — issues compound otherwise.
 
 ## Tier 2 — commands work and resolve translations
 
-- [ ] `/aternosguardian help` lists 8 subcommands
-- [ ] `/aternosguardian status` shows tier + heap percentage with green
+- [ ] `/freeserversaver help` lists 8 subcommands
+- [ ] `/freeserversaver status` shows tier + heap percentage with green
       coloring (NORMAL tier)
-- [ ] `/aternosguardian env` shows non-zero heap max + the right
+- [ ] `/freeserversaver env` shows non-zero heap max + the right
       Aternos-tier interpretation hint
-- [ ] `/aternosguardian metrics` shows player count, loaded chunks, view
+- [ ] `/freeserversaver metrics` shows player count, loaded chunks, view
       distance
-- [ ] `/aternosguardian lagspikes` shows "no spikes" message (green)
-- [ ] `/aternosguardian top entities` shows the vanilla starter entities
+- [ ] `/freeserversaver lagspikes` shows "no spikes" message (green)
+- [ ] `/freeserversaver top entities` shows the vanilla starter entities
       (zombies, skeletons in overworld)
-- [ ] `/aternosguardian inspect chunks` shows per-dimension counts
+- [ ] `/freeserversaver inspect chunks` shows per-dimension counts
 - [ ] Switch client language to Japanese (`ja_jp`) and re-run commands —
       output is in Japanese
 - [ ] Try one more locale (`de_de` or `zh_cn`) to confirm i18n routing
@@ -44,14 +44,14 @@ Hardest to verify naturally. Use one of these approaches:
 launcher. Generate ~3000 mobs (mob farm or `/summon` in a loop). Watch
 for:
 - [ ] `[HeapGuardian] Throttle level: NORMAL -> L1_MILD` in log
-- [ ] `/aternosguardian status` reports the new tier
+- [ ] `/freeserversaver status` reports the new tier
 - [ ] Mob spawn rate visibly drops (no new mobs entering the loaded
       chunks)
 - [ ] At L2_HEAVY: distant mob movement visibly stutters / pauses (the
       far DAB bucket is running at 1/8 tick rate)
 - [ ] Heap recovers; tier drops back to NORMAL after 5%+ hysteresis
       drop
-- [ ] `/aternosguardian history` shows the transition entries
+- [ ] `/freeserversaver history` shows the transition entries
 
 **Option B — temporarily lower the threshold via reflection or by
 patching `ThrottleLevel.java` to use 30/40/50/55% for the test session.**
@@ -77,7 +77,7 @@ Each of these is `default: false` in v0.1 but should be tested
 independently:
 
 - [ ] `enableAutoTuning = true` → after 5 min with intentional spikes,
-      `/aternosguardian tuning` shows non-zero offset; log shows
+      `/freeserversaver tuning` shows non-zero offset; log shows
       `[AutoTuner] Threshold offset adjusted` line
 - [ ] `enableMobDensityDetection = true` → build a 30+ zombie farm in
       one chunk, after 30s log shows `[MobDensity]` warning
@@ -91,7 +91,7 @@ independently:
       Heap Guardian using < 2% CPU at NORMAL tier
 - [ ] No allocation spikes on tier transitions (`/spark memory`)
 - [ ] WARN log isn't spammy in normal operation (< 10 lines / hour)
-- [ ] Config file `serverconfig/aternosguardian-server.toml` is well-
+- [ ] Config file `serverconfig/freeserversaver-server.toml` is well-
       formed; can edit and `/reload` (or restart) to apply
 
 ## Known unknowns

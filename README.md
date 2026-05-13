@@ -1,17 +1,19 @@
-# Aternos Heap Guardian
+# Free Server Saver
 
-**Lag reducer purpose-built for Aternos free Minecraft servers.**
+**Lag reducer for free Minecraft servers — Aternos, Falixnodes, Minehut, and any low-RAM hosting.**
 
-If you play on Aternos, you've seen it:
+If you play on a free server, you've seen it:
 
 - Mobs teleporting 5-10 blocks instead of moving smoothly
 - You and one friend get disconnected when nobody else is even online
 - The server "freezes" for half a second every few minutes
 - "Server crashed because it ran out of memory" after running fine for an hour
 
-Those aren't ping problems. They're **garbage collection pauses** — Aternos gives you ~2.5GB of RAM, modpacks push that to the limit, the JVM panics and stops the entire server for hundreds of milliseconds to clean up. To the player, that looks identical to network lag.
+Those aren't ping problems. They're **garbage collection pauses** — your host gives you 2-4GB of RAM, modpacks push that to the limit, the JVM panics and stops the entire server for hundreds of milliseconds to clean up. To the player, that looks identical to network lag.
 
-**Aternos Heap Guardian polls your server's heap usage every 2 seconds and gradually scales back AI ticks, mob spawns, and view distance _before_ the heap fills up.** No GC pause, no rubber-banding, no disconnects.
+**Free Server Saver polls your server's heap usage every 2 seconds and gradually scales back AI ticks, mob spawns, and view distance _before_ the heap fills up.** No GC pause, no rubber-banding, no disconnects.
+
+> **Tested target**: Aternos free tier (~2.5GB RAM), but works on any low-RAM Minecraft server — Falixnodes, Minehut, self-hosted, old PCs.
 
 ## How it works
 
@@ -42,11 +44,11 @@ Heap Guardian works **within** Aternos's rules. That's why it's allowed on the m
 
 ## Discord notifications (opt-in)
 
-Set `enableDiscordWebhook = true` and a webhook URL in `serverconfig/aternosguardian-server.toml`, get a ping in Discord when your server hits L3 or L4. You don't have to sit watching the Aternos console — Heap Guardian tells you when things are getting tight.
+Set `enableDiscordWebhook = true` and a webhook URL in `serverconfig/freeserversaver-server.toml`, get a ping in Discord when your server hits L3 or L4. You don't have to sit watching the Aternos console — Heap Guardian tells you when things are getting tight.
 
 ## Languages
 
-Aternos Heap Guardian's chat output is translated into 9 languages: English, 日本語, Deutsch, Português (BR), Español, 简体中文, 한국어, Français, Русский. A Japanese client sees Japanese, a German client sees German — same server, no recompilation.
+Free Server Saver's chat output is translated into 9 languages: English, 日本語, Deutsch, Português (BR), Español, 简体中文, 한국어, Français, Русский. A Japanese client sees Japanese, a German client sees German — same server, no recompilation.
 
 **The translations are machine-generated** as a starting point. Native-speaker corrections are very welcome — open a PR or issue with a fixed `lang/{locale}.json`.
 
@@ -54,10 +56,10 @@ Aternos Heap Guardian's chat output is translated into 9 languages: English, 日
 
 | Command | What it shows |
 |---------|---------------|
-| `/aternosguardian status` | Current tier + heap percentage |
-| `/aternosguardian history` | Last 20 tier transitions, color-coded |
-| `/aternosguardian metrics` | Heap, tier, players, loaded chunks, view distance |
-| `/aternosguardian inspect chunks` | Per-dimension chunk load counts |
+| `/freeserversaver status` | Current tier + heap percentage |
+| `/freeserversaver history` | Last 20 tier transitions, color-coded |
+| `/freeserversaver metrics` | Heap, tier, players, loaded chunks, view distance |
+| `/freeserversaver inspect chunks` | Per-dimension chunk load counts |
 
 All require op (permission level 2).
 
