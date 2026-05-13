@@ -32,6 +32,8 @@ public final class HeapGuardianConfig {
     public static final ModConfigSpec.BooleanValue ENABLE_CHUNK_PRUNING;
     public static final ModConfigSpec.BooleanValue ENABLE_STORAGE_MONITOR;
     public static final ModConfigSpec.BooleanValue ENABLE_IDLE_NOTIFIER;
+    public static final ModConfigSpec.BooleanValue ENABLE_BOOT_TIME_TRACKER;
+    public static final ModConfigSpec.BooleanValue ENABLE_CHUNK_PREGEN;
     public static final ModConfigSpec.BooleanValue ENABLE_MOD_COMPAT_WARNINGS;
     public static final ModConfigSpec.BooleanValue VERBOSE_LOGGING;
 
@@ -172,6 +174,27 @@ public final class HeapGuardianConfig {
                 "fake-player tactic Aternos bans (Carpet)."
             )
             .define("enableIdleNotifier", true);
+
+        ENABLE_BOOT_TIME_TRACKER = b
+            .comment(
+                "On each server start, log JVM uptime to 'ready for players'",
+                "state and persist the last 10 boot times to a flat file in",
+                "the world directory. If recent 3-boot average exceeds 8 min,",
+                "warn at startup that you're approaching Aternos's 10-min cap.",
+                "Pure observation — does not modify mod loading (that's",
+                "ModernFix's job, which we recommend in companion warnings)."
+            )
+            .define("enableBootTimeTracker", true);
+
+        ENABLE_CHUNK_PREGEN = b
+            .comment(
+                "Enable /aternosguardian pregen <radius> command for synchronous",
+                "chunk pre-generation around the command source. Capped at 16",
+                "chunks radius (~256 blocks). Yields entirely to Chunky if",
+                "Chunky is installed — Chunky's multi-threaded async approach",
+                "is the right tool for any non-trivial pregen job."
+            )
+            .define("enableChunkPregen", true);
 
         ENABLE_MOD_COMPAT_WARNINGS = b
             .comment(

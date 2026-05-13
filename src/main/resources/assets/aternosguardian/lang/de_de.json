@@ -10,6 +10,7 @@
   "aternosguardian.help.entry.tuning": "  /aternosguardian tuning — Aktueller Schwellenwert-Offset des AutoTuners.",
   "aternosguardian.help.entry.prune": "  /aternosguardian prune — Identifiziert nicht erreichbare geladene Chunks (Flood-Fill).",
   "aternosguardian.help.entry.storage": "  /aternosguardian storage — Welt-Verzeichnisgröße vs. Aternos 4GB-Limit.",
+  "aternosguardian.help.entry.pregen": "  /aternosguardian pregen <radius> — Chunks synchron im Umkreis vorgenerieren (max. 16).",
 
   "aternosguardian.tuning.title": "Heap Guardian AutoTuner:",
   "aternosguardian.tuning.offset": "  Schwellenwert-Offset: %s Prozentpunkte",
@@ -19,7 +20,10 @@
   "aternosguardian.storage.error": "Welt-Verzeichnisgröße konnte nicht gelesen werden.",
   "aternosguardian.storage.result": "Welt-Verzeichnis: %s MB / 4096 MB (Aternos-Limit)",
 
-  "aternosguardian.idle.first_join": "Willkommen — der Aternos-Idle-Timer ist zurückgesetzt, solange du online bist."
+  "aternosguardian.idle.first_join": "Willkommen — der Aternos-Idle-Timer ist zurückgesetzt, solange du online bist.",
+
+  "aternosguardian.pregen.yielded": "Chunky ist installiert — nutze stattdessen /chunky. Aternos Heap Guardians Pregen weicht zurück.",
+  "aternosguardian.pregen.result": "%s Chunks vorgeneriert (Radius %s)."
 
   "aternosguardian.status.title": "Heap Guardian Status:",
   "aternosguardian.status.line": "  Stufe: %s  |  Heap: %s%%",

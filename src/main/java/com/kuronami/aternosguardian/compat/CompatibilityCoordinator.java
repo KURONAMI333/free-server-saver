@@ -85,11 +85,18 @@ public final class CompatibilityCoordinator {
         "tick_tweaks"
     );
 
+    /** Chunk pre-generation — same lane as ChunkPreGenModule. Chunky is the gold standard. */
+    private static final List<String> CHUNK_PREGEN_MODS = List.of(
+        "chunky",
+        "chunkpregen"
+    );
+
     /** Static flags. Set once at server start; read by each module's event handler. */
     private static final AtomicBoolean yieldEntityTick = new AtomicBoolean(false);
     private static final AtomicBoolean yieldSpawn = new AtomicBoolean(false);
     private static final AtomicBoolean yieldTickRate = new AtomicBoolean(false);
     private static final AtomicBoolean yieldItemTick = new AtomicBoolean(false);
+    private static final AtomicBoolean yieldChunkPregen = new AtomicBoolean(false);
 
     private CompatibilityCoordinator() {}
 
@@ -104,6 +111,7 @@ public final class CompatibilityCoordinator {
         evaluate(list, TICK_RATE_MODS, yieldTickRate, "TickRateModule");
         evaluate(list, SPAWN_THROTTLE_MODS, yieldSpawn, "SpawnThrottleModule");
         evaluate(list, ITEM_THROTTLE_MODS, yieldItemTick, "ItemEntityThrottleModule");
+        evaluate(list, CHUNK_PREGEN_MODS, yieldChunkPregen, "ChunkPreGenModule");
     }
 
     /**
@@ -145,5 +153,10 @@ public final class CompatibilityCoordinator {
     /** True if a competitor for {@code ItemEntityThrottleModule} is loaded. */
     public static boolean yieldItemThrottle() {
         return yieldItemTick.get();
+    }
+
+    /** True if a competitor for {@code ChunkPreGenModule} is loaded (Chunky etc.). */
+    public static boolean yieldChunkPregen() {
+        return yieldChunkPregen.get();
     }
 }
