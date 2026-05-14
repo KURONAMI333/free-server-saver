@@ -22,11 +22,11 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
  *   <li>"{@code java.lang.OutOfMemoryError: Metaspace}" crash</li>
  *   <li>{@code spark}'s memory profile shows "heap is empty" — because
  *       it's metadata, not heap</li>
- *   <li>RAM Boost via Medal <strong>does not help</strong>
+ *   <li>RAM Boost <strong>does not help</strong>
  *       — that boost extends {@code -Xmx} (heap), not
  *       {@code -XX:MaxMetaspaceSize}</li>
- *   <li>the typical official advice: "remove mods or switch to
- *       exaroton"</li>
+ *   <li>the typical official advice: "remove mods or move to a
+ *       paid host"</li>
  * </ul>
  *
  * <p>What this watcher does:
@@ -50,7 +50,7 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
  * operator sees "Metaspace 90%," the more options they have:
  * <ol>
  *   <li>Remove an optional mod before next restart</li>
- *   <li>Move to exaroton with more headroom</li>
+ *   <li>Move to a paid host with more headroom</li>
  *   <li>Switch to a smaller modpack</li>
  * </ol>
  * Without the warning, they get a hard crash and the world stops
@@ -121,9 +121,9 @@ public class MetaspaceWatcher {
         if (pct >= CRITICAL_THRESHOLD_PCT && lastWarnedPct < CRITICAL_THRESHOLD_PCT) {
             FreeServerSaver.LOGGER.error(
                 "[Metaspace] CRITICAL: {}% used ({} MB / {} MB). Server will "
-                + "crash with 'OutOfMemoryError: Metaspace' soon. RAM Boost via "
-                + "RAM Boost does NOT help — it only extends heap. The fix is fewer "
-                + "mods or moving to a paid host like exaroton.",
+                + "crash with 'OutOfMemoryError: Metaspace' soon. RAM Boost "
+                + "does NOT help — it only extends heap. The fix is fewer "
+                + "mods or moving to a paid host.",
                 String.format("%.1f", pct),
                 usage.getUsed() / 1_048_576L,
                 max / 1_048_576L);
