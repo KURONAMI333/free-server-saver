@@ -207,7 +207,7 @@ public final class FreeServerSaverConfig {
                 "monitor can't see. Large modpacks (Craftoria, ATM10) sometimes",
                 "exhaust Metaspace BEFORE heap, producing 'OutOfMemoryError:",
                 "Metaspace' that spark reports as 'memory empty'. the host's",
-                "RAM Boost via Medal does NOT help this — it only extends",
+                "RAM Boost does NOT help this — it only extends",
                 "heap. The watcher WARNs at 80%, ERRORs at 95%, giving the",
                 "operator time to trim mods before the OOM crash."
             )
