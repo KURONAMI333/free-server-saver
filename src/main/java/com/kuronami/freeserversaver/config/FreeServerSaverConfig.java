@@ -66,10 +66,10 @@ public final class FreeServerSaverConfig {
                 "run full ticks. Starvation floor of every 20 ticks ensures",
                 "no mob is fully frozen.",
                 "",
-                "This replaces the older RandomTickModule (removed in 0.1.1)",
-                "because vanilla random ticks are allocation-cheap; the real",
-                "heap pressure comes from per-entity AI ticks. Install",
-                "Lithium for the random-tick allocation optimization."
+                "Vanilla random ticks (crops, leaves, snow, fire) are NEVER",
+                "touched — they're allocation-cheap; the real heap pressure",
+                "comes from per-entity AI ticks. Install Lithium for the",
+                "random-tick allocation optimization."
             )
             .define("enableEntityTickThrottle", true);
 

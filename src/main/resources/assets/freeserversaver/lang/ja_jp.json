@@ -9,7 +9,7 @@
   "freeserversaver.help.entry.inspect": "  /freeserversaver inspect chunks — ディメンション別のロード済み/強制ロード/プレイヤー数",
   "freeserversaver.help.entry.tuning": "  /freeserversaver tuning — AutoTunerの現在の閾値オフセット",
   "freeserversaver.help.entry.prune": "  /freeserversaver prune — 到達不能なロード済みチャンクを特定（flood-fill）",
-  "freeserversaver.help.entry.storage": "  /freeserversaver storage — ワールドディレクトリ容量とfree-host 4GB制限の比較",
+  "freeserversaver.help.entry.storage": "  /freeserversaver storage — ワールドディレクトリ容量と4GB世界容量上限の比較",
   "freeserversaver.help.entry.quarantine": "  /freeserversaver quarantine — 直近に隔離されたエンティティ/ブロックエンティティ（10秒間に3回tick例外を出したら自動discard）。",
   "freeserversaver.help.entry.pregen": "  /freeserversaver pregen <半径> — 自分の周囲のチャンクを同期的に事前生成（最大半径16）",
   "freeserversaver.tuning.title": "Free Server Saver AutoTuner:",

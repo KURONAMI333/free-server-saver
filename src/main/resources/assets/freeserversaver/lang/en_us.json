@@ -9,7 +9,7 @@
   "freeserversaver.help.entry.inspect": "  /freeserversaver inspect chunks — Per-dimension loaded / forced / player counts.",
   "freeserversaver.help.entry.tuning": "  /freeserversaver tuning — Current AutoTuner threshold offset.",
   "freeserversaver.help.entry.prune": "  /freeserversaver prune — Identify unreachable loaded chunks (anchored flood-fill).",
-  "freeserversaver.help.entry.storage": "  /freeserversaver storage — World directory size vs the free-host 4GB cap.",
+  "freeserversaver.help.entry.storage": "  /freeserversaver storage — World directory size vs the 4 GB world cap.",
   "freeserversaver.help.entry.pregen": "  /freeserversaver pregen <radius> — Synchronously pre-generate chunks around your position. Max radius 16.",
   "freeserversaver.help.entry.quarantine": "  /freeserversaver quarantine — Recently quarantined entities/block-entities (auto-discarded after 3 tick exceptions in 10s).",
   "freeserversaver.tuning.title": "Free Server Saver AutoTuner:",

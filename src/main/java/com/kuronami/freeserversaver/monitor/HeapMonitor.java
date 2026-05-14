@@ -17,8 +17,8 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
  * {@link #POLL_INTERVAL_TICKS} server ticks (~2 s by default). When the
  * derived {@link ThrottleLevel} changes, fires a
  * {@link ThrottleLevelChangedEvent} on the NeoForge event bus so each
- * intervention module ({@code RandomTickModule}, {@code SpawnThrottleModule},
- * ...) can adjust independently.
+ * intervention module ({@code EntityTickThrottleModule},
+ * {@code SpawnThrottleModule}, etc.) can adjust independently.
  *
  * <p>Hysteresis on the falling edge: a level is only released when the
  * heap drops more than {@link ThrottleLevel#HYSTERESIS_MARGIN} below the

@@ -8,7 +8,7 @@ import net.neoforged.bus.api.Event;
  * memory pressure or falling back during recovery (with hysteresis already
  * applied by {@link HeapMonitor}).
  *
- * <p>Modules that perform actual interventions ({@code RandomTickModule},
+ * <p>Modules that perform actual interventions ({@code EntityTickThrottleModule},
  * {@code SpawnThrottleModule}, etc.) subscribe to this event and adjust
  * their behavior based on the new tier. Keeping the throttling decision
  * separate from the interventions is what lets each module be toggled
