@@ -15,9 +15,9 @@ import net.neoforged.neoforge.event.server.ServerStartedEvent;
  * not because it does anything host-specific, but because operators on low-RAM hosts
  * have <strong>no other way</strong> to see what RAM their server is
  * actually running with. The host's panel shows "your server has 2.5GB"
- * but doesn't tell you whether the RAM Boost reward from Medal is
- * actually applied this session, or whether you accidentally fell back
- * to base allocation.
+ * but doesn't tell you whether the RAM Boost is actually applied
+ * this session, or whether you accidentally fell back to base
+ * allocation.
  *
  * <p>This module logs the truth at server start:
  * <ul>
