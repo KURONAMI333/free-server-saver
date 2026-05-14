@@ -43,7 +43,7 @@ Hardest to verify naturally. Use one of these approaches:
 **Option A — force the issue.** Lower `-Xmx` to 1.5GB on the test
 launcher. Generate ~3000 mobs (mob farm or `/summon` in a loop). Watch
 for:
-- [ ] `[HeapGuardian] Throttle level: NORMAL -> L1_MILD` in log
+- [ ] `[freeserversaver] Throttle level: NORMAL -> L1_MILD` in log
 - [ ] `/freeserversaver status` reports the new tier
 - [ ] Mob spawn rate visibly drops (no new mobs entering the loaded
       chunks)
@@ -88,7 +88,7 @@ independently:
 ## Tier 6 — non-functional checks
 
 - [ ] Server tick budget: `/spark profiler --timeout 60` shows
-      Heap Guardian using < 2% CPU at NORMAL tier
+      Free Server Saver using < 2% CPU at NORMAL tier
 - [ ] No allocation spikes on tier transitions (`/spark memory`)
 - [ ] WARN log isn't spammy in normal operation (< 10 lines / hour)
 - [ ] Config file `serverconfig/freeserversaver-server.toml` is well-
@@ -110,7 +110,7 @@ independently:
 
 ## After every test passes
 
-- [ ] Update `HEAP_GUARDIAN_NOTES.md` with anything learned
+- [ ] Update `FREE_SERVER_SAVER_NOTES.md` with anything learned
 - [ ] Add a `CHANGELOG.md` entry for any code change made during
       verification
 - [ ] Bump `mod_version` to 0.1.0 (currently 0.1.0 in gradle.properties

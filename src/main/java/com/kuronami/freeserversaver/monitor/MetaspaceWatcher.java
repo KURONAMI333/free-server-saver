@@ -1,7 +1,7 @@
 package com.kuronami.freeserversaver.monitor;
 
-import com.kuronami.freeserversaver.HeapGuardian;
-import com.kuronami.freeserversaver.config.HeapGuardianConfig;
+import com.kuronami.freeserversaver.FreeServerSaver;
+import com.kuronami.freeserversaver.config.FreeServerSaverConfig;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryPoolMXBean;
 import java.lang.management.MemoryUsage;
@@ -81,12 +81,12 @@ public class MetaspaceWatcher {
         if (metaspacePool == null) {
             // No Metaspace pool exposed — unusual but possible with some
             // custom JVMs. Disable silently rather than crashing.
-            HeapGuardian.LOGGER.info(
+            FreeServerSaver.LOGGER.info(
                 "[Metaspace] No Metaspace memory pool exposed by this JVM. "
                 + "Watcher disabled for this session.");
         } else {
             MemoryUsage initial = metaspacePool.getUsage();
-            HeapGuardian.LOGGER.info(
+            FreeServerSaver.LOGGER.info(
                 "[Metaspace] Initial: {} MB used / {} MB max",
                 initial.getUsed() / 1_048_576L,
                 initial.getMax() / 1_048_576L);
@@ -103,7 +103,7 @@ public class MetaspaceWatcher {
     @SubscribeEvent
     public void onServerTickPost(ServerTickEvent.Post event) {
         if (metaspacePool == null) return;
-        if (Boolean.FALSE.equals(HeapGuardianConfig.ENABLE_METASPACE_WATCHER.get())) {
+        if (Boolean.FALSE.equals(FreeServerSaverConfig.ENABLE_METASPACE_WATCHER.get())) {
             return;
         }
         if (--ticksUntilNext > 0) return;
@@ -119,7 +119,7 @@ public class MetaspaceWatcher {
 
         // Critical band — emit ERROR with explicit fix advice.
         if (pct >= CRITICAL_THRESHOLD_PCT && lastWarnedPct < CRITICAL_THRESHOLD_PCT) {
-            HeapGuardian.LOGGER.error(
+            FreeServerSaver.LOGGER.error(
                 "[Metaspace] CRITICAL: {}% used ({} MB / {} MB). Server will "
                 + "crash with 'OutOfMemoryError: Metaspace' soon. RAM Boost via "
                 + "Medal does NOT help — it only extends heap. The fix is fewer "
@@ -129,7 +129,7 @@ public class MetaspaceWatcher {
                 max / 1_048_576L);
             lastWarnedPct = pct;
         } else if (pct >= WARN_THRESHOLD_PCT && lastWarnedPct < WARN_THRESHOLD_PCT) {
-            HeapGuardian.LOGGER.warn(
+            FreeServerSaver.LOGGER.warn(
                 "[Metaspace] {}% used ({} MB / {} MB) — approaching capacity. "
                 + "Aternos's free tier doesn't expose Metaspace tuning, and "
                 + "Medal's RAM Boost doesn't help this. Consider trimming mods "
@@ -142,7 +142,7 @@ public class MetaspaceWatcher {
             // Dropped back below — reset the ratchet so a future increase
             // can warn again. (Metaspace rarely drops in practice, but
             // it's safe to support the case.)
-            HeapGuardian.LOGGER.info(
+            FreeServerSaver.LOGGER.info(
                 "[Metaspace] Now {}% — below warning threshold.",
                 String.format("%.1f", pct));
             lastWarnedPct = 0.0;

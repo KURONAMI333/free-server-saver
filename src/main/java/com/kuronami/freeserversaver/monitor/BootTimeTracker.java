@@ -1,7 +1,7 @@
 package com.kuronami.freeserversaver.monitor;
 
-import com.kuronami.freeserversaver.HeapGuardian;
-import com.kuronami.freeserversaver.config.HeapGuardianConfig;
+import com.kuronami.freeserversaver.FreeServerSaver;
+import com.kuronami.freeserversaver.config.FreeServerSaverConfig;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -24,7 +24,7 @@ import net.neoforged.neoforge.event.server.ServerStartedEvent;
  * reach the "started" state, it's killed. Players have to remove mods,
  * which is the worst possible UX — your modpack is too big AFTER you've
  * already built a world on it. The only escape is "remove mods" or
- * "switch to a smaller pack." Heap Guardian can't speed up mod load
+ * "switch to a smaller pack." Free Server Saver can't speed up mod load
  * (that's ModernFix's job), but it CAN give the user an early warning
  * before they hit the wall.
  *
@@ -40,7 +40,7 @@ import net.neoforged.neoforge.event.server.ServerStartedEvent;
  *       (8 minutes), log a WARN at next startup with a recommendation.</li>
  * </ul>
  *
- * <p>Why a flat file instead of HG's existing config? The config is
+ * <p>Why a flat file instead of Free Server Saver's existing config? The config is
  * a TOML schema with typed entries; a list of timestamps doesn't fit
  * cleanly. Plain text is one append per boot, no parser to maintain.
  *
@@ -62,7 +62,7 @@ public class BootTimeTracker {
     private static final String HISTORY_FILE_NAME = "freeserversaver-boottimes.txt";
 
     /**
-     * JVM start time, captured at mod constructor (see HeapGuardian).
+     * JVM start time, captured at mod constructor (see FreeServerSaver).
      * Compared with ServerStartedEvent fire-time to get boot duration.
      */
     private static volatile long modConstructedAtMs = 0L;
@@ -78,7 +78,7 @@ public class BootTimeTracker {
 
     @SubscribeEvent
     public void onServerStarted(ServerStartedEvent event) {
-        if (Boolean.FALSE.equals(HeapGuardianConfig.ENABLE_BOOT_TIME_TRACKER.get())) {
+        if (Boolean.FALSE.equals(FreeServerSaverConfig.ENABLE_BOOT_TIME_TRACKER.get())) {
             return;
         }
         MinecraftServer server = event.getServer();
@@ -89,7 +89,7 @@ public class BootTimeTracker {
         long jvmUptimeMs = java.lang.management.ManagementFactory
             .getRuntimeMXBean().getUptime();
 
-        HeapGuardian.LOGGER.info(
+        FreeServerSaver.LOGGER.info(
             "[BootTime] Server reached 'started' state {} ms after JVM start ({}s, " +
             "Aternos cap is 600s).",
             jvmUptimeMs, jvmUptimeMs / 1000);
@@ -114,7 +114,7 @@ public class BootTimeTracker {
             }
             long avgMs = sum / n;
             if (avgMs > WARN_THRESHOLD_MS) {
-                HeapGuardian.LOGGER.warn(
+                FreeServerSaver.LOGGER.warn(
                     "[BootTime] Recent {}-boot average is {}s — approaching the " +
                     "600s Aternos limit. Install ModernFix (mod-loading speedup) " +
                     "or trim your modpack before the next start fails.",
@@ -139,7 +139,7 @@ public class BootTimeTracker {
                 }
             }
         } catch (IOException e) {
-            HeapGuardian.LOGGER.warn("[BootTime] Could not read history: {}",
+            FreeServerSaver.LOGGER.warn("[BootTime] Could not read history: {}",
                 e.getMessage());
         }
         return out;
@@ -160,7 +160,7 @@ public class BootTimeTracker {
         try {
             Files.write(file, lines, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            HeapGuardian.LOGGER.warn("[BootTime] Could not write history: {}",
+            FreeServerSaver.LOGGER.warn("[BootTime] Could not write history: {}",
                 e.getMessage());
         }
     }

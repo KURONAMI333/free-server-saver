@@ -1,8 +1,8 @@
 package com.kuronami.freeserversaver.modules;
 
-import com.kuronami.freeserversaver.HeapGuardian;
+import com.kuronami.freeserversaver.FreeServerSaver;
 import com.kuronami.freeserversaver.compat.CompatibilityCoordinator;
-import com.kuronami.freeserversaver.config.HeapGuardianConfig;
+import com.kuronami.freeserversaver.config.FreeServerSaverConfig;
 import com.kuronami.freeserversaver.monitor.ThrottleLevel;
 import com.kuronami.freeserversaver.monitor.ThrottleLevelChangedEvent;
 import net.minecraft.commands.CommandSourceStack;
@@ -77,7 +77,7 @@ public class TickRateModule {
         if (CompatibilityCoordinator.yieldTickRate()) {
             return;
         }
-        if (Boolean.FALSE.equals(HeapGuardianConfig.ENABLE_TICK_RATE_THROTTLE.get())) {
+        if (Boolean.FALSE.equals(FreeServerSaverConfig.ENABLE_TICK_RATE_THROTTLE.get())) {
             // If we'd previously throttled but the user just turned the
             // module off, restore. Otherwise the server stays at 10 TPS
             // until the next throttle event passes the gate.
@@ -91,13 +91,13 @@ public class TickRateModule {
         if (event.current() == ThrottleLevel.L4_EMERGENCY && !throttled) {
             applyTickRate(L4_TICK_RATE);
             throttled = true;
-            HeapGuardian.LOGGER.warn(
+            FreeServerSaver.LOGGER.warn(
                 "[TickRate] EMERGENCY — server slowed to {} TPS to relieve heap pressure.",
                 L4_TICK_RATE);
         } else if (event.current() != ThrottleLevel.L4_EMERGENCY && throttled) {
             applyTickRate(DEFAULT_TICK_RATE);
             throttled = false;
-            HeapGuardian.LOGGER.info("[TickRate] Recovery — restored to {} TPS.", DEFAULT_TICK_RATE);
+            FreeServerSaver.LOGGER.info("[TickRate] Recovery — restored to {} TPS.", DEFAULT_TICK_RATE);
         }
     }
 
@@ -114,8 +114,8 @@ public class TickRateModule {
             source,
             "tick rate " + rate);
 
-        if (Boolean.TRUE.equals(HeapGuardianConfig.VERBOSE_LOGGING.get())) {
-            HeapGuardian.LOGGER.debug("[TickRate] /tick rate {}", rate);
+        if (Boolean.TRUE.equals(FreeServerSaverConfig.VERBOSE_LOGGING.get())) {
+            FreeServerSaver.LOGGER.debug("[TickRate] /tick rate {}", rate);
         }
     }
 }

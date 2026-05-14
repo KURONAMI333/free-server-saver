@@ -1,8 +1,8 @@
 package com.kuronami.freeserversaver.modules;
 
-import com.kuronami.freeserversaver.HeapGuardian;
+import com.kuronami.freeserversaver.FreeServerSaver;
 import com.kuronami.freeserversaver.compat.CompatibilityCoordinator;
-import com.kuronami.freeserversaver.config.HeapGuardianConfig;
+import com.kuronami.freeserversaver.config.FreeServerSaverConfig;
 import com.kuronami.freeserversaver.monitor.ThrottleLevel;
 import com.kuronami.freeserversaver.monitor.ThrottleLevelChangedEvent;
 import com.kuronami.freeserversaver.util.BossDetection;
@@ -76,7 +76,7 @@ public class SpawnThrottleModule {
      */
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onFinalizeSpawn(FinalizeSpawnEvent event) {
-        if (Boolean.FALSE.equals(HeapGuardianConfig.ENABLE_SPAWN_THROTTLE.get())) {
+        if (Boolean.FALSE.equals(FreeServerSaverConfig.ENABLE_SPAWN_THROTTLE.get())) {
             return;
         }
         // APT-Spawn covers this lane with finer-grained rules; defer to it.
@@ -107,7 +107,7 @@ public class SpawnThrottleModule {
      */
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onEntityJoinLevel(EntityJoinLevelEvent event) {
-        if (Boolean.FALSE.equals(HeapGuardianConfig.ENABLE_SPAWN_THROTTLE.get())) {
+        if (Boolean.FALSE.equals(FreeServerSaverConfig.ENABLE_SPAWN_THROTTLE.get())) {
             return;
         }
         if (CompatibilityCoordinator.yieldSpawnThrottle()) {
@@ -164,8 +164,8 @@ public class SpawnThrottleModule {
     }
 
     private void logCancellation(String stage, Entity entity) {
-        if (Boolean.TRUE.equals(HeapGuardianConfig.VERBOSE_LOGGING.get())) {
-            HeapGuardian.LOGGER.debug(
+        if (Boolean.TRUE.equals(FreeServerSaverConfig.VERBOSE_LOGGING.get())) {
+            FreeServerSaver.LOGGER.debug(
                 "[Spawn/{}] Cancelled {} at tier {}",
                 stage, entity.getType().getDescriptionId(), currentLevel);
         }
