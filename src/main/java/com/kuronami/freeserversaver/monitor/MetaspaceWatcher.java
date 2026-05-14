@@ -122,7 +122,7 @@ public class MetaspaceWatcher {
             FreeServerSaver.LOGGER.error(
                 "[Metaspace] CRITICAL: {}% used ({} MB / {} MB). Server will "
                 + "crash with 'OutOfMemoryError: Metaspace' soon. RAM Boost via "
-                + "Medal does NOT help — it only extends heap. The fix is fewer "
+                + "Aternos RAM Boost does NOT help — it only extends heap. The fix is fewer "
                 + "mods or moving to a paid host like exaroton.",
                 String.format("%.1f", pct),
                 usage.getUsed() / 1_048_576L,
@@ -132,7 +132,7 @@ public class MetaspaceWatcher {
             FreeServerSaver.LOGGER.warn(
                 "[Metaspace] {}% used ({} MB / {} MB) — approaching capacity. "
                 + "Aternos's free tier doesn't expose Metaspace tuning, and "
-                + "Medal's RAM Boost doesn't help this. Consider trimming mods "
+                + "Aternos RAM Boost doesn't help this. Consider trimming mods "
                 + "before the next OOM crash.",
                 String.format("%.1f", pct),
                 usage.getUsed() / 1_048_576L,
