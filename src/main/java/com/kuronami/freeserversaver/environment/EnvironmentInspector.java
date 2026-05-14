@@ -11,7 +11,7 @@ import net.neoforged.neoforge.event.server.ServerStartedEvent;
 /**
  * Logs the JVM / hardware environment once at server start.
  *
- * <p>This is Aternos Free Server Saver's most Aternos-specific module —
+ * <p>This is Free Server Saver's most Aternos-specific module —
  * not because it does anything Aternos-only, but because Aternos players
  * have <strong>no other way</strong> to see what RAM their server is
  * actually running with. The Aternos panel shows "your server has 2.5GB"
@@ -83,7 +83,7 @@ public class EnvironmentInspector {
         lastSnapshot = snap;
 
         FreeServerSaver.LOGGER.info(
-            "=== Aternos Free Server Saver: environment snapshot ===");
+            "=== Free Server Saver: environment snapshot ===");
         FreeServerSaver.LOGGER.info(
             "  Heap max     : {} MB", snap.heapMaxMB());
         FreeServerSaver.LOGGER.info(
@@ -99,7 +99,7 @@ public class EnvironmentInspector {
 
         // Aternos-specific reality check: free tier is ~2.5 GB. If we see
         // less than 2 GB, the user probably has a misconfiguration; more
-        // than 3.5 GB suggests Medal RAM Boost is active.
+        // than 3.5 GB suggests Aternos RAM Boost is active.
         long heapMB = snap.heapMaxMB();
         if (heapMB < 2_000) {
             FreeServerSaver.LOGGER.warn(
@@ -107,7 +107,7 @@ public class EnvironmentInspector {
                 + "may have a misconfiguration — base tier should give ~2.5 GB.");
         } else if (heapMB > 3_500) {
             FreeServerSaver.LOGGER.info(
-                "  ✓ Heap is above 3.5 GB — looks like Medal RAM Boost is "
+                "  ✓ Heap is above 3.5 GB — looks like Aternos RAM Boost is "
                 + "active. Throttling will engage at higher absolute "
                 + "thresholds this session.");
         } else {
