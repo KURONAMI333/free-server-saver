@@ -57,16 +57,16 @@ Initial public release.
   transitions; `/freeserversaver history`.
 - **EnvironmentInspector**: captures heap max, heap used, CPU
   count, JVM details at server start. Interprets the heap size
-  (`< 2 GB = misconfigured`, `2-3.5 GB = standard Aternos`,
+  (`< 2 GB = misconfigured`, `2-3.5 GB = standard low-RAM`,
   `> 3.5 GB = RAM Boost active`); `/freeserversaver env`.
 - **MetaspaceWatcher**: tracks the Metaspace pool separately from
   heap because RAM Boost extends heap but not Metaspace — the
   Metaspace OOM crash class is invisible to a heap-only monitor.
 - **BootTimeTracker**: persists boot durations to a flat file so an
-  approach to Aternos's 10-minute startup limit is visible
+  approach to the 10-minute startup limit common to free hosts is visible
   before it's hit.
 
-### Aternos-specific addresses
+### low-RAM host-specific addresses
 - **4 GB world cap**: `StorageMonitor` periodically scans the world
   directory; `/freeserversaver storage` shows current size vs the
   cap.
@@ -77,7 +77,7 @@ Initial public release.
   synchronously generates chunks in the radius around the runner.
   Yields to Chunky if installed.
 - **Idle-timer notice**: a one-time welcome message on first join
-  reminds players that the Aternos idle timer is reset only while
+  reminds players that the idle timer is reset only while
   someone is online.
 - **Mob-density detector** (opt-in): scans loaded chunks and warns
   about 30+ same-type concentrations (mob-farm signature).

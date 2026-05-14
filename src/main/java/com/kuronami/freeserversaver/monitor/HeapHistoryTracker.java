@@ -13,7 +13,7 @@ import net.neoforged.bus.api.SubscribeEvent;
  *
  * <p>Why bother keeping history? Two reasons:
  * <ol>
- *   <li><strong>Post-mortem.</strong> An Aternos operator who comes back
+ *   <li><strong>Post-mortem.</strong> An operator who comes back
  *       to "the server crashed earlier" wants to see whether the heap
  *       was already climbing before the crash — was Free Server Saver
  *       intervening, did it reach L4? The vanilla logs answer that but

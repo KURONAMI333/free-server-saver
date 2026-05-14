@@ -11,7 +11,7 @@ copy; this file is the same content with formatting friendly to CurseForge.
 
 # Free Server Saver
 
-**Lag reducer for low-RAM Minecraft servers — Aternos, Falixnodes, Minehut, self-hosted, anything stuck on 2-4 GB of RAM.**
+**Lag reducer for low-RAM Minecraft servers (Falixnodes, Minehut, self-hosted), self-hosted, anything stuck on 2-4 GB of RAM.**
 
 ## The problem
 
@@ -50,7 +50,7 @@ When the heap recovers, every change reverses automatically.
 
 ## Also addresses
 
-- 4 GB world cap (Aternos hard ceiling) — `/freeserversaver storage` to watch, `/freeserversaver prune` to identify pruneable chunks
+- 4 GB world cap (free-host hard ceiling) — `/freeserversaver storage` to watch, `/freeserversaver prune` to identify pruneable chunks
 - 10-minute startup limit — boot-time history + early warning
 - Metaspace OOM — RAM Boost extends heap, not Metaspace. We monitor it separately
 - Chunk-generation lag — `/freeserversaver pregen <radius>` for spawn-area pre-gen
@@ -75,12 +75,12 @@ All under `/freeserversaver`, op-only (permission level 2):
 - `status` — current tier + heap percentage
 - `metrics` — heap, tier, players, chunks, view distance
 - `history` — last 20 tier transitions, color-coded
-- `env` — JVM heap/CPU snapshot from server start, with Aternos-tier interpretation
+- `env` — JVM heap/CPU snapshot from server start, with low-RAM hosts-tier interpretation
 - `lagspikes` — recent 100ms+ ticks with heap state at the time
 - `top entities` — top 10 entity types by count
 - `inspect chunks` — per-dimension loaded / forced / player counts
 - `prune` — identify unreachable loaded chunks (flood-fill)
-- `storage` — world directory size vs Aternos's 4 GB cap
+- `storage` — world directory size vs the host's 4 GB cap
 - `pregen <radius>` — pre-generate chunks around you
 
 ## Languages
@@ -92,7 +92,7 @@ Translations are machine-generated as a starting point. Native-speaker correctio
 ## What it does NOT do
 
 - Network ping issues — geographical, no mod can help
-- Bypass Aternos's idle-shutdown timer with fake players — that's what Aternos bans (Carpet). Free Server Saver works within Aternos's rules
+- Bypass the host's idle-shutdown timer with fake players — that's what many free hosts ban (Carpet). Free Server Saver works within the host's rules
 
 ## Requirements
 
@@ -112,7 +112,7 @@ For a complete low-RAM stack, install alongside:
 
 - Lithium — allocation-cheap optimizations across the engine
 - FerriteCore — 40-50% block-state memory reduction
-- ModernFix — mod-loading speedup; helps with that 10-minute Aternos boot limit
+- ModernFix — mod-loading speedup; helps with that 10-minute free-host boot limit
 
 Free Server Saver intentionally stays out of their lane. They handle static optimization, we handle adaptive response.
 
@@ -120,7 +120,7 @@ Free Server Saver intentionally stays out of their lane. They handle static opti
 
 MIT. See NOTICE.md in the GitHub repo for full attribution.
 
-UNOFFICIAL and not affiliated with Aternos GmbH. "Aternos" is referenced only as the most common deployment target.
+UNOFFICIAL community mod. Not affiliated with any hosting provider.
 
 ---
 
@@ -141,10 +141,10 @@ UNOFFICIAL and not affiliated with Aternos GmbH. "Aternos" is referenced only as
 - (don't have "Optimization" as a top-level category — use Tweaks)
 
 ### Search-relevant terms to include in description body
-- aternos lag fix
-- aternos optimization
-- free server lag
+- free minecraft server lag
 - low ram minecraft server
 - minecraft heap optimization
 - gc pause fix
+- minecraft modpack lag fix
+- 2gb minecraft server
 - minecraft modpack lag

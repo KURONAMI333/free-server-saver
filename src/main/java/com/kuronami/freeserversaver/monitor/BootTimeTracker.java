@@ -18,9 +18,9 @@ import net.neoforged.neoforge.event.server.ServerStartedEvent;
 /**
  * Records the time from JVM start to {@code ServerStartedEvent} and
  * keeps a small on-disk history so it can warn when the average
- * approaches Aternos's 10-minute startup limit.
+ * approaches the 10-minute startup limit common to free hosts.
  *
- * <p>Aternos's hard rule: if a server takes more than 600 seconds to
+ * <p>the typical hard rule on free hosts: if a server takes more than 600 seconds to
  * reach the "started" state, it's killed. Players have to remove mods,
  * which is the worst possible UX — your modpack is too big AFTER you've
  * already built a world on it. The only escape is "remove mods" or
@@ -44,7 +44,7 @@ import net.neoforged.neoforge.event.server.ServerStartedEvent;
  * a TOML schema with typed entries; a list of timestamps doesn't fit
  * cleanly. Plain text is one append per boot, no parser to maintain.
  *
- * <p>Why warn at 8 minutes instead of 10? Aternos's hard kill is at
+ * <p>Why warn at 8 minutes instead of 10? free hosts' hard kill is at
  * 600 seconds. A warning at 480 seconds gives the user one or two more
  * boots of margin before the next one fails — enough time to install
  * ModernFix or trim their modpack.
@@ -84,14 +84,14 @@ public class BootTimeTracker {
         MinecraftServer server = event.getServer();
 
         // Read total JVM uptime — this includes EVERYTHING since the
-        // java process started, which is what Aternos's 10-minute timer
+        // java process started, which is what the host's 10-minute timer
         // counts.
         long jvmUptimeMs = java.lang.management.ManagementFactory
             .getRuntimeMXBean().getUptime();
 
         FreeServerSaver.LOGGER.info(
             "[BootTime] Server reached 'started' state {} ms after JVM start ({}s, " +
-            "Aternos cap is 600s).",
+            "free hosts typically kill at 600s).",
             jvmUptimeMs, jvmUptimeMs / 1000);
 
         // Persist and check trend.
@@ -116,7 +116,7 @@ public class BootTimeTracker {
             if (avgMs > WARN_THRESHOLD_MS) {
                 FreeServerSaver.LOGGER.warn(
                     "[BootTime] Recent {}-boot average is {}s — approaching the " +
-                    "600s Aternos limit. Install ModernFix (mod-loading speedup) " +
+                    "600s free host boot limit. Install ModernFix (mod-loading speedup) " +
                     "or trim your modpack before the next start fails.",
                     n, avgMs / 1000);
             }

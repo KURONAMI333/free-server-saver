@@ -14,17 +14,17 @@ import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 
 /**
- * Watches the world directory size against Aternos's 4GB ceiling.
+ * Watches the world directory size against the host's 4GB ceiling.
  *
  * <p>Once every {@link #SCAN_INTERVAL_TICKS} (30 minutes), walks the
  * server's world directory and sums file sizes. If the total crosses
  * {@link #WARN_THRESHOLD_BYTES} (3.5 GB), emits a WARN log line and
- * (if enabled) a Discord notification — Aternos will stop the server
+ * (if enabled) a Discord notification — the host will stop the server
  * once size exceeds 4 GB, so the user has roughly one play session of
  * lead time once they hit 3.5.
  *
  * <p>The scan is intentionally on the main thread (inside a tick handler)
- * because filesystem walks of 4GB take maybe 200ms on Aternos-grade
+ * because filesystem walks of 4GB take maybe 200ms on low-RAM
  * storage and we trigger them every 30 minutes — that's a tolerable
  * spike vs the complexity of off-thread execution. The 30-minute
  * interval is generous enough that the cost averages out.
@@ -43,7 +43,7 @@ public class StorageMonitor {
     /** Warn when world directory exceeds this size. 3.5 GB. */
     private static final long WARN_THRESHOLD_BYTES = 3_500L * 1024L * 1024L;
 
-    /** Hard-warn threshold: world over 4 GB = Aternos will refuse to start. */
+    /** Hard-warn threshold: world over 4 GB = the host will refuse to start. */
     private static final long CRITICAL_THRESHOLD_BYTES = 4_000L * 1024L * 1024L;
 
     private MinecraftServer server;
@@ -117,15 +117,15 @@ public class StorageMonitor {
         // hasn't taken action is just noise.
         if (size >= CRITICAL_THRESHOLD_BYTES && lastWarnedSize < CRITICAL_THRESHOLD_BYTES) {
             FreeServerSaver.LOGGER.error(
-                "[StorageMonitor] World directory is {} MB — over Aternos's 4GB cap. "
+                "[StorageMonitor] World directory is {} MB — over the 4 GB world cap. "
                 + "The server may refuse to start on the next boot. "
                 + "Run /freeserversaver prune to reduce loaded chunks, or trim "
-                + "unused dimensions via Aternos's world manager.",
+                + "unused dimensions via your host's world manager.",
                 size / 1_048_576L);
             lastWarnedSize = size;
         } else if (size >= WARN_THRESHOLD_BYTES && lastWarnedSize < WARN_THRESHOLD_BYTES) {
             FreeServerSaver.LOGGER.warn(
-                "[StorageMonitor] World directory is {} MB — approaching Aternos's "
+                "[StorageMonitor] World directory is {} MB — approaching the common "
                 + "4GB cap. Consider /freeserversaver prune to reduce loaded chunks.",
                 size / 1_048_576L);
             lastWarnedSize = size;

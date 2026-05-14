@@ -342,7 +342,7 @@ public class FreeServerSaverCommand {
             return Command.SINGLE_SUCCESS;
         }
         long mb = bytes / 1_048_576L;
-        // Color-code by Aternos's 4GB cap proximity.
+        // Color-code by the 4 GB world cap proximity.
         ChatFormatting color = mb >= 4000 ? ChatFormatting.DARK_RED
             : mb >= 3500 ? ChatFormatting.RED
             : mb >= 3000 ? ChatFormatting.YELLOW

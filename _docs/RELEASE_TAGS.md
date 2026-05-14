@@ -38,7 +38,6 @@ Set `assets/freeserversaver/icon.png` once the logo is ready, also upload separa
 
 ### Tags (free-text in the description body)
 These work like SEO. Sprinkle naturally:
-- aternos
 - falixnodes
 - minehut
 - low-ram
@@ -46,6 +45,7 @@ These work like SEO. Sprinkle naturally:
 - gc-pause
 - modpack-optimization
 - heap-monitor
+- free-minecraft-server
 
 ## CurseForge
 
@@ -63,14 +63,12 @@ These work like SEO. Sprinkle naturally:
 Same icon.png as Modrinth. CurseForge accepts 64×64–400×400 PNG/JPG/GIF.
 
 ### Mention in description (for CurseForge full-text search)
-- aternos
-- aternos lag fix
-- aternos optimization
-- free server lag
+- free minecraft server lag
 - low ram minecraft server
 - minecraft heap optimization
 - gc pause fix
 - minecraft modpack lag
+- 2gb minecraft server
 
 ## Pre-upload checklist
 
@@ -91,6 +89,6 @@ Same icon.png as Modrinth. CurseForge accepts 64×64–400×400 PNG/JPG/GIF.
 For the first week:
 - Watch Modrinth/CurseForge issue threads daily
 - Watch GitHub issues
-- Spot-check r/aternos for any mention (or backlash)
+- Spot-check Reddit / community reports for any mention (or backlash)
 - Address load-failure reports as priority 1
 - Note feedback for v0.2 backlog

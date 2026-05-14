@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
  * back random ticks, mob spawns, chunk loads, and (in the most extreme
  * tier) forces distant mob despawns. The goal is to keep heap pressure
  * below the threshold where the GC starts producing the long pause times
- * that look like network lag on Aternos-grade hardware.
+ * that look like network lag on low-RAM hardware.
  *
  * <p>v0.1.0 Phase 1+2+3 scope:
  * <ul>

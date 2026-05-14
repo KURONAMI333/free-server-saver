@@ -16,7 +16,7 @@ import net.neoforged.neoforge.event.server.ServerStoppingEvent;
  * naturally unload via vanilla's ticket system.
  *
  * <p>This is an indirect approach compared to ChunkPurge's flood-fill
- * unload, but it has two big advantages on a low-RAM Aternos server:
+ * unload, but it has two big advantages on a low-RAM free-host server:
  * <ol>
  *   <li><strong>No mixins / no access transformers.</strong> The
  *       {@link PlayerList} setters are public API and have been stable
@@ -36,7 +36,7 @@ import net.neoforged.neoforge.event.server.ServerStoppingEvent;
  *
  * <p>The trade-off: this module reduces <em>loaded</em> chunks but
  * doesn't <em>delete</em> chunks from disk. The 4GB-storage cap problem
- * (Aternos's other big complaint) needs a separate chunk-pruning module
+ * (another common complaint) needs a separate chunk-pruning module
  * — slated for Phase 3, see {@code FREE_SERVER_SAVER_NOTES.md}.
  *
  * <p>Tier mapping (per-tier values are hard-coded — see

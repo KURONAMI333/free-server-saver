@@ -8,7 +8,7 @@ import net.neoforged.neoforge.common.ModConfigSpec;
  * monitor logging, enable random-tick throttling once they trust it,
  * then enable spawn throttling, etc.
  *
- * <p>Defaults are aimed at a 2-4 GB Aternos-grade server. The thresholds
+ * <p>Defaults are aimed at a 2-4 GB low-RAM server. The thresholds
  * themselves live on {@link com.kuronami.freeserversaver.monitor.ThrottleLevel}
  * — we intentionally don't expose them as config in v0.1 because tuning
  * them well requires understanding G1GC's allocation rate behavior, and a
@@ -140,7 +140,7 @@ public final class FreeServerSaverConfig {
                 "points from the static defaults. Step size: 2 points/cycle.",
                 "",
                 "DEFAULT: false. Static thresholds work well for typical",
-                "Aternos workloads. Enable only if /freeserversaver status",
+                "low-RAM workloads. Enable only if /freeserversaver status",
                 "shows you're consistently in the wrong tier — the",
                 "adjustment is slow (5-minute cycle) and most users won't",
                 "see the benefit."
@@ -160,7 +160,7 @@ public final class FreeServerSaverConfig {
         ENABLE_STORAGE_MONITOR = b
             .comment(
                 "Every 30 minutes, scan the world directory size against",
-                "Aternos's 4GB cap. WARN at 3.5GB; ERROR at 4GB. Initial",
+                "the 4 GB world cap. WARN at 3.5GB; ERROR at 4GB. Initial",
                 "scan runs 30 seconds after server start to catch the",
                 "'already over the cap' case immediately. No deletes."
             )
@@ -169,10 +169,10 @@ public final class FreeServerSaverConfig {
         ENABLE_IDLE_NOTIFIER = b
             .comment(
                 "On player-count transitions to/from zero, log a note about",
-                "Aternos's idle-shutdown timer. Server-empty -> 'countdown",
+                "the host's idle-shutdown timer. Server-empty -> 'countdown",
                 "starts'. First-rejoin -> 'timer reset'. Purely informational",
                 "— does NOT keep the server alive. Doing that would be the",
-                "fake-player tactic Aternos bans (Carpet)."
+                "fake-player tactic many free hosts ban (Carpet)."
             )
             .define("enableIdleNotifier", true);
 
@@ -181,7 +181,7 @@ public final class FreeServerSaverConfig {
                 "On each server start, log JVM uptime to 'ready for players'",
                 "state and persist the last 10 boot times to a flat file in",
                 "the world directory. If recent 3-boot average exceeds 8 min,",
-                "warn at startup that you're approaching Aternos's 10-min cap.",
+                "warn at startup that you're approaching the 10-min boot cap.",
                 "Pure observation — does not modify mod loading (that's",
                 "ModernFix's job, which we recommend in companion warnings)."
             )
@@ -202,7 +202,7 @@ public final class FreeServerSaverConfig {
                 "Watch JVM Metaspace (class metadata) for crashes the heap",
                 "monitor can't see. Large modpacks (Craftoria, ATM10) sometimes",
                 "exhaust Metaspace BEFORE heap, producing 'OutOfMemoryError:",
-                "Metaspace' that spark reports as 'memory empty'. Aternos's",
+                "Metaspace' that spark reports as 'memory empty'. the host's",
                 "RAM Boost via Medal does NOT help this — it only extends",
                 "heap. The watcher WARNs at 80%, ERRORs at 95%, giving the",
                 "operator time to trim mods before the OOM crash."

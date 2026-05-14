@@ -29,7 +29,7 @@ import net.neoforged.neoforge.event.server.ServerStartingEvent;
  *
  * <p>This is intentionally a warning, not a hard refusal: the user knows
  * their own setup better than we do, and a "won't even load" failure mode
- * for a server-side mod on Aternos is far worse than a log line.
+ * for a server-side mod on low-RAM hosts is far worse than a log line.
  */
 public final class ModCompatWarnings {
 
