@@ -69,7 +69,7 @@ public class HeapGuardian {
         // (vs ServerStartedEvent fire time) to compute boot duration.
         BootTimeTracker.recordModConstructed();
 
-        LOGGER.info("Heap Guardian starting (Phase 1+2+3).");
+        LOGGER.info("Free Server Saver starting (heap-aware adaptive throttle, Phase 1-13).");
 
         // Config is loaded via the mod container; it lives in
         // serverconfig/freeserversaver-server.toml once a world has been
