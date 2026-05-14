@@ -1,5 +1,5 @@
 {
-  "freeserversaver.help.title": "Free Server Saver — 命令列表：",
+  "freeserversaver.help.title": "Free Server Saver — 命令列表（短指令：/fss）：",
   "freeserversaver.help.entry.status": "  /freeserversaver status — 当前级别和堆内存占用百分比",
   "freeserversaver.help.entry.history": "  /freeserversaver history — 最近20次级别变化历史（带颜色）",
   "freeserversaver.help.entry.metrics": "  /freeserversaver metrics — 堆、级别、玩家、加载区块、视距",
@@ -12,20 +12,14 @@
   "freeserversaver.help.entry.storage": "  /freeserversaver storage — 世界目录大小 vs Aternos 4GB 上限",
   "freeserversaver.help.entry.pregen": "  /freeserversaver pregen <半径> — 同步预生成你周围的区块（半径最大16）",
   "freeserversaver.help.entry.quarantine": "  /freeserversaver quarantine — 最近被隔离的实体/方块实体（10秒内3次tick异常后自动discard）。",
-
   "freeserversaver.tuning.title": "Free Server Saver AutoTuner:",
   "freeserversaver.tuning.offset": "  阈值偏移: %s 个百分点",
-
   "freeserversaver.prune.result": "区块清理: 识别到 %s 个孤立区块。vanilla 将在约 10 tick 内卸载。",
-
   "freeserversaver.storage.error": "无法读取世界目录大小。",
   "freeserversaver.storage.result": "世界目录: %s MB / 4096 MB (Aternos 上限)",
-
   "freeserversaver.idle.first_join": "欢迎 — 你在线期间 Aternos 空闲计时器已重置。",
-
   "freeserversaver.pregen.yielded": "Chunky 已安装 — 请使用 /chunky。Free Server Saver 的 pregen 让位。",
   "freeserversaver.pregen.result": "预生成 %s 个区块（半径 %s）。",
-
   "freeserversaver.quarantine.yielded": "ExceptionGuard 已让位给其他 tick 异常处理 mod（Neruina / Bug Fix Mod / Failsafe）。请查看该 mod 的报告。",
   "freeserversaver.quarantine.empty": "ExceptionGuard：暂无隔离记录 — 没有重复抛出 tick 异常的对象。",
   "freeserversaver.quarantine.title": "最近隔离（%s 条，最新优先）：",
@@ -33,20 +27,16 @@
   "freeserversaver.quarantine.kind.blockentity": "方块实体",
   "freeserversaver.quarantine.entry": "  [%s] %s  %s  — %s",
   "freeserversaver.quarantine.more": "  ... 其余 %s 条较早的隔离未显示",
-
   "freeserversaver.status.title": "Free Server Saver 状态：",
   "freeserversaver.status.line": "  级别: %s  |  堆: %s%%",
-
   "freeserversaver.history.empty": "Free Server Saver 历史：（暂无变化记录）",
   "freeserversaver.history.title": "Free Server Saver 历史（共 %s 条，最新在前）：",
   "freeserversaver.history.entry": "  [%s] %s -> %s （堆 %s%%）",
   "freeserversaver.history.more": "  ... 省略 %s 条较旧记录",
-
   "freeserversaver.metrics.title": "Free Server Saver 指标：",
   "freeserversaver.metrics.line.heap": "  堆: %s%%  |  级别: %s",
   "freeserversaver.metrics.line.players": "  玩家: %s  |  加载区块: %s  |  强制加载: %s",
   "freeserversaver.metrics.line.distance": "  视距: %s  |  模拟距离: %s",
-
   "freeserversaver.env.notyet": "环境快照尚未获取（服务器未完全启动）",
   "freeserversaver.env.title": "Aternos 环境快照（启动时获取）：",
   "freeserversaver.env.line.heap": "  堆最大: %s MB  |  启动时使用: %s MB",
@@ -55,16 +45,13 @@
   "freeserversaver.env.hint.low": "  堆小于 2 GB — 请检查 Aternos 配置，基础级别应有 ~2.5 GB",
   "freeserversaver.env.hint.boost": "  RAM Boost 似乎已激活（超过 3.5 GB）",
   "freeserversaver.env.hint.standard": "  标准 Aternos 堆大小",
-
   "freeserversaver.lagspikes.empty": "未记录到卡顿 — 服务器运行流畅",
   "freeserversaver.lagspikes.title": "最近的卡顿（共 %s 条，最新在前）：",
   "freeserversaver.lagspikes.entry": "  [%s] %s 毫秒 tick（堆 %s%%、级别 %s、%s 玩家）",
   "freeserversaver.lagspikes.more": "  ... 省略 %s 条较旧记录",
-
   "freeserversaver.topentities.empty": "无已加载的实体",
   "freeserversaver.topentities.title": "实体类型排行（合计所有维度，前10）：",
   "freeserversaver.topentities.entry": "  %s  %s  (%s)",
-
   "freeserversaver.inspect.chunks.title": "区块检查（共 %s 个维度）：",
   "freeserversaver.inspect.chunks.entry": "  %s: 加载=%s, 强制=%s, 玩家=%s"
 }

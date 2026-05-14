@@ -17,6 +17,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.tree.LiteralCommandNode;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -102,7 +103,17 @@ public class FreeServerSaverCommand {
                 .then(Commands.literal("chunks").executes(this::inspectChunks)))
             .then(Commands.literal("quarantine").executes(this::quarantine));
 
-        dispatcher.register(root);
+        // Register the full tree under "/freeserversaver"; then register
+        // "/fss" as a Brigadier redirect to the same node. A redirect
+        // means tab-completion, error messages, and subcommand parsing
+        // all flow through the canonical tree — no duplication, no
+        // chance of the alias drifting out of sync. The permission
+        // check has to be re-applied on the alias because requires()
+        // is evaluated at the literal node, not transitively.
+        LiteralCommandNode<CommandSourceStack> registered = dispatcher.register(root);
+        dispatcher.register(Commands.literal("fss")
+            .requires(src -> src.hasPermission(2))
+            .redirect(registered));
     }
 
     /** Shorthand to format a double to 1 decimal place — the value all our percentages use. */
