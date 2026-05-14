@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import net.minecraft.core.BlockPos;
 
 /**
- * Singleton state holder for the ExceptionGuard module (Phase 13).
+ * Singleton state holder for the ExceptionGuard module.
  *
  * <p>Watches per-entity / per-block-entity ticks via Mixin wrappers and
  * counts how often the same source throws an unhandled exception. After

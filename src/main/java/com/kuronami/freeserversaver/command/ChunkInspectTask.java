@@ -23,8 +23,9 @@ import net.minecraft.server.level.ServerLevel;
  * or pursue manual region pruning out-of-band.
  *
  * <p>Real chunk-file pruning ("delete .mca files for unvisited regions")
- * is destructive enough that it should never be automatic — slated as
- * a Phase 4 manual command guarded by an explicit confirm flag.
+ * is destructive enough that it should never be automatic — out of
+ * scope for this command. {@code /freeserversaver prune} (flood-fill
+ * identification of orphan chunks) is the closest thing we offer.
  */
 public final class ChunkInspectTask {
 
