@@ -69,6 +69,9 @@ public class LagSpikeDetector {
     /** Re-evaluate the hint after this many spikes have accumulated. */
     private static final int HINT_EVAL_WINDOW = 5;
 
+    /** Minimum wall-clock time between non-heap-pattern hints. 5 minutes. */
+    private static final long HINT_COOLDOWN_MS = 5L * 60L * 1000L;
+
     public record Entry(
             long timestampMs,
             long msptObserved,
@@ -82,6 +85,9 @@ public class LagSpikeDetector {
     private long tickStartNanos = 0;
     private boolean armed = false;
     private final Deque<Entry> buffer = new ArrayDeque<>();
+
+    /** Wall-clock of the last non-heap-pattern hint. 0 = never. */
+    private long lastHintMs = 0;
 
     public LagSpikeDetector(HeapMonitor heapMonitor) {
         this.heapMonitor = heapMonitor;
@@ -177,13 +183,14 @@ public class LagSpikeDetector {
         double ratio = (double) normalCount / HINT_EVAL_WINDOW;
         if (ratio < NON_HEAP_SPIKE_HINT_RATIO) return;
 
-        // Rate-limit the hint: only fire it once every 5 minutes of
-        // sustained pattern. Reuse the most recent timestamp as a
-        // crude cooldown check — if the previous hint's epoch is within
-        // 5 minutes, skip. We don't track the previous hint explicitly,
-        // we just check that this is the FIRST time the window is
-        // entirely-or-mostly NORMAL. Since the hint is observational
-        // only, occasional re-firing on a long run is fine.
+        // Rate-limit: don't re-fire the hint within HINT_COOLDOWN_MS
+        // (5 min). Without this, every additional NORMAL-tier spike
+        // keeps the window mostly-NORMAL and the WARN line fires on
+        // every single spike — useful info turned into log spam.
+        long now = System.currentTimeMillis();
+        if (now - lastHintMs < HINT_COOLDOWN_MS) return;
+        lastHintMs = now;
+
         FreeServerSaver.LOGGER.warn(
             "[LagSpike] Pattern hint: {}/{} recent spikes happened at NORMAL "
             + "tier (heap pressure was NOT high). The cause is probably outside "

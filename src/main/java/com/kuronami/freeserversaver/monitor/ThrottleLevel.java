@@ -20,16 +20,16 @@ public enum ThrottleLevel {
     /** Below 60%. No interventions; vanilla behavior. */
     NORMAL(0.0),
 
-    /** 60-70%. randomTickSpeed 3→1, 50% mob spawn rejection. */
+    /** 60-70%. Far/distant mob AI ticks every other tick; 50% of natural spawns rejected. */
     L1_MILD(60.0),
 
-    /** 70-80%. randomTickSpeed→0, all spawns canceled, distant mob AI frozen. */
+    /** 70-80%. Distant mob AI at 1/8 tick rate; all natural spawns rejected. */
     L2_HEAVY(70.0),
 
-    /** 80-85%. + aggressive chunk unload (ChunkPurge-style flood fill). */
+    /** 80-85%. + view / simulation distance compressed (vanilla unloads chunks). */
     L3_AGGRESSIVE(80.0),
 
-    /** 85%+. + force-discard distant mobs, optional explicit System.gc(). */
+    /** 85%+. + distant mob force-discard sweep; server tick rate halved (10 TPS). */
     L4_EMERGENCY(85.0);
 
     /** Percentage points of margin required before releasing a level. */

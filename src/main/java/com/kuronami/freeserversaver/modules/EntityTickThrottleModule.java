@@ -14,6 +14,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
@@ -130,6 +131,19 @@ public class EntityTickThrottleModule {
     @SubscribeEvent
     public void onThrottleChanged(ThrottleLevelChangedEvent event) {
         currentLevel = event.current();
+    }
+
+    /**
+     * Free per-mob hysteresis state when the entity leaves the world
+     * (chunk unload, death, dimension change, server stop). Without this
+     * the {@link #lastBucket} map would grow without bound on
+     * long-running servers as new entity IDs accumulate and old ones
+     * never get evicted — Minecraft assigns monotonically increasing
+     * global entity IDs within a session.
+     */
+    @SubscribeEvent
+    public void onEntityLeaveLevel(EntityLeaveLevelEvent event) {
+        lastBucket.remove(event.getEntity().getId());
     }
 
     /**
