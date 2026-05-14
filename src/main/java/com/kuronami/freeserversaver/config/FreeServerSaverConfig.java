@@ -15,8 +15,12 @@ import net.neoforged.neoforge.common.ModConfigSpec;
  * misconfigured threshold (e.g. 95% trigger) defeats the whole point of
  * acting before the GC pause.
  *
- * <p>Phase 2 may expose threshold tuning once we have real-world data on
- * how the defaults perform across modpack RAM profiles.
+ * <p>Threshold tuning is intentionally not user-configurable in this
+ * release — defaults are calibrated for 2-4 GB heaps and changing them
+ * without real-world data risks the "throttle never engages" or
+ * "throttle is always on" failure modes. {@code AutoTuner} (opt-in)
+ * adjusts thresholds based on observed lag-spike vs heap patterns
+ * for users who want adaptive tuning.
  */
 public final class FreeServerSaverConfig {
 

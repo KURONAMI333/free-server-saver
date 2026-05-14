@@ -35,28 +35,43 @@ import org.slf4j.LoggerFactory;
  * Free Server Saver — entry point.
  *
  * <p>Heap-aware adaptive throttle for low-RAM Minecraft servers. Polls
- * the JVM heap on every {@code ServerTickEvent.Post} and gradually scales
- * back random ticks, mob spawns, chunk loads, and (in the most extreme
- * tier) forces distant mob despawns. The goal is to keep heap pressure
- * below the threshold where the GC starts producing the long pause times
- * that look like network lag on low-RAM hardware.
+ * the JVM heap every {@code ServerTickEvent.Post} and gradually scales
+ * back mob AI ticks, spawn rates, and view distance before GC pauses
+ * can fire — those pauses look identical to network lag from the
+ * player's perspective and are the actual root cause behind "mobs
+ * teleporting", "disconnected even though only 2 of us were online",
+ * and intermittent crashes on 2-4 GB hosts.
  *
- * <p>v0.1.0 Phase 1+2+3 scope:
+ * <p>Module responsibilities (each registered on {@code NeoForge.EVENT_BUS}
+ * in the constructor below):
  * <ul>
- *   <li>{@link HeapMonitor} — polling + tier classification</li>
+ *   <li>{@link HeapMonitor} — polling loop, 5-tier classification with hysteresis</li>
  *   <li>{@link HeapHistoryTracker} — ring buffer of recent transitions</li>
- *   <li>{@link EntityTickThrottleModule} — distance-bucketed AI tick throttling (L1+)</li>
- *   <li>{@link SpawnThrottleModule} — mob spawn cancellation (L1+)</li>
- *   <li>{@link ChunkUnloadModule} — view/simulation distance scaling (L3+)</li>
- *   <li>{@link DespawnModule} — emergency mob sweep on L4 entry</li>
- *   <li>{@link TickRateModule} — emergency tick-rate halving on L4</li>
- *   <li>{@link DiscordWebhookModule} — async Discord notifications</li>
- *   <li>{@link ModCompatWarnings} — startup warnings for overlapping mods</li>
- *   <li>{@link FreeServerSaverCommand} — {@code /freeserversaver status|history|metrics|inspect}</li>
+ *   <li>{@link MetaspaceWatcher} — separate watcher for the Metaspace pool
+ *       (RAM Boost extends heap, not Metaspace)</li>
+ *   <li>{@link LagSpikeDetector} — 100ms+ tick breadcrumbs with heap state</li>
+ *   <li>{@link BootTimeTracker} — boot-duration history vs the 10-min cap</li>
+ *   <li>{@link EnvironmentInspector} — server-start JVM snapshot</li>
+ *   <li>{@link EntityTickThrottleModule} — distance-bucketed AI tick throttle</li>
+ *   <li>{@link ItemEntityThrottleModule} — ground-item tick throttle</li>
+ *   <li>{@link SpawnThrottleModule} — natural-spawn cancellation</li>
+ *   <li>{@link ChunkUnloadModule} — view/simulation distance compression</li>
+ *   <li>{@link DespawnModule} — emergency far-mob sweep at L4</li>
+ *   <li>{@link TickRateModule} — emergency tick-rate halving at L4</li>
+ *   <li>{@link ChunkPruningModule} — flood-fill identification of orphan chunks</li>
+ *   <li>{@link ChunkPreGenModule} — synchronous chunk pre-generation</li>
+ *   <li>{@link StorageMonitor} — world-directory size vs 4 GB cap</li>
+ *   <li>{@link IdleTimerNotifier} — first-join welcome about idle timer</li>
+ *   <li>{@link MobDensityDetector} — mob-farm signature scanner (opt-in)</li>
+ *   <li>{@link AutoTuner} — PID-lite threshold adjustment (opt-in)</li>
+ *   <li>{@link DiscordWebhookModule} — async webhook for tier escalations (opt-in)</li>
+ *   <li>{@code ExceptionGuard} (Mixin-based) — auto-quarantine for entities
+ *       and block-entities that throw repeating tick exceptions</li>
+ *   <li>{@link CompatibilityCoordinator} — yields overlapping modules
+ *       when competitor mods are present (Lithium, FerriteCore, Neruina, etc.)</li>
+ *   <li>{@link ModCompatWarnings} — startup hints about companion mods</li>
+ *   <li>{@link FreeServerSaverCommand} — {@code /freeserversaver | /fss} command tree</li>
  * </ul>
- *
- * <p>See {@code claude-memory/kuronami-mods/knowledge/FREE_SERVER_SAVER_NOTES.md}
- * for the design rationale of each module.
  */
 @Mod(FreeServerSaver.MOD_ID)
 public class FreeServerSaver {
@@ -69,7 +84,7 @@ public class FreeServerSaver {
         // (vs ServerStartedEvent fire time) to compute boot duration.
         BootTimeTracker.recordModConstructed();
 
-        LOGGER.info("Free Server Saver starting (heap-aware adaptive throttle, Phase 1-13).");
+        LOGGER.info("Free Server Saver starting — heap-aware adaptive throttle for low-RAM servers.");
 
         // Config is loaded via the mod container; it lives in
         // serverconfig/freeserversaver-server.toml once a world has been

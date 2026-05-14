@@ -22,9 +22,8 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 /**
  * Distance-based entity tick throttle.
  *
- * <p>The defining intervention of Free Server Saver — and the one I was
- * missing in Phase 1. Vanilla random ticks (the thing the old
- * {@code RandomTickModule} touched) are allocation-cheap; per-mob AI
+ * <p>The defining intervention of Free Server Saver. Vanilla random
+ * ticks (crops, leaves, snow, fire) are allocation-cheap; per-mob AI
  * tick is not. Modpack heap pressure comes overwhelmingly from
  * entities being ticked, not from crops growing. Throttling AI ticks
  * for far-away mobs gives us the heap headroom without the

@@ -7,7 +7,8 @@ package com.kuronami.freeserversaver.monitor;
  * point of this MOD is that "good defaults for a 2-4GB server" already
  * encodes the JVM-level behavior we're working around (G1GC starting to
  * burn CPU on collection cycles when heap occupancy climbs past ~60-70%).
- * Per-server tuning happens in Phase 2 if real users need it.
+ * Per-server adaptive tuning is delegated to {@code AutoTuner} (opt-in)
+ * for users who need it.
  *
  * <p>Hysteresis: levels are entered at the {@code enterAt} threshold but
  * only released when heap drops by {@link #HYSTERESIS_MARGIN}% below it.
