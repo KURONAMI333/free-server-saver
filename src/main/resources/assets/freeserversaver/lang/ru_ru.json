@@ -1,5 +1,5 @@
 {
-  "freeserversaver.help.title": "Free Server Saver — команды:",
+  "freeserversaver.help.title": "Free Server Saver — команды (псевдоним: /fss):",
   "freeserversaver.help.entry.status": "  /freeserversaver status — Текущий уровень и процент использования кучи.",
   "freeserversaver.help.entry.history": "  /freeserversaver history — Последние 20 переходов уровней, с цветами.",
   "freeserversaver.help.entry.metrics": "  /freeserversaver metrics — Куча, уровень, игроки, загруженные чанки, дальность видимости.",
@@ -12,20 +12,14 @@
   "freeserversaver.help.entry.storage": "  /freeserversaver storage — Размер директории мира vs лимит 4GB Aternos.",
   "freeserversaver.help.entry.pregen": "  /freeserversaver pregen <радиус> — Синхронно генерирует чанки вокруг (макс. радиус 16).",
   "freeserversaver.help.entry.quarantine": "  /freeserversaver quarantine — Недавно изолированные сущности/блок-сущности (авто-discard после 3 tick-исключений за 10с).",
-
   "freeserversaver.tuning.title": "Free Server Saver AutoTuner:",
   "freeserversaver.tuning.offset": "  Сдвиг порога: %s процентных пунктов",
-
   "freeserversaver.prune.result": "Обрезка чанков: определено %s изолированных чанков. Vanilla выгрузит их через ~10 тиков.",
-
   "freeserversaver.storage.error": "Не удалось прочитать размер директории мира.",
   "freeserversaver.storage.result": "Директория мира: %s MB / 4096 MB (лимит Aternos)",
-
   "freeserversaver.idle.first_join": "Добро пожаловать — таймер бездействия Aternos сброшен пока вы онлайн.",
-
   "freeserversaver.pregen.yielded": "Chunky установлен — используйте /chunky. Pregen Free Server Saver уступает ему.",
   "freeserversaver.pregen.result": "Пре-сгенерировано %s чанков (радиус %s).",
-
   "freeserversaver.quarantine.yielded": "ExceptionGuard уступил другому моду обработки tick-исключений (Neruina / Bug Fix Mod / Failsafe). См. отчёт этого мода.",
   "freeserversaver.quarantine.empty": "ExceptionGuard: изоляций нет — ничто не бросает повторных tick-исключений.",
   "freeserversaver.quarantine.title": "Недавние изоляции (%s записей, новые первыми):",
@@ -33,20 +27,16 @@
   "freeserversaver.quarantine.kind.blockentity": "БЛОК-СУЩНОСТЬ",
   "freeserversaver.quarantine.entry": "  [%s] %s  %s  — %s",
   "freeserversaver.quarantine.more": "  ... %s более старых изоляций не показано",
-
   "freeserversaver.status.title": "Статус Free Server Saver:",
   "freeserversaver.status.line": "  Уровень: %s  |  Куча: %s%%",
-
   "freeserversaver.history.empty": "История Free Server Saver: (переходы не записаны)",
   "freeserversaver.history.title": "История Free Server Saver (%s записей, новые сверху):",
   "freeserversaver.history.entry": "  [%s] %s -> %s (куча %s%%)",
   "freeserversaver.history.more": "  ... %s старых записей не показано",
-
   "freeserversaver.metrics.title": "Метрики Free Server Saver:",
   "freeserversaver.metrics.line.heap": "  Куча: %s%%  |  Уровень: %s",
   "freeserversaver.metrics.line.players": "  Игроки: %s  |  Загруженные чанки: %s  |  Принудительные: %s",
   "freeserversaver.metrics.line.distance": "  Дальность видимости: %s  |  Дальность симуляции: %s",
-
   "freeserversaver.env.notyet": "Снимок среды ещё не захвачен (сервер не полностью запущен).",
   "freeserversaver.env.title": "Снимок среды Aternos (захвачен при запуске):",
   "freeserversaver.env.line.heap": "  Куча макс.: %s MB  |  Куча при старте: %s MB",
@@ -55,16 +45,13 @@
   "freeserversaver.env.hint.low": "  Куча < 2 ГБ — проверь конфигурацию Aternos, базовый уровень должен давать ~2.5 ГБ.",
   "freeserversaver.env.hint.boost": "  RAM Boost, похоже, активен (> 3.5 ГБ).",
   "freeserversaver.env.hint.standard": "  Стандартный размер кучи Aternos.",
-
   "freeserversaver.lagspikes.empty": "Лаг-спайки не записаны — сервер работает плавно.",
   "freeserversaver.lagspikes.title": "Последние лаг-спайки (%s записей, новые сверху):",
   "freeserversaver.lagspikes.entry": "  [%s] тик %s мс (куча %s%%, уровень %s, %s игроков)",
   "freeserversaver.lagspikes.more": "  ... %s старых спайков не показано",
-
   "freeserversaver.topentities.empty": "Нет загруженных сущностей.",
   "freeserversaver.topentities.title": "Топ типов сущностей (все измерения, топ 10):",
   "freeserversaver.topentities.entry": "  %s  %s  (%s)",
-
   "freeserversaver.inspect.chunks.title": "Проверка чанков (%s измерений):",
   "freeserversaver.inspect.chunks.entry": "  %s: загружено=%s, принудительно=%s, игроки=%s"
 }

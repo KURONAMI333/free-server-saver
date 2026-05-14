@@ -1,5 +1,5 @@
 {
-  "freeserversaver.help.title": "Free Server Saver — コマンド一覧:",
+  "freeserversaver.help.title": "Free Server Saver — コマンド一覧（短縮形: /fss）:",
   "freeserversaver.help.entry.status": "  /freeserversaver status — 現在のティアとヒープ使用率",
   "freeserversaver.help.entry.history": "  /freeserversaver history — 直近20件のティア遷移履歴（色分け表示）",
   "freeserversaver.help.entry.metrics": "  /freeserversaver metrics — ヒープ・ティア・プレイヤー数・チャンク数・描画距離",
@@ -12,20 +12,14 @@
   "freeserversaver.help.entry.storage": "  /freeserversaver storage — ワールドディレクトリ容量とAternos 4GB制限の比較",
   "freeserversaver.help.entry.quarantine": "  /freeserversaver quarantine — 直近に隔離されたエンティティ/ブロックエンティティ（10秒間に3回tick例外を出したら自動discard）。",
   "freeserversaver.help.entry.pregen": "  /freeserversaver pregen <半径> — 自分の周囲のチャンクを同期的に事前生成（最大半径16）",
-
   "freeserversaver.tuning.title": "Free Server Saver AutoTuner:",
   "freeserversaver.tuning.offset": "  閾値オフセット: %s ポイント",
-
   "freeserversaver.prune.result": "チャンク剪定: %s 個の孤立チャンクを特定。約10ティック以内にvanilla側でアンロードされます。",
-
   "freeserversaver.storage.error": "ワールドディレクトリ容量を読み取れませんでした。",
   "freeserversaver.storage.result": "ワールド容量: %s MB / 4096 MB （Aternos上限）",
-
   "freeserversaver.idle.first_join": "ようこそ — あなたがログインしている間、Aternosのアイドルタイマーはリセットされます。",
-
   "freeserversaver.pregen.yielded": "Chunkyがインストールされています — /chunky を使ってください。Free Server Saverのpregenはそちらに譲ります。",
   "freeserversaver.pregen.result": "%s チャンクを事前生成（半径 %s）",
-
   "freeserversaver.quarantine.yielded": "ExceptionGuardは別のtick例外MOD（Neruina / Bug Fix Mod / Failsafe）に譲りました。インシデント履歴はそちらのレポートを参照してください。",
   "freeserversaver.quarantine.empty": "ExceptionGuard: 隔離記録なし — tick例外を繰り返しているものはありません。",
   "freeserversaver.quarantine.title": "直近の隔離（%s件、新しい順）:",
@@ -33,20 +27,16 @@
   "freeserversaver.quarantine.kind.blockentity": "ブロックエンティティ",
   "freeserversaver.quarantine.entry": "  [%s] %s  %s  — %s",
   "freeserversaver.quarantine.more": "  ... 他に %s 件の古い隔離（非表示）",
-
   "freeserversaver.status.title": "Free Server Saver ステータス:",
   "freeserversaver.status.line": "  ティア: %s  |  ヒープ: %s%%",
-
   "freeserversaver.history.empty": "Free Server Saver 履歴: （遷移はまだ記録されていません）",
   "freeserversaver.history.title": "Free Server Saver 履歴（%s件、新しい順）:",
   "freeserversaver.history.entry": "  [%s] %s -> %s （ヒープ %s%%）",
   "freeserversaver.history.more": "  ... 古い %s 件は省略",
-
   "freeserversaver.metrics.title": "Free Server Saver メトリクス:",
   "freeserversaver.metrics.line.heap": "  ヒープ: %s%%  |  ティア: %s",
   "freeserversaver.metrics.line.players": "  プレイヤー: %s人  |  ロード済みチャンク: %s  |  強制ロード: %s",
   "freeserversaver.metrics.line.distance": "  描画距離: %s  |  シミュレーション距離: %s",
-
   "freeserversaver.env.notyet": "環境スナップショットはまだ取得されていません（サーバー起動完了前）",
   "freeserversaver.env.title": "Aternos環境スナップショット（起動時取得）:",
   "freeserversaver.env.line.heap": "  ヒープ最大: %s MB  |  起動時使用量: %s MB",
@@ -55,16 +45,13 @@
   "freeserversaver.env.hint.low": "  ヒープが2GB未満です — Aternos設定を確認してください（基本ティアで約2.5GB のはず）",
   "freeserversaver.env.hint.boost": "  RAMブーストが有効のようです（3.5GB超）",
   "freeserversaver.env.hint.standard": "  Aternos標準のヒープサイズです",
-
   "freeserversaver.lagspikes.empty": "ラグスパイクは記録されていません — サーバーは順調です",
   "freeserversaver.lagspikes.title": "最近のラグスパイク（%s件、新しい順）:",
   "freeserversaver.lagspikes.entry": "  [%s] %s msティック（ヒープ %s%%、ティア %s、%s人）",
   "freeserversaver.lagspikes.more": "  ... 古い %s 件は省略",
-
   "freeserversaver.topentities.empty": "ロード済みエンティティなし",
   "freeserversaver.topentities.title": "エンティティ数上位（全ディメンション合計、上位10件）:",
   "freeserversaver.topentities.entry": "  %s  %s  (%s)",
-
   "freeserversaver.inspect.chunks.title": "チャンク調査（%s ディメンション）:",
   "freeserversaver.inspect.chunks.entry": "  %s: ロード済み=%s, 強制=%s, プレイヤー=%s"
 }
