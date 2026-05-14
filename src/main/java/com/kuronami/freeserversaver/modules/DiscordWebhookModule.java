@@ -16,7 +16,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 /**
  * Sends throttle-level transitions to a Discord webhook.
  *
- * <p>The free-host use case here is "I'm not watching the console, but I
+ * <p>The use case here is "I'm not watching the console, but I
  * want a Discord ping when my server is in trouble." Vanilla and the
  * existing perf-mod ecosystem give the operator zero visibility once
  * the world is running — Free Server Saver's whole point is to act early,

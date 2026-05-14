@@ -14,7 +14,7 @@ import net.neoforged.neoforge.event.server.ServerStartedEvent;
  * <p>This is Free Server Saver's most host-resource-aware module —
  * not because it does anything host-specific, but because operators on low-RAM hosts
  * have <strong>no other way</strong> to see what RAM their server is
- * actually running with. The free-host panel shows "your server has 2.5GB"
+ * actually running with. The host's panel shows "your server has 2.5GB"
  * but doesn't tell you whether the RAM Boost reward from Medal is
  * actually applied this session, or whether you accidentally fell back
  * to base allocation.

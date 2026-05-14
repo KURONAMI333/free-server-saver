@@ -12,7 +12,7 @@ import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 /**
  * Tracks server-empty transitions for the host's idle-shutdown timer.
  *
- * <p>free-host stops servers automatically when no player has been
+ * <p>Free hosts stop servers automatically when no player has been
  * connected for several minutes. The exact countdown isn't exposed to
  * us — the host's panel shows it, but the in-process JVM doesn't see
  * the timer. What we CAN do is log + broadcast around player-count
@@ -85,7 +85,7 @@ public class IdleTimerNotifier {
         int afterCount = server.getPlayerList().getPlayerCount() - 1;
         if (afterCount == 0) {
             FreeServerSaver.LOGGER.info(
-                "[IdleTimer] Last player left ('{}'). free-host idle countdown "
+                "[IdleTimer] Last player left ('{}'). Idle countdown "
                 + "starts — server will stop after several minutes of no activity.",
                 event.getEntity().getName().getString());
         }

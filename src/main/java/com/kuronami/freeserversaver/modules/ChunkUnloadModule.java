@@ -16,7 +16,7 @@ import net.neoforged.neoforge.event.server.ServerStoppingEvent;
  * naturally unload via vanilla's ticket system.
  *
  * <p>This is an indirect approach compared to ChunkPurge's flood-fill
- * unload, but it has two big advantages on a low-RAM free-host server:
+ * unload, but it has two big advantages on a low-RAM server:
  * <ol>
  *   <li><strong>No mixins / no access transformers.</strong> The
  *       {@link PlayerList} setters are public API and have been stable
@@ -116,7 +116,7 @@ public class ChunkUnloadModule {
                 targetSim = Math.min(L4_SIMULATION_DISTANCE, savedSimulationDistance);
             }
             default -> {
-                // NORMAL / L1 / L2 — restore user values. RandomTickModule
+                // NORMAL / L1 / L2 — restore user values. EntityTickThrottle
                 // and SpawnThrottleModule have already taken effect at the
                 // lower tiers; chunk unload is reserved for actual crisis.
                 targetView = savedViewDistance;
