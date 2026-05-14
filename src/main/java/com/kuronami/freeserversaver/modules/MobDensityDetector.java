@@ -98,6 +98,15 @@ public class MobDensityDetector {
         }
 
         long currentTick = level.getGameTime();
+
+        // Prune stale suppress-entries: anything that hasn't been re-warned
+        // in twice the suppress window is gone. Without this, lastWarnedAt
+        // would accumulate one entry per (chunk, type) that has EVER had a
+        // density warning, which on a large explored world grows without
+        // bound.
+        lastWarnedAt.entrySet().removeIf(
+            e -> currentTick - e.getValue() > REPEAT_SUPPRESS_TICKS * 2);
+
         for (Map.Entry<ChunkTypeKey, Integer> e : counts.entrySet()) {
             int count = e.getValue();
             if (count < CONCENTRATION_THRESHOLD) continue;
