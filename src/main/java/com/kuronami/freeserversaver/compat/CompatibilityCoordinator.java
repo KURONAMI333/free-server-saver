@@ -93,7 +93,7 @@ public final class CompatibilityCoordinator {
     );
 
     /**
-     * Exception-guard mods — same lane as ExceptionGuard (Phase 13).
+     * Exception-guard mods — same lane as ExceptionGuard.
      * Neruina is the industry standard with 48M+ downloads and a much more
      * sophisticated approach (per-entity NBT persistence, interactive
      * suspend/resume UI). If it's present we yield entirely — running both
