@@ -11,6 +11,7 @@
   "freeserversaver.help.entry.prune": "  /freeserversaver prune — Identify unreachable loaded chunks (anchored flood-fill).",
   "freeserversaver.help.entry.storage": "  /freeserversaver storage — World directory size vs the Aternos 4GB cap.",
   "freeserversaver.help.entry.pregen": "  /freeserversaver pregen <radius> — Synchronously pre-generate chunks around your position. Max radius 16.",
+  "freeserversaver.help.entry.quarantine": "  /freeserversaver quarantine — Recently quarantined entities/block-entities (auto-discarded after 3 tick exceptions in 10s).",
 
   "freeserversaver.tuning.title": "Heap Guardian AutoTuner:",
   "freeserversaver.tuning.offset": "  Threshold offset: %s percentage points",
@@ -22,8 +23,16 @@
 
   "freeserversaver.idle.first_join": "Welcome — Aternos idle timer reset for as long as you stay online.",
 
-  "freeserversaver.pregen.yielded": "Chunky is installed — use /chunky instead. Aternos Heap Guardian's pregen yields to it.",
-  "freeserversaver.pregen.result": "Pre-generated %s chunks (radius %s)."
+  "freeserversaver.pregen.yielded": "Chunky is installed — use /chunky instead. Free Server Saver's pregen yields to it.",
+  "freeserversaver.pregen.result": "Pre-generated %s chunks (radius %s).",
+
+  "freeserversaver.quarantine.yielded": "ExceptionGuard yielded to another tick-exception mod (Neruina / Bug Fix Mod / Failsafe). See that mod's report for incident history.",
+  "freeserversaver.quarantine.empty": "ExceptionGuard: no quarantines recorded — nothing has been throwing repeating tick exceptions.",
+  "freeserversaver.quarantine.title": "Recently quarantined (%s entries, newest first):",
+  "freeserversaver.quarantine.kind.entity": "ENTITY",
+  "freeserversaver.quarantine.kind.blockentity": "BLOCK_ENTITY",
+  "freeserversaver.quarantine.entry": "  [%s] %s  %s  — %s",
+  "freeserversaver.quarantine.more": "  ... %s older quarantines not shown",
 
   "freeserversaver.status.title": "Heap Guardian status:",
   "freeserversaver.status.line": "  Tier: %s  |  Heap: %s%%",

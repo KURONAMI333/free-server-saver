@@ -10,6 +10,7 @@
   "freeserversaver.help.entry.tuning": "  /freeserversaver tuning — AutoTunerの現在の閾値オフセット",
   "freeserversaver.help.entry.prune": "  /freeserversaver prune — 到達不能なロード済みチャンクを特定（flood-fill）",
   "freeserversaver.help.entry.storage": "  /freeserversaver storage — ワールドディレクトリ容量とAternos 4GB制限の比較",
+  "freeserversaver.help.entry.quarantine": "  /freeserversaver quarantine — 直近に隔離されたエンティティ/ブロックエンティティ（10秒間に3回tick例外を出したら自動discard）。",
   "freeserversaver.help.entry.pregen": "  /freeserversaver pregen <半径> — 自分の周囲のチャンクを同期的に事前生成（最大半径16）",
 
   "freeserversaver.tuning.title": "Heap Guardian AutoTuner:",
@@ -23,7 +24,15 @@
   "freeserversaver.idle.first_join": "ようこそ — あなたがログインしている間、Aternosのアイドルタイマーはリセットされます。",
 
   "freeserversaver.pregen.yielded": "Chunkyがインストールされています — /chunky を使ってください。Aternos Heap Guardianのpregenはそちらに譲ります。",
-  "freeserversaver.pregen.result": "%s チャンクを事前生成（半径 %s）"
+  "freeserversaver.pregen.result": "%s チャンクを事前生成（半径 %s）",
+
+  "freeserversaver.quarantine.yielded": "ExceptionGuardは別のtick例外MOD（Neruina / Bug Fix Mod / Failsafe）に譲りました。インシデント履歴はそちらのレポートを参照してください。",
+  "freeserversaver.quarantine.empty": "ExceptionGuard: 隔離記録なし — tick例外を繰り返しているものはありません。",
+  "freeserversaver.quarantine.title": "直近の隔離（%s件、新しい順）:",
+  "freeserversaver.quarantine.kind.entity": "エンティティ",
+  "freeserversaver.quarantine.kind.blockentity": "ブロックエンティティ",
+  "freeserversaver.quarantine.entry": "  [%s] %s  %s  — %s",
+  "freeserversaver.quarantine.more": "  ... 他に %s 件の古い隔離（非表示）",
 
   "freeserversaver.status.title": "Heap Guardian ステータス:",
   "freeserversaver.status.line": "  ティア: %s  |  ヒープ: %s%%",
