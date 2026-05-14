@@ -77,7 +77,7 @@ The startup log will hint about these if you're missing any.
 
 Aternos players report a small, well-known set of pain points. Honest scope statement:
 
-**What HG addresses:**
+**What Free Server Saver addresses:**
 - Mobs teleporting / players disconnecting (GC pause → TPS death) ✓
 - "Out of Memory" crashes ✓
 - General lag from entity tick budget ✓
@@ -88,11 +88,11 @@ Aternos players report a small, well-known set of pain points. Honest scope stat
 - 10-min startup timeout awareness (boot-time history + early warning) ✓
 - Chunk-generation lag from new exploration (`/pregen <radius>`, yields to Chunky) ✓
 
-**What HG does NOT do:**
+**What Free Server Saver does NOT do:**
 - Network latency / ping issues — server-region geographical problem.
-- Bypass Aternos's idle timer with fake players — that's what Aternos bans (Carpet). HG works within Aternos's rules.
+- Bypass Aternos's idle timer with fake players — that's what Aternos bans (Carpet). Free Server Saver works within Aternos's rules.
 
-**Cooperates rather than competes.** If you've already installed Chunky / Lithium / FerriteCore / ModernFix / Adaptive Performance Tweaks / Where's my Brain / Immersive Optimization / OptimizeMod / Tick Dynamic / Tick Tweaks, Free Server Saver detects them at startup and yields its overlapping modules. You get HG's heap-pressure-adaptive logic on top of whatever you already have, with no double-throttling and no `/tick rate` fights.
+**Cooperates rather than competes.** If you've already installed Chunky / Lithium / FerriteCore / ModernFix / Adaptive Performance Tweaks / Where's my Brain / Immersive Optimization / OptimizeMod / Tick Dynamic / Tick Tweaks, Free Server Saver detects them at startup and yields its overlapping modules. You get our heap-pressure-adaptive logic on top of whatever you already have, with no double-throttling and no `/tick rate` fights.
 
 ## Status
 

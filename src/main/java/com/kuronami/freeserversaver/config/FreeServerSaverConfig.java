@@ -4,7 +4,7 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 
 /**
  * Server-side config. Each intervention module can be toggled independently
- * so users can adopt Heap Guardian incrementally — start with just the
+ * so users can adopt Free Server Saver incrementally — start with just the
  * monitor logging, enable random-tick throttling once they trust it,
  * then enable spawn throttling, etc.
  *
@@ -18,7 +18,7 @@ import net.neoforged.neoforge.common.ModConfigSpec;
  * <p>Phase 2 may expose threshold tuning once we have real-world data on
  * how the defaults perform across modpack RAM profiles.
  */
-public final class HeapGuardianConfig {
+public final class FreeServerSaverConfig {
 
     public static final ModConfigSpec SPEC;
     public static final ModConfigSpec.BooleanValue ENABLE_ENTITY_TICK_THROTTLE;
@@ -124,7 +124,7 @@ public final class HeapGuardianConfig {
                 "Repeat warnings are suppressed for 5 min per (chunk, type).",
                 "",
                 "DEFAULT: false. Enable after you've validated the rest of",
-                "Heap Guardian works on your server — the scan iterates",
+                "Free Server Saver works on your server — the scan iterates",
                 "getAllEntities() and is the only module here that's not",
                 "strictly free."
             )
@@ -213,7 +213,7 @@ public final class HeapGuardianConfig {
             .comment(
                 "Log a warning when known-heavy mods (Create, Mekanism, etc.)",
                 "are loaded, since their persistent block entities can",
-                "consume heap faster than Heap Guardian can recover it."
+                "consume heap faster than Free Server Saver can recover it."
             )
             .define("enableModCompatWarnings", true);
 
@@ -280,5 +280,5 @@ public final class HeapGuardianConfig {
         SPEC = b.build();
     }
 
-    private HeapGuardianConfig() {}
+    private FreeServerSaverConfig() {}
 }
