@@ -126,7 +126,7 @@ similar mod.
 | Where's my Brain (DAB-style) | ARR (Modrinth public docs) | Distance-bucket model: NEAR/MID/FAR/DISTANT with per-bucket tick interval multiplier. Proximity snapshot. Hysteresis deadband. The conservative "AI Culling 3-gate" (requireNoTarget / requireNoPath / requireLowMotion). |
 | Immersive Optimization (Luke100000) | GPL-3.0 | Tick scheduler model — per-mob priority field, mod `(gameTime + entityId)` to distribute work, frustum-aware throttling on single player. |
 | OptimizeMod | MIT | Public docs only. Same distance-bucket family. |
-| Mobtimizations (Corosauce) | LGPL-3.0 | Mixin-based AI goal tweaks. Out of our scope for v0.1, but informed Phase 5+ planning. |
+| Mobtimizations (Corosauce) | LGPL-3.0 | Mixin-based AI goal tweaks. Out of our scope for now; read for design context. |
 | DynView (LDTteam) | GPL-3.0 | Server-side dynamic view distance via PlayerList — same approach Free Server Saver's ChunkUnloadModule uses, just TPS-triggered instead of heap-triggered. |
 | Hibernateforge (Thadah) | EUPL v1.2 | Server-empty hibernation. Not used (EUPL's copyleft scope is awkward to mix), but the pattern of letting vanilla commands do the heavy lifting was confirmed. |
 

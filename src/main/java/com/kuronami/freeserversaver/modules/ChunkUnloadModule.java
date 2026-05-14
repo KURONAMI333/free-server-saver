@@ -35,9 +35,10 @@ import net.neoforged.neoforge.event.server.ServerStoppingEvent;
  * </ol>
  *
  * <p>The trade-off: this module reduces <em>loaded</em> chunks but
- * doesn't <em>delete</em> chunks from disk. The 4GB-storage cap problem
- * (another common complaint) needs a separate chunk-pruning module
- * — slated for Phase 3, see {@code FREE_SERVER_SAVER_NOTES.md}.
+ * doesn't <em>delete</em> chunks from disk. The 4 GB world-size cap
+ * problem is handled separately by {@link ChunkPruningModule} (flood-
+ * fill identification of orphan chunks) and {@link StorageMonitor}
+ * (disk-size warning).
  *
  * <p>Tier mapping (per-tier values are hard-coded — see
  * {@code FreeServerSaverConfig} for the reasoning on why thresholds aren't
