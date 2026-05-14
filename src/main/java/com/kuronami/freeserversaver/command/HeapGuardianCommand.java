@@ -2,6 +2,8 @@ package com.kuronami.freeserversaver.command;
 
 import com.kuronami.freeserversaver.HeapGuardian;
 import com.kuronami.freeserversaver.environment.EnvironmentInspector;
+import com.kuronami.freeserversaver.exceptionguard.ExceptionGuard;
+import com.kuronami.freeserversaver.exceptionguard.QuarantineEntry;
 import com.kuronami.freeserversaver.modules.ChunkPreGenModule;
 import com.kuronami.freeserversaver.modules.ChunkPruningModule;
 import com.kuronami.freeserversaver.modules.StorageMonitor;
@@ -97,7 +99,8 @@ public class HeapGuardianCommand {
                 .then(Commands.argument("radius", IntegerArgumentType.integer(1, ChunkPreGenModule.MAX_RADIUS_CHUNKS))
                     .executes(this::pregen)))
             .then(Commands.literal("inspect")
-                .then(Commands.literal("chunks").executes(this::inspectChunks)));
+                .then(Commands.literal("chunks").executes(this::inspectChunks)))
+            .then(Commands.literal("quarantine").executes(this::quarantine));
 
         dispatcher.register(root);
     }
@@ -125,6 +128,7 @@ public class HeapGuardianCommand {
             "freeserversaver.help.entry.prune",
             "freeserversaver.help.entry.storage",
             "freeserversaver.help.entry.pregen",
+            "freeserversaver.help.entry.quarantine",
         };
         for (String key : keys) {
             ctx.getSource().sendSuccess(() -> Component.translatable(key), false);
@@ -358,6 +362,54 @@ public class HeapGuardianCommand {
         ctx.getSource().sendSuccess(() -> Component.translatable(
             "freeserversaver.pregen.result", generated, radius)
             .withStyle(ChatFormatting.GREEN), false);
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private int quarantine(CommandContext<CommandSourceStack> ctx) {
+        // ExceptionGuard yielded to a competing mod (Neruina etc.) — say
+        // so explicitly. The history is still kept (empty) but operators
+        // need to know we're not the source of truth here.
+        if (!ExceptionGuard.isEnabled()) {
+            ctx.getSource().sendSuccess(() -> Component.translatable(
+                "freeserversaver.quarantine.yielded").withStyle(ChatFormatting.YELLOW), false);
+            return Command.SINGLE_SUCCESS;
+        }
+
+        List<QuarantineEntry> entries = ExceptionGuard.recentQuarantines();
+        if (entries.isEmpty()) {
+            ctx.getSource().sendSuccess(() -> Component.translatable(
+                "freeserversaver.quarantine.empty").withStyle(ChatFormatting.GREEN), false);
+            return Command.SINGLE_SUCCESS;
+        }
+
+        ctx.getSource().sendSuccess(() -> Component.translatable(
+            "freeserversaver.quarantine.title", entries.size()).withStyle(ChatFormatting.BOLD), false);
+
+        int shown = Math.min(entries.size(), 20);
+        for (int i = 0; i < shown; i++) {
+            QuarantineEntry e = entries.get(i);
+            String time = HISTORY_TIME.format(new Date(e.timestampMs()));
+            String kindKey = e.kind() == QuarantineEntry.Kind.ENTITY
+                ? "freeserversaver.quarantine.kind.entity"
+                : "freeserversaver.quarantine.kind.blockentity";
+            // Color: entity discards are red, block-entity removals are
+            // gold (block survives, just data wiped — less destructive).
+            ChatFormatting color = e.kind() == QuarantineEntry.Kind.ENTITY
+                ? ChatFormatting.RED : ChatFormatting.GOLD;
+            ctx.getSource().sendSuccess(
+                () -> Component.translatable("freeserversaver.quarantine.entry",
+                    time,
+                    Component.translatable(kindKey),
+                    e.descriptor(),
+                    e.reason()).withStyle(color),
+                false);
+        }
+        if (entries.size() > shown) {
+            int more = entries.size() - shown;
+            ctx.getSource().sendSuccess(() -> Component.translatable(
+                "freeserversaver.quarantine.more", more).withStyle(ChatFormatting.GRAY),
+                false);
+        }
         return Command.SINGLE_SUCCESS;
     }
 

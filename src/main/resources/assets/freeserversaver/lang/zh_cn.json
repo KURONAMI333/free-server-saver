@@ -11,6 +11,7 @@
   "freeserversaver.help.entry.prune": "  /freeserversaver prune — 识别无法到达的已加载区块（flood-fill）",
   "freeserversaver.help.entry.storage": "  /freeserversaver storage — 世界目录大小 vs Aternos 4GB 上限",
   "freeserversaver.help.entry.pregen": "  /freeserversaver pregen <半径> — 同步预生成你周围的区块（半径最大16）",
+  "freeserversaver.help.entry.quarantine": "  /freeserversaver quarantine — 最近被隔离的实体/方块实体（10秒内3次tick异常后自动discard）。",
 
   "freeserversaver.tuning.title": "Heap Guardian AutoTuner:",
   "freeserversaver.tuning.offset": "  阈值偏移: %s 个百分点",
@@ -23,7 +24,15 @@
   "freeserversaver.idle.first_join": "欢迎 — 你在线期间 Aternos 空闲计时器已重置。",
 
   "freeserversaver.pregen.yielded": "Chunky 已安装 — 请使用 /chunky。Aternos Heap Guardian 的 pregen 让位。",
-  "freeserversaver.pregen.result": "预生成 %s 个区块（半径 %s）。"
+  "freeserversaver.pregen.result": "预生成 %s 个区块（半径 %s）。",
+
+  "freeserversaver.quarantine.yielded": "ExceptionGuard 已让位给其他 tick 异常处理 mod（Neruina / Bug Fix Mod / Failsafe）。请查看该 mod 的报告。",
+  "freeserversaver.quarantine.empty": "ExceptionGuard：暂无隔离记录 — 没有重复抛出 tick 异常的对象。",
+  "freeserversaver.quarantine.title": "最近隔离（%s 条，最新优先）：",
+  "freeserversaver.quarantine.kind.entity": "实体",
+  "freeserversaver.quarantine.kind.blockentity": "方块实体",
+  "freeserversaver.quarantine.entry": "  [%s] %s  %s  — %s",
+  "freeserversaver.quarantine.more": "  ... 其余 %s 条较早的隔离未显示",
 
   "freeserversaver.status.title": "Heap Guardian 状态：",
   "freeserversaver.status.line": "  级别: %s  |  堆: %s%%",

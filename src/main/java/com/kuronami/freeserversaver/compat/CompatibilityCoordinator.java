@@ -1,6 +1,7 @@
 package com.kuronami.freeserversaver.compat;
 
 import com.kuronami.freeserversaver.HeapGuardian;
+import com.kuronami.freeserversaver.exceptionguard.ExceptionGuard;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -91,6 +92,20 @@ public final class CompatibilityCoordinator {
         "chunkpregen"
     );
 
+    /**
+     * Exception-guard mods — same lane as ExceptionGuard (Phase 13).
+     * Neruina is the industry standard with 48M+ downloads and a much more
+     * sophisticated approach (per-entity NBT persistence, interactive
+     * suspend/resume UI). If it's present we yield entirely — running both
+     * would mean two mixins fighting over the same try/catch site.
+     */
+    private static final List<String> EXCEPTION_GUARD_MODS = List.of(
+        "neruina",
+        "bugfix",
+        "failsafe",
+        "crashbacktotitle"
+    );
+
     /** Static flags. Set once at server start; read by each module's event handler. */
     private static final AtomicBoolean yieldEntityTick = new AtomicBoolean(false);
     private static final AtomicBoolean yieldSpawn = new AtomicBoolean(false);
@@ -112,6 +127,21 @@ public final class CompatibilityCoordinator {
         evaluate(list, SPAWN_THROTTLE_MODS, yieldSpawn, "SpawnThrottleModule");
         evaluate(list, ITEM_THROTTLE_MODS, yieldItemTick, "ItemEntityThrottleModule");
         evaluate(list, CHUNK_PREGEN_MODS, yieldChunkPregen, "ChunkPreGenModule");
+
+        // ExceptionGuard yields by toggling its own enabled flag rather
+        // than gating an event handler — the mixin checks the flag every
+        // tick. We don't keep a separate AtomicBoolean here because the
+        // single source of truth is ExceptionGuard's own flag.
+        for (String id : EXCEPTION_GUARD_MODS) {
+            if (list.isLoaded(id)) {
+                ExceptionGuard.setEnabled(false);
+                HeapGuardian.LOGGER.info(
+                    "[Compat] Yielding ExceptionGuard to '{}' (overlapping scope; "
+                    + "running both would mean two mixins fighting over the same "
+                    + "tick try/catch site).", id);
+                break;
+            }
+        }
     }
 
     /**
