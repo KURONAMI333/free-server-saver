@@ -1,7 +1,7 @@
 package com.kuronami.freeserversaver.modules;
 
-import com.kuronami.freeserversaver.HeapGuardian;
-import com.kuronami.freeserversaver.config.HeapGuardianConfig;
+import com.kuronami.freeserversaver.FreeServerSaver;
+import com.kuronami.freeserversaver.config.FreeServerSaverConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -28,7 +28,7 @@ import net.neoforged.neoforge.event.server.ServerStoppingEvent;
  *
  * <p>What this module does NOT do: try to keep the server alive by
  * faking activity. That's exactly what Aternos bans (it's why Carpet
- * mod isn't allowed). Heap Guardian is built to live within Aternos's
+ * mod isn't allowed). Free Server Saver is built to live within Aternos's
  * rules; this module is purely informational.
  *
  * <h3>Player-count tracking</h3>
@@ -57,14 +57,14 @@ public class IdleTimerNotifier {
     @SubscribeEvent
     public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         if (server == null) return;
-        if (Boolean.FALSE.equals(HeapGuardianConfig.ENABLE_IDLE_NOTIFIER.get())) {
+        if (Boolean.FALSE.equals(FreeServerSaverConfig.ENABLE_IDLE_NOTIFIER.get())) {
             return;
         }
 
         // After this event the count will be N (current N-1 + this one).
         int afterCount = server.getPlayerList().getPlayerCount() + 1;
         if (afterCount == 1) {
-            HeapGuardian.LOGGER.info(
+            FreeServerSaver.LOGGER.info(
                 "[IdleTimer] First player joined ('{}'). Aternos idle timer reset.",
                 event.getEntity().getName().getString());
             // The player who just joined can see this; broadcast to them
@@ -77,14 +77,14 @@ public class IdleTimerNotifier {
     @SubscribeEvent
     public void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
         if (server == null) return;
-        if (Boolean.FALSE.equals(HeapGuardianConfig.ENABLE_IDLE_NOTIFIER.get())) {
+        if (Boolean.FALSE.equals(FreeServerSaverConfig.ENABLE_IDLE_NOTIFIER.get())) {
             return;
         }
 
         // After this event the count will be N-1 (current N includes the leaver).
         int afterCount = server.getPlayerList().getPlayerCount() - 1;
         if (afterCount == 0) {
-            HeapGuardian.LOGGER.info(
+            FreeServerSaver.LOGGER.info(
                 "[IdleTimer] Last player left ('{}'). Aternos idle countdown "
                 + "starts — server will stop after several minutes of no activity.",
                 event.getEntity().getName().getString());

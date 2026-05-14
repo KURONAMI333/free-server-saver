@@ -1,7 +1,7 @@
 package com.kuronami.freeserversaver.modules;
 
-import com.kuronami.freeserversaver.HeapGuardian;
-import com.kuronami.freeserversaver.config.HeapGuardianConfig;
+import com.kuronami.freeserversaver.FreeServerSaver;
+import com.kuronami.freeserversaver.config.FreeServerSaverConfig;
 import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -72,7 +72,7 @@ public class MobDensityDetector {
     @SubscribeEvent
     public void onServerTickPost(ServerTickEvent.Post event) {
         if (server == null) return;
-        if (Boolean.FALSE.equals(HeapGuardianConfig.ENABLE_MOB_DENSITY_DETECTION.get())) {
+        if (Boolean.FALSE.equals(FreeServerSaverConfig.ENABLE_MOB_DENSITY_DETECTION.get())) {
             return;
         }
         if (--ticksUntilNextScan > 0) return;
@@ -111,9 +111,9 @@ public class MobDensityDetector {
             lastWarnedAt.put(e.getKey().hashCode64(), currentTick);
 
             ChunkPos cp = new ChunkPos(e.getKey().chunkPosLong);
-            HeapGuardian.LOGGER.warn(
+            FreeServerSaver.LOGGER.warn(
                 "[MobDensity] {} '{}' mobs in {} at chunk ({}, {}) — likely a mob farm. "
-                + "Heap Guardian's distance throttling applies, but consider moving the farm "
+                + "Free Server Saver's distance throttling applies, but consider moving the farm "
                 + "or limiting its output if heap pressure persists.",
                 count, e.getKey().typeId, level.dimension().location(), cp.x, cp.z);
         }

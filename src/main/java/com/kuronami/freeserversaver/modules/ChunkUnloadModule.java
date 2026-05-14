@@ -1,7 +1,7 @@
 package com.kuronami.freeserversaver.modules;
 
-import com.kuronami.freeserversaver.HeapGuardian;
-import com.kuronami.freeserversaver.config.HeapGuardianConfig;
+import com.kuronami.freeserversaver.FreeServerSaver;
+import com.kuronami.freeserversaver.config.FreeServerSaverConfig;
 import com.kuronami.freeserversaver.monitor.ThrottleLevel;
 import com.kuronami.freeserversaver.monitor.ThrottleLevelChangedEvent;
 import net.minecraft.server.MinecraftServer;
@@ -37,10 +37,10 @@ import net.neoforged.neoforge.event.server.ServerStoppingEvent;
  * <p>The trade-off: this module reduces <em>loaded</em> chunks but
  * doesn't <em>delete</em> chunks from disk. The 4GB-storage cap problem
  * (Aternos's other big complaint) needs a separate chunk-pruning module
- * — slated for Phase 3, see {@code HEAP_GUARDIAN_NOTES.md}.
+ * — slated for Phase 3, see {@code FREE_SERVER_SAVER_NOTES.md}.
  *
  * <p>Tier mapping (per-tier values are hard-coded — see
- * {@code HeapGuardianConfig} for the reasoning on why thresholds aren't
+ * {@code FreeServerSaverConfig} for the reasoning on why thresholds aren't
  * user-configurable in v0.1):
  * <ul>
  *   <li>{@code NORMAL}, {@code L1_MILD}, {@code L2_HEAVY} → unchanged</li>
@@ -78,7 +78,7 @@ public class ChunkUnloadModule {
         PlayerList list = server.getPlayerList();
         savedViewDistance = list.getViewDistance();
         savedSimulationDistance = list.getSimulationDistance();
-        HeapGuardian.LOGGER.info(
+        FreeServerSaver.LOGGER.info(
             "ChunkUnloadModule armed (saved view={}, simulation={}).",
             savedViewDistance, savedSimulationDistance);
     }
@@ -99,7 +99,7 @@ public class ChunkUnloadModule {
         if (server == null) {
             return;
         }
-        if (Boolean.FALSE.equals(HeapGuardianConfig.ENABLE_CHUNK_UNLOAD.get())) {
+        if (Boolean.FALSE.equals(FreeServerSaverConfig.ENABLE_CHUNK_UNLOAD.get())) {
             return;
         }
 
@@ -125,8 +125,8 @@ public class ChunkUnloadModule {
 
         applyDistances(targetView, targetSim);
 
-        if (Boolean.TRUE.equals(HeapGuardianConfig.VERBOSE_LOGGING.get())) {
-            HeapGuardian.LOGGER.debug(
+        if (Boolean.TRUE.equals(FreeServerSaverConfig.VERBOSE_LOGGING.get())) {
+            FreeServerSaver.LOGGER.debug(
                 "[ChunkUnload] {} -> view={}, simulation={}",
                 event.current(), targetView, targetSim);
         }

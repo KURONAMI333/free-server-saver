@@ -75,7 +75,7 @@ public abstract class LevelGuardEntityTickMixin {
             // swallow. Letting the exception escape would re-trigger
             // the same crash we're trying to prevent.
             if (!(entity instanceof Entity ent)) {
-                com.kuronami.freeserversaver.HeapGuardian.LOGGER.warn(
+                com.kuronami.freeserversaver.FreeServerSaver.LOGGER.warn(
                     "[ExceptionGuard] Non-Entity passed to guardEntityTick "
                     + "(class={}); swallowing.", entity == null ? "null" : entity.getClass(), t);
                 return;

@@ -1,6 +1,6 @@
 package com.kuronami.freeserversaver.environment;
 
-import com.kuronami.freeserversaver.HeapGuardian;
+import com.kuronami.freeserversaver.FreeServerSaver;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.lang.management.MemoryUsage;
@@ -11,7 +11,7 @@ import net.neoforged.neoforge.event.server.ServerStartedEvent;
 /**
  * Logs the JVM / hardware environment once at server start.
  *
- * <p>This is Aternos Heap Guardian's most Aternos-specific module —
+ * <p>This is Aternos Free Server Saver's most Aternos-specific module —
  * not because it does anything Aternos-only, but because Aternos players
  * have <strong>no other way</strong> to see what RAM their server is
  * actually running with. The Aternos panel shows "your server has 2.5GB"
@@ -82,19 +82,19 @@ public class EnvironmentInspector {
                 .format(new java.util.Date()));
         lastSnapshot = snap;
 
-        HeapGuardian.LOGGER.info(
-            "=== Aternos Heap Guardian: environment snapshot ===");
-        HeapGuardian.LOGGER.info(
+        FreeServerSaver.LOGGER.info(
+            "=== Aternos Free Server Saver: environment snapshot ===");
+        FreeServerSaver.LOGGER.info(
             "  Heap max     : {} MB", snap.heapMaxMB());
-        HeapGuardian.LOGGER.info(
+        FreeServerSaver.LOGGER.info(
             "  Heap used    : {} MB (post-boot, expect to climb)",
             snap.heapUsedMB());
-        HeapGuardian.LOGGER.info(
+        FreeServerSaver.LOGGER.info(
             "  CPU cores    : {}", snap.availableProcessors());
-        HeapGuardian.LOGGER.info(
+        FreeServerSaver.LOGGER.info(
             "  JVM          : {} {} (Java {})",
             snap.jvmVendor(), snap.jvmVersion(), snap.javaSpecVersion());
-        HeapGuardian.LOGGER.info(
+        FreeServerSaver.LOGGER.info(
             "  Uptime so far: {} ms", runBean.getUptime());
 
         // Aternos-specific reality check: free tier is ~2.5 GB. If we see
@@ -102,19 +102,19 @@ public class EnvironmentInspector {
         // than 3.5 GB suggests Medal RAM Boost is active.
         long heapMB = snap.heapMaxMB();
         if (heapMB < 2_000) {
-            HeapGuardian.LOGGER.warn(
+            FreeServerSaver.LOGGER.warn(
                 "  ⚠ Heap is below 2 GB. If you're on Aternos free tier you "
                 + "may have a misconfiguration — base tier should give ~2.5 GB.");
         } else if (heapMB > 3_500) {
-            HeapGuardian.LOGGER.info(
+            FreeServerSaver.LOGGER.info(
                 "  ✓ Heap is above 3.5 GB — looks like Medal RAM Boost is "
                 + "active. Throttling will engage at higher absolute "
                 + "thresholds this session.");
         } else {
-            HeapGuardian.LOGGER.info(
+            FreeServerSaver.LOGGER.info(
                 "  Standard Aternos-grade heap. Thresholds calibrated.");
         }
-        HeapGuardian.LOGGER.info("===================================================");
+        FreeServerSaver.LOGGER.info("===================================================");
     }
 
     /** Snapshot the start-of-session values. Null until first server start. */

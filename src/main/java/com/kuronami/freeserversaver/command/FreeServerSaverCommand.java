@@ -1,6 +1,6 @@
 package com.kuronami.freeserversaver.command;
 
-import com.kuronami.freeserversaver.HeapGuardian;
+import com.kuronami.freeserversaver.FreeServerSaver;
 import com.kuronami.freeserversaver.environment.EnvironmentInspector;
 import com.kuronami.freeserversaver.exceptionguard.ExceptionGuard;
 import com.kuronami.freeserversaver.exceptionguard.QuarantineEntry;
@@ -49,7 +49,7 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
  * references to the live {@link HeapMonitor} and {@link HeapHistoryTracker}
  * so the subcommands can read fresh data on every invocation.
  */
-public class HeapGuardianCommand {
+public class FreeServerSaverCommand {
 
     private static final SimpleDateFormat HISTORY_TIME =
         new SimpleDateFormat("HH:mm:ss");
@@ -62,7 +62,7 @@ public class HeapGuardianCommand {
     private final StorageMonitor storage;
     private final ChunkPreGenModule chunkPregen;
 
-    public HeapGuardianCommand(HeapMonitor monitor, HeapHistoryTracker history,
+    public FreeServerSaverCommand(HeapMonitor monitor, HeapHistoryTracker history,
                                LagSpikeDetector lagSpikes, AutoTuner autoTuner,
                                ChunkPruningModule chunkPruning, StorageMonitor storage,
                                ChunkPreGenModule chunkPregen) {
@@ -82,7 +82,7 @@ public class HeapGuardianCommand {
 
     private void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         LiteralArgumentBuilder<CommandSourceStack> root = Commands
-            .literal(HeapGuardian.MOD_ID)
+            .literal(FreeServerSaver.MOD_ID)
             .requires(src -> src.hasPermission(2))
             .then(Commands.literal("help").executes(this::help))
             .then(Commands.literal("tuning").executes(this::tuning))

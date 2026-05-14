@@ -1,7 +1,7 @@
 package com.kuronami.freeserversaver.tuning;
 
-import com.kuronami.freeserversaver.HeapGuardian;
-import com.kuronami.freeserversaver.config.HeapGuardianConfig;
+import com.kuronami.freeserversaver.FreeServerSaver;
+import com.kuronami.freeserversaver.config.FreeServerSaverConfig;
 import com.kuronami.freeserversaver.monitor.HeapMonitor;
 import com.kuronami.freeserversaver.monitor.LagSpikeDetector;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -109,7 +109,7 @@ public class AutoTuner {
     @SubscribeEvent
     public void onServerTickPost(ServerTickEvent.Post event) {
         if (!armed) return;
-        if (Boolean.FALSE.equals(HeapGuardianConfig.ENABLE_AUTO_TUNING.get())) {
+        if (Boolean.FALSE.equals(FreeServerSaverConfig.ENABLE_AUTO_TUNING.get())) {
             return;
         }
 
@@ -168,7 +168,7 @@ public class AutoTuner {
             // next poll (within 2 seconds) classifies against the new
             // effective thresholds.
             heapMonitor.setThresholdOffset(currentOffset);
-            HeapGuardian.LOGGER.info(
+            FreeServerSaver.LOGGER.info(
                 "[AutoTuner] Threshold offset adjusted: {} -> {} (spikes_at_low_tier={}, max_heap={}%)",
                 String.format("%+.1f", previousOffset),
                 String.format("%+.1f", currentOffset),

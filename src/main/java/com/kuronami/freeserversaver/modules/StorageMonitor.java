@@ -1,7 +1,7 @@
 package com.kuronami.freeserversaver.modules;
 
-import com.kuronami.freeserversaver.HeapGuardian;
-import com.kuronami.freeserversaver.config.HeapGuardianConfig;
+import com.kuronami.freeserversaver.FreeServerSaver;
+import com.kuronami.freeserversaver.config.FreeServerSaverConfig;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -68,7 +68,7 @@ public class StorageMonitor {
     @SubscribeEvent
     public void onServerTickPost(ServerTickEvent.Post event) {
         if (server == null) return;
-        if (Boolean.FALSE.equals(HeapGuardianConfig.ENABLE_STORAGE_MONITOR.get())) {
+        if (Boolean.FALSE.equals(FreeServerSaverConfig.ENABLE_STORAGE_MONITOR.get())) {
             return;
         }
         if (--ticksUntilNextScan > 0) return;
@@ -90,7 +90,7 @@ public class StorageMonitor {
             evaluate(size);
             return size;
         } catch (IOException e) {
-            HeapGuardian.LOGGER.warn(
+            FreeServerSaver.LOGGER.warn(
                 "[StorageMonitor] Could not walk world directory: {}", e.getMessage());
             return -1L;
         }
@@ -116,7 +116,7 @@ public class StorageMonitor {
         // re-emitting the same warning every 30 minutes when the user
         // hasn't taken action is just noise.
         if (size >= CRITICAL_THRESHOLD_BYTES && lastWarnedSize < CRITICAL_THRESHOLD_BYTES) {
-            HeapGuardian.LOGGER.error(
+            FreeServerSaver.LOGGER.error(
                 "[StorageMonitor] World directory is {} MB — over Aternos's 4GB cap. "
                 + "The server may refuse to start on the next boot. "
                 + "Run /freeserversaver prune to reduce loaded chunks, or trim "
@@ -124,7 +124,7 @@ public class StorageMonitor {
                 size / 1_048_576L);
             lastWarnedSize = size;
         } else if (size >= WARN_THRESHOLD_BYTES && lastWarnedSize < WARN_THRESHOLD_BYTES) {
-            HeapGuardian.LOGGER.warn(
+            FreeServerSaver.LOGGER.warn(
                 "[StorageMonitor] World directory is {} MB — approaching Aternos's "
                 + "4GB cap. Consider /freeserversaver prune to reduce loaded chunks.",
                 size / 1_048_576L);
@@ -132,7 +132,7 @@ public class StorageMonitor {
         } else if (size < WARN_THRESHOLD_BYTES && lastWarnedSize >= WARN_THRESHOLD_BYTES) {
             // User shrank the world or pruned. Reset the warn ratchet so
             // future warnings can fire again if they re-grow.
-            HeapGuardian.LOGGER.info(
+            FreeServerSaver.LOGGER.info(
                 "[StorageMonitor] World directory now {} MB — below warning threshold.",
                 size / 1_048_576L);
             lastWarnedSize = 0;

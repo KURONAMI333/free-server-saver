@@ -1,8 +1,8 @@
 package com.kuronami.freeserversaver.modules;
 
-import com.kuronami.freeserversaver.HeapGuardian;
+import com.kuronami.freeserversaver.FreeServerSaver;
 import com.kuronami.freeserversaver.compat.CompatibilityCoordinator;
-import com.kuronami.freeserversaver.config.HeapGuardianConfig;
+import com.kuronami.freeserversaver.config.FreeServerSaverConfig;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
@@ -64,11 +64,11 @@ public class ChunkPreGenModule {
      * @return generation count, or -1 if this module is yielding to a competitor
      */
     public int pregen(ServerLevel level, ChunkPos center, int radius) {
-        if (Boolean.FALSE.equals(HeapGuardianConfig.ENABLE_CHUNK_PREGEN.get())) {
+        if (Boolean.FALSE.equals(FreeServerSaverConfig.ENABLE_CHUNK_PREGEN.get())) {
             return -1;
         }
         if (CompatibilityCoordinator.yieldChunkPregen()) {
-            HeapGuardian.LOGGER.info(
+            FreeServerSaver.LOGGER.info(
                 "[ChunkPreGen] Chunky is installed — use /chunky instead for "
                 + "better multi-threaded pregen.");
             return -1;
@@ -90,7 +90,7 @@ public class ChunkPreGenModule {
                 }
             }
         }
-        HeapGuardian.LOGGER.info(
+        FreeServerSaver.LOGGER.info(
             "[ChunkPreGen] Generated/loaded {} chunks around ({}, {}) in {}.",
             generated, center.x, center.z, level.dimension().location());
         return generated;

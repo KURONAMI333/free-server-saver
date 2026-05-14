@@ -1,7 +1,7 @@
 package com.kuronami.freeserversaver.modules;
 
 import com.kuronami.freeserversaver.compat.CompatibilityCoordinator;
-import com.kuronami.freeserversaver.config.HeapGuardianConfig;
+import com.kuronami.freeserversaver.config.FreeServerSaverConfig;
 import com.kuronami.freeserversaver.monitor.ThrottleLevel;
 import com.kuronami.freeserversaver.monitor.ThrottleLevelChangedEvent;
 import net.minecraft.server.level.ServerLevel;
@@ -80,7 +80,7 @@ public class ItemEntityThrottleModule {
 
     @SubscribeEvent
     public void onEntityTickPre(EntityTickEvent.Pre event) {
-        if (Boolean.FALSE.equals(HeapGuardianConfig.ENABLE_ITEM_THROTTLE.get())) {
+        if (Boolean.FALSE.equals(FreeServerSaverConfig.ENABLE_ITEM_THROTTLE.get())) {
             return;
         }
         if (CompatibilityCoordinator.yieldItemThrottle()) {

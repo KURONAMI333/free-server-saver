@@ -1,6 +1,6 @@
 package com.kuronami.freeserversaver.monitor;
 
-import com.kuronami.freeserversaver.config.HeapGuardianConfig;
+import com.kuronami.freeserversaver.config.FreeServerSaverConfig;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -15,7 +15,7 @@ import net.neoforged.bus.api.SubscribeEvent;
  * <ol>
  *   <li><strong>Post-mortem.</strong> An Aternos operator who comes back
  *       to "the server crashed earlier" wants to see whether the heap
- *       was already climbing before the crash — was Heap Guardian
+ *       was already climbing before the crash — was Free Server Saver
  *       intervening, did it reach L4? The vanilla logs answer that but
  *       are awkward to grep. In-game `/freeserversaver history` answers it
  *       in one command.</li>
@@ -25,7 +25,7 @@ import net.neoforged.bus.api.SubscribeEvent;
  *       without a record of transitions.</li>
  * </ol>
  *
- * <p>Capacity is bounded ({@link HeapGuardianConfig#HISTORY_SIZE}) and
+ * <p>Capacity is bounded ({@link FreeServerSaverConfig#HISTORY_SIZE}) and
  * the buffer is cleared on server stop so it doesn't bleed across
  * sessions in dev runClient cycles.
  */
@@ -48,7 +48,7 @@ public class HeapHistoryTracker {
 
     @SubscribeEvent
     public void onThrottleChanged(ThrottleLevelChangedEvent event) {
-        int capacity = HeapGuardianConfig.HISTORY_SIZE.get();
+        int capacity = FreeServerSaverConfig.HISTORY_SIZE.get();
         Entry entry = new Entry(
             System.currentTimeMillis(),
             event.previous(),

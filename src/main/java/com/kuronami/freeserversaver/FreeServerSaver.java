@@ -1,9 +1,9 @@
 package com.kuronami.freeserversaver;
 
-import com.kuronami.freeserversaver.command.HeapGuardianCommand;
+import com.kuronami.freeserversaver.command.FreeServerSaverCommand;
 import com.kuronami.freeserversaver.compat.CompatibilityCoordinator;
 import com.kuronami.freeserversaver.compat.ModCompatWarnings;
-import com.kuronami.freeserversaver.config.HeapGuardianConfig;
+import com.kuronami.freeserversaver.config.FreeServerSaverConfig;
 import com.kuronami.freeserversaver.monitor.HeapMonitor;
 import com.kuronami.freeserversaver.environment.EnvironmentInspector;
 import com.kuronami.freeserversaver.modules.ChunkPreGenModule;
@@ -32,7 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Heap Guardian — entry point.
+ * Free Server Saver — entry point.
  *
  * <p>Heap-aware adaptive throttle for low-RAM Minecraft servers. Polls
  * the JVM heap on every {@code ServerTickEvent.Post} and gradually scales
@@ -52,19 +52,19 @@ import org.slf4j.LoggerFactory;
  *   <li>{@link TickRateModule} — emergency tick-rate halving on L4</li>
  *   <li>{@link DiscordWebhookModule} — async Discord notifications</li>
  *   <li>{@link ModCompatWarnings} — startup warnings for overlapping mods</li>
- *   <li>{@link HeapGuardianCommand} — {@code /freeserversaver status|history|metrics|inspect}</li>
+ *   <li>{@link FreeServerSaverCommand} — {@code /freeserversaver status|history|metrics|inspect}</li>
  * </ul>
  *
- * <p>See {@code claude-memory/kuronami-mods/knowledge/HEAP_GUARDIAN_NOTES.md}
+ * <p>See {@code claude-memory/kuronami-mods/knowledge/FREE_SERVER_SAVER_NOTES.md}
  * for the design rationale of each module.
  */
-@Mod(HeapGuardian.MOD_ID)
-public class HeapGuardian {
+@Mod(FreeServerSaver.MOD_ID)
+public class FreeServerSaver {
 
     public static final String MOD_ID = "freeserversaver";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-    public HeapGuardian(IEventBus modBus, ModContainer container) {
+    public FreeServerSaver(IEventBus modBus, ModContainer container) {
         // Record JVM-uptime-at-mod-construct. BootTimeTracker uses this
         // (vs ServerStartedEvent fire time) to compute boot duration.
         BootTimeTracker.recordModConstructed();
@@ -75,7 +75,7 @@ public class HeapGuardian {
         // serverconfig/freeserversaver-server.toml once a world has been
         // started, but the spec itself has to be registered here, on the
         // mod bus, during construction.
-        container.registerConfig(ModConfig.Type.SERVER, HeapGuardianConfig.SPEC);
+        container.registerConfig(ModConfig.Type.SERVER, FreeServerSaverConfig.SPEC);
 
         // Build the modules once so we have stable references to pass into
         // both the event bus subscriptions and the command. The command
@@ -100,7 +100,7 @@ public class HeapGuardian {
         BootTimeTracker bootTimer = new BootTimeTracker();
         ChunkPreGenModule chunkPregen = new ChunkPreGenModule();
         MetaspaceWatcher metaspace = new MetaspaceWatcher();
-        HeapGuardianCommand command = new HeapGuardianCommand(
+        FreeServerSaverCommand command = new FreeServerSaverCommand(
             monitor, history, lagSpikes, autoTuner, chunkPruning, storage, chunkPregen);
 
         // Game-bus subscriptions: everything that listens to server tick

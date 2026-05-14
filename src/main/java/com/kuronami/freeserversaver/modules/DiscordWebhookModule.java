@@ -1,7 +1,7 @@
 package com.kuronami.freeserversaver.modules;
 
-import com.kuronami.freeserversaver.HeapGuardian;
-import com.kuronami.freeserversaver.config.HeapGuardianConfig;
+import com.kuronami.freeserversaver.FreeServerSaver;
+import com.kuronami.freeserversaver.config.FreeServerSaverConfig;
 import com.kuronami.freeserversaver.monitor.ThrottleLevel;
 import com.kuronami.freeserversaver.monitor.ThrottleLevelChangedEvent;
 import java.net.URI;
@@ -19,7 +19,7 @@ import net.neoforged.bus.api.SubscribeEvent;
  * <p>The Aternos use case here is "I'm not watching the console, but I
  * want a Discord ping when my server is in trouble." Vanilla and the
  * existing perf-mod ecosystem give the operator zero visibility once
- * the world is running — Heap Guardian's whole point is to act early,
+ * the world is running — Free Server Saver's whole point is to act early,
  * but if it never tells anyone, the operator only finds out after
  * players complain.
  *
@@ -63,10 +63,10 @@ public class DiscordWebhookModule {
 
     @SubscribeEvent
     public void onThrottleChanged(ThrottleLevelChangedEvent event) {
-        if (Boolean.FALSE.equals(HeapGuardianConfig.ENABLE_DISCORD_WEBHOOK.get())) {
+        if (Boolean.FALSE.equals(FreeServerSaverConfig.ENABLE_DISCORD_WEBHOOK.get())) {
             return;
         }
-        String url = HeapGuardianConfig.DISCORD_WEBHOOK_URL.get();
+        String url = FreeServerSaverConfig.DISCORD_WEBHOOK_URL.get();
         if (url == null || url.isBlank() || !url.startsWith("https://")) {
             return;
         }
@@ -75,7 +75,7 @@ public class DiscordWebhookModule {
         // malicious link into config; this also catches typos like missing
         // "https://".
         if (!url.contains("discord.com/api/webhooks/")) {
-            HeapGuardian.LOGGER.warn(
+            FreeServerSaver.LOGGER.warn(
                 "[Webhook] Configured URL is not a Discord webhook (must contain 'discord.com/api/webhooks/'); skipping.");
             return;
         }
@@ -83,7 +83,7 @@ public class DiscordWebhookModule {
         // Recovery suppression: only fire on escalations unless the operator
         // explicitly opts in to recovery notifications.
         if (event.isRecovery()
-            && Boolean.FALSE.equals(HeapGuardianConfig.WEBHOOK_NOTIFY_RECOVERY.get())) {
+            && Boolean.FALSE.equals(FreeServerSaverConfig.WEBHOOK_NOTIFY_RECOVERY.get())) {
             return;
         }
 
@@ -114,7 +114,7 @@ public class DiscordWebhookModule {
             : "✅";                              // ✅
 
         String content = String.format(
-            "%s **Heap Guardian** — `%s → %s` (heap %.1f%%, used %d MB / max %d MB)",
+            "%s **Free Server Saver** — `%s → %s` (heap %.1f%%, used %d MB / max %d MB)",
             emoji,
             event.previous().name(),
             event.current().name(),
@@ -161,7 +161,7 @@ public class DiscordWebhookModule {
             .uri(URI.create(url))
             .timeout(HTTP_TIMEOUT)
             .header("Content-Type", "application/json")
-            .header("User-Agent", "AternosHeapGuardian/0.1.0")
+            .header("User-Agent", "AternosFreeServerSaver/0.1.0")
             .POST(HttpRequest.BodyPublishers.ofString(payload, StandardCharsets.UTF_8))
             .build();
 
@@ -172,11 +172,11 @@ public class DiscordWebhookModule {
                     // is enough for an operator to debug.
                     int n = consecutiveFailures.incrementAndGet();
                     if (n <= MAX_CONSECUTIVE_FAILURES) {
-                        HeapGuardian.LOGGER.warn(
+                        FreeServerSaver.LOGGER.warn(
                             "[Webhook] Discord notification failed ({}/{} consecutive): {}",
                             n, MAX_CONSECUTIVE_FAILURES, err.getClass().getSimpleName());
                         if (n == MAX_CONSECUTIVE_FAILURES) {
-                            HeapGuardian.LOGGER.warn(
+                            FreeServerSaver.LOGGER.warn(
                                 "[Webhook] Suppressing further failure logs until a request succeeds. "
                                 + "Check webhook URL and network.");
                         }
@@ -187,14 +187,14 @@ public class DiscordWebhookModule {
                 if (status >= 400) {
                     int n = consecutiveFailures.incrementAndGet();
                     if (n <= MAX_CONSECUTIVE_FAILURES) {
-                        HeapGuardian.LOGGER.warn(
+                        FreeServerSaver.LOGGER.warn(
                             "[Webhook] Discord responded HTTP {} ({}/{} consecutive)",
                             status, n, MAX_CONSECUTIVE_FAILURES);
                     }
                 } else {
                     // 2xx — success. Reset the counter; resume normal logging.
                     if (consecutiveFailures.getAndSet(0) > 0) {
-                        HeapGuardian.LOGGER.info(
+                        FreeServerSaver.LOGGER.info(
                             "[Webhook] Discord notifications recovered.");
                     }
                 }

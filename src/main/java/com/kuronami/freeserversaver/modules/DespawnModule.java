@@ -1,7 +1,7 @@
 package com.kuronami.freeserversaver.modules;
 
-import com.kuronami.freeserversaver.HeapGuardian;
-import com.kuronami.freeserversaver.config.HeapGuardianConfig;
+import com.kuronami.freeserversaver.FreeServerSaver;
+import com.kuronami.freeserversaver.config.FreeServerSaverConfig;
 import com.kuronami.freeserversaver.monitor.ThrottleLevel;
 import com.kuronami.freeserversaver.monitor.ThrottleLevelChangedEvent;
 import com.kuronami.freeserversaver.util.BossDetection;
@@ -20,7 +20,7 @@ import net.neoforged.neoforge.event.server.ServerStoppingEvent;
  * level and force-{@link Entity#discard() discard} mobs that are
  * (a) far from any player and (b) safe to despawn.
  *
- * <p>This is the most invasive intervention in Heap Guardian — it
+ * <p>This is the most invasive intervention in Free Server Saver — it
  * outright deletes entities that were behaving normally. Vanilla's
  * own despawn logic would eventually remove far mobs anyway, but
  * "eventually" runs on per-mob despawn timers spread across many
@@ -77,7 +77,7 @@ public class DespawnModule {
         if (server == null) {
             return;
         }
-        if (Boolean.FALSE.equals(HeapGuardianConfig.ENABLE_DESPAWN_SWEEP.get())) {
+        if (Boolean.FALSE.equals(FreeServerSaverConfig.ENABLE_DESPAWN_SWEEP.get())) {
             return;
         }
         // Only act on the rising edge into L4 — once per crisis, not
@@ -91,7 +91,7 @@ public class DespawnModule {
             killed += sweepLevel(level);
         }
 
-        HeapGuardian.LOGGER.warn(
+        FreeServerSaver.LOGGER.warn(
             "[Despawn] L4_EMERGENCY sweep removed {} far-from-player mobs to relieve heap pressure.",
             killed);
     }
@@ -124,8 +124,8 @@ public class DespawnModule {
             mob.discard();
             killed++;
 
-            if (Boolean.TRUE.equals(HeapGuardianConfig.VERBOSE_LOGGING.get())) {
-                HeapGuardian.LOGGER.debug(
+            if (Boolean.TRUE.equals(FreeServerSaverConfig.VERBOSE_LOGGING.get())) {
+                FreeServerSaver.LOGGER.debug(
                     "[Despawn] Discarded {} in {} at {}",
                     mob.getType().getDescriptionId(),
                     level.dimension().location(),
