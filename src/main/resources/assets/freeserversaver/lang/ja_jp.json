@@ -1,5 +1,5 @@
 {
-  "freeserversaver.help.title": "Aternos Heap Guardian — コマンド一覧:",
+  "freeserversaver.help.title": "Free Server Saver — コマンド一覧:",
   "freeserversaver.help.entry.status": "  /freeserversaver status — 現在のティアとヒープ使用率",
   "freeserversaver.help.entry.history": "  /freeserversaver history — 直近20件のティア遷移履歴（色分け表示）",
   "freeserversaver.help.entry.metrics": "  /freeserversaver metrics — ヒープ・ティア・プレイヤー数・チャンク数・描画距離",
@@ -13,7 +13,7 @@
   "freeserversaver.help.entry.quarantine": "  /freeserversaver quarantine — 直近に隔離されたエンティティ/ブロックエンティティ（10秒間に3回tick例外を出したら自動discard）。",
   "freeserversaver.help.entry.pregen": "  /freeserversaver pregen <半径> — 自分の周囲のチャンクを同期的に事前生成（最大半径16）",
 
-  "freeserversaver.tuning.title": "Heap Guardian AutoTuner:",
+  "freeserversaver.tuning.title": "Free Server Saver AutoTuner:",
   "freeserversaver.tuning.offset": "  閾値オフセット: %s ポイント",
 
   "freeserversaver.prune.result": "チャンク剪定: %s 個の孤立チャンクを特定。約10ティック以内にvanilla側でアンロードされます。",
@@ -23,7 +23,7 @@
 
   "freeserversaver.idle.first_join": "ようこそ — あなたがログインしている間、Aternosのアイドルタイマーはリセットされます。",
 
-  "freeserversaver.pregen.yielded": "Chunkyがインストールされています — /chunky を使ってください。Aternos Heap Guardianのpregenはそちらに譲ります。",
+  "freeserversaver.pregen.yielded": "Chunkyがインストールされています — /chunky を使ってください。Free Server Saverのpregenはそちらに譲ります。",
   "freeserversaver.pregen.result": "%s チャンクを事前生成（半径 %s）",
 
   "freeserversaver.quarantine.yielded": "ExceptionGuardは別のtick例外MOD（Neruina / Bug Fix Mod / Failsafe）に譲りました。インシデント履歴はそちらのレポートを参照してください。",
@@ -34,15 +34,15 @@
   "freeserversaver.quarantine.entry": "  [%s] %s  %s  — %s",
   "freeserversaver.quarantine.more": "  ... 他に %s 件の古い隔離（非表示）",
 
-  "freeserversaver.status.title": "Heap Guardian ステータス:",
+  "freeserversaver.status.title": "Free Server Saver ステータス:",
   "freeserversaver.status.line": "  ティア: %s  |  ヒープ: %s%%",
 
-  "freeserversaver.history.empty": "Heap Guardian 履歴: （遷移はまだ記録されていません）",
-  "freeserversaver.history.title": "Heap Guardian 履歴（%s件、新しい順）:",
+  "freeserversaver.history.empty": "Free Server Saver 履歴: （遷移はまだ記録されていません）",
+  "freeserversaver.history.title": "Free Server Saver 履歴（%s件、新しい順）:",
   "freeserversaver.history.entry": "  [%s] %s -> %s （ヒープ %s%%）",
   "freeserversaver.history.more": "  ... 古い %s 件は省略",
 
-  "freeserversaver.metrics.title": "Heap Guardian メトリクス:",
+  "freeserversaver.metrics.title": "Free Server Saver メトリクス:",
   "freeserversaver.metrics.line.heap": "  ヒープ: %s%%  |  ティア: %s",
   "freeserversaver.metrics.line.players": "  プレイヤー: %s人  |  ロード済みチャンク: %s  |  強制ロード: %s",
   "freeserversaver.metrics.line.distance": "  描画距離: %s  |  シミュレーション距離: %s",

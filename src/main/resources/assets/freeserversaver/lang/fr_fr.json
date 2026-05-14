@@ -1,5 +1,5 @@
 {
-  "freeserversaver.help.title": "Aternos Heap Guardian — commandes :",
+  "freeserversaver.help.title": "Free Server Saver — commandes :",
   "freeserversaver.help.entry.status": "  /freeserversaver status — Niveau actuel et pourcentage du tas.",
   "freeserversaver.help.entry.history": "  /freeserversaver history — 20 dernières transitions de niveau, avec couleurs.",
   "freeserversaver.help.entry.metrics": "  /freeserversaver metrics — Tas, niveau, joueurs, chunks chargés, distance de vue.",
@@ -13,7 +13,7 @@
   "freeserversaver.help.entry.pregen": "  /freeserversaver pregen <rayon> — Pré-génère les chunks autour synchrone (rayon max 16).",
   "freeserversaver.help.entry.quarantine": "  /freeserversaver quarantine — Entités/blocs-entités récemment mis en quarantaine (auto-supprimés après 3 exceptions de tick en 10s).",
 
-  "freeserversaver.tuning.title": "Heap Guardian AutoTuner :",
+  "freeserversaver.tuning.title": "Free Server Saver AutoTuner :",
   "freeserversaver.tuning.offset": "  Offset des seuils : %s points de pourcentage",
 
   "freeserversaver.prune.result": "Élagage des chunks : %s chunks isolés identifiés. Vanilla les déchargera dans ~10 ticks.",
@@ -23,7 +23,7 @@
 
   "freeserversaver.idle.first_join": "Bienvenue — le timer d'inactivité Aternos est réinitialisé tant que tu restes en ligne.",
 
-  "freeserversaver.pregen.yielded": "Chunky est installé — utilise /chunky. Le pregen d'Aternos Heap Guardian cède la place.",
+  "freeserversaver.pregen.yielded": "Chunky est installé — utilise /chunky. Le pregen de Free Server Saver cède la place.",
   "freeserversaver.pregen.result": "%s chunks pré-générés (rayon %s).",
 
   "freeserversaver.quarantine.yielded": "ExceptionGuard a cédé à un autre mod d'exception de tick (Neruina / Bug Fix Mod / Failsafe). Consultez le rapport de ce mod.",
@@ -34,15 +34,15 @@
   "freeserversaver.quarantine.entry": "  [%s] %s  %s  — %s",
   "freeserversaver.quarantine.more": "  ... %s mises en quarantaine plus anciennes non affichées",
 
-  "freeserversaver.status.title": "Statut de Heap Guardian :",
+  "freeserversaver.status.title": "Statut de Free Server Saver :",
   "freeserversaver.status.line": "  Niveau : %s  |  Tas : %s%%",
 
-  "freeserversaver.history.empty": "Historique Heap Guardian : (aucune transition enregistrée)",
-  "freeserversaver.history.title": "Historique Heap Guardian (%s entrées, plus récentes en premier) :",
+  "freeserversaver.history.empty": "Historique Free Server Saver : (aucune transition enregistrée)",
+  "freeserversaver.history.title": "Historique Free Server Saver (%s entrées, plus récentes en premier) :",
   "freeserversaver.history.entry": "  [%s] %s -> %s (tas %s%%)",
   "freeserversaver.history.more": "  ... %s entrées plus anciennes masquées",
 
-  "freeserversaver.metrics.title": "Métriques Heap Guardian :",
+  "freeserversaver.metrics.title": "Métriques Free Server Saver :",
   "freeserversaver.metrics.line.heap": "  Tas : %s%%  |  Niveau : %s",
   "freeserversaver.metrics.line.players": "  Joueurs : %s  |  Chunks chargés : %s  |  Forcés : %s",
   "freeserversaver.metrics.line.distance": "  Distance de vue : %s  |  Distance de simulation : %s",
