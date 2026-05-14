@@ -1,6 +1,6 @@
 package com.kuronami.freeserversaver.exceptionguard;
 
-import com.kuronami.freeserversaver.HeapGuardian;
+import com.kuronami.freeserversaver.FreeServerSaver;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -124,7 +124,7 @@ public final class ExceptionGuard {
         // Always log once per hit so operators can correlate. Throttle to
         // a single line per hit (not a full stacktrace) to keep logs
         // readable. The top frame is what makes incident triage tractable.
-        HeapGuardian.LOGGER.warn("[ExceptionGuard] Entity tick threw: {} — {} ({}/{})",
+        FreeServerSaver.LOGGER.warn("[ExceptionGuard] Entity tick threw: {} — {} ({}/{})",
             descriptor, summarize(t), hits.size(), THRESHOLD);
 
         if (hits.size() >= THRESHOLD) {
@@ -146,7 +146,7 @@ public final class ExceptionGuard {
         prune(hits, now);
         hits.addLast(now);
 
-        HeapGuardian.LOGGER.warn("[ExceptionGuard] BlockEntity tick threw: {} — {} ({}/{})",
+        FreeServerSaver.LOGGER.warn("[ExceptionGuard] BlockEntity tick threw: {} — {} ({}/{})",
             descriptor, summarize(t), hits.size(), THRESHOLD);
 
         if (hits.size() >= THRESHOLD) {

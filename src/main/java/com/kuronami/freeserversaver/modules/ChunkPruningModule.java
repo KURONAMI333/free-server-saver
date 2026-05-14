@@ -1,7 +1,7 @@
 package com.kuronami.freeserversaver.modules;
 
-import com.kuronami.freeserversaver.HeapGuardian;
-import com.kuronami.freeserversaver.config.HeapGuardianConfig;
+import com.kuronami.freeserversaver.FreeServerSaver;
+import com.kuronami.freeserversaver.config.FreeServerSaverConfig;
 import com.kuronami.freeserversaver.mixin.ChunkMapAccessor;
 import com.kuronami.freeserversaver.monitor.ThrottleLevel;
 import com.kuronami.freeserversaver.monitor.ThrottleLevelChangedEvent;
@@ -83,7 +83,7 @@ public class ChunkPruningModule {
     @SubscribeEvent
     public void onThrottleChanged(ThrottleLevelChangedEvent event) {
         if (server == null) return;
-        if (Boolean.FALSE.equals(HeapGuardianConfig.ENABLE_CHUNK_PRUNING.get())) {
+        if (Boolean.FALSE.equals(FreeServerSaverConfig.ENABLE_CHUNK_PRUNING.get())) {
             return;
         }
         // Auto-run only on the rising edge into L3 or L4. Continuous
@@ -115,7 +115,7 @@ public class ChunkPruningModule {
             total += pruneLevel(level);
         }
         if (total > 0) {
-            HeapGuardian.LOGGER.info(
+            FreeServerSaver.LOGGER.info(
                 "[ChunkPrune] Released {} isolated chunks across all dimensions.", total);
         }
         return total;
@@ -179,7 +179,7 @@ public class ChunkPruningModule {
         }
 
         if (released > 0) {
-            HeapGuardian.LOGGER.info(
+            FreeServerSaver.LOGGER.info(
                 "[ChunkPrune/{}] Identified {} isolated chunks ({} loaded total). "
                 + "Vanilla's ticket system will unload them within ~10 ticks. "
                 + "If they persist, consider /forceload remove all and a server restart.",

@@ -1,6 +1,6 @@
 package com.kuronami.freeserversaver.monitor;
 
-import com.kuronami.freeserversaver.HeapGuardian;
+import com.kuronami.freeserversaver.FreeServerSaver;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.lang.management.MemoryUsage;
@@ -74,8 +74,8 @@ public class HeapMonitor {
         ticksSinceStart = 0;
         ticksSincePoll = 0;
         currentLevel = ThrottleLevel.NORMAL;
-        HeapGuardian.LOGGER.info(
-            "Heap Guardian armed — {}-tick warm-up, then poll every {} ticks.",
+        FreeServerSaver.LOGGER.info(
+            "Free Server Saver armed — {}-tick warm-up, then poll every {} ticks.",
             STARTUP_DELAY_TICKS, POLL_INTERVAL_TICKS);
     }
 
@@ -150,7 +150,7 @@ public class HeapMonitor {
 
             // SLF4J's {} placeholder doesn't support format specifiers, so
             // format the percentage separately before logging.
-            HeapGuardian.LOGGER.info(
+            FreeServerSaver.LOGGER.info(
                 "Throttle level: {} -> {} (heap {}%, used={}MB / max={}MB)",
                 previous, newLevel,
                 String.format("%.1f", pct),

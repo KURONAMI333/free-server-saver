@@ -1,6 +1,6 @@
 package com.kuronami.freeserversaver.compat;
 
-import com.kuronami.freeserversaver.HeapGuardian;
+import com.kuronami.freeserversaver.FreeServerSaver;
 import com.kuronami.freeserversaver.exceptionguard.ExceptionGuard;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -9,10 +9,10 @@ import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
 /**
- * Detects loaded mods that overlap with Heap Guardian's scope and
+ * Detects loaded mods that overlap with Free Server Saver's scope and
  * disables our overlapping modules so we don't multiply effects.
  *
- * <p>Two HG-style throttling mods running together create a multiplicative
+ * <p>Two throttle-style throttling mods running together create a multiplicative
  * problem: if both decide independently to tick a mob every 4th tick,
  * the result isn't "ticked every 4th tick by one of them" — it's "ticked
  * every 4th×4th tick combined into who-cancels-first." A mob that should
@@ -38,7 +38,7 @@ import net.neoforged.neoforge.event.server.ServerStartingEvent;
  * decisions across mods is a well-known nightmare in the Forge/Bukkit
  * world; better to be predictable than clever.
  *
- * <p>Heap Guardian's <em>other</em> modules — heap monitor itself,
+ * <p>Free Server Saver's <em>other</em> modules — heap monitor itself,
  * spawn cancel-of-cancel logic, chunk view-distance, L4 despawn,
  * Discord webhook, lag-spike detector, mob-density detector,
  * environment inspector — don't have direct competitors and are not
@@ -135,7 +135,7 @@ public final class CompatibilityCoordinator {
         for (String id : EXCEPTION_GUARD_MODS) {
             if (list.isLoaded(id)) {
                 ExceptionGuard.setEnabled(false);
-                HeapGuardian.LOGGER.info(
+                FreeServerSaver.LOGGER.info(
                     "[Compat] Yielding ExceptionGuard to '{}' (overlapping scope; "
                     + "running both would mean two mixins fighting over the same "
                     + "tick try/catch site).", id);
@@ -155,9 +155,9 @@ public final class CompatibilityCoordinator {
         for (String id : competitors) {
             if (list.isLoaded(id)) {
                 flag.set(true);
-                HeapGuardian.LOGGER.info(
+                FreeServerSaver.LOGGER.info(
                     "[Compat] Yielding {} to '{}' (overlapping scope; running both would "
-                    + "multiply throttle effects). Re-enable in HG's config only if you "
+                    + "multiply throttle effects). Re-enable in our config only if you "
                     + "have confirmed the other mod isn't doing this job already.",
                     moduleName, id);
                 return;

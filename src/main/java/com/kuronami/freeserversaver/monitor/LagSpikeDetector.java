@@ -1,7 +1,7 @@
 package com.kuronami.freeserversaver.monitor;
 
-import com.kuronami.freeserversaver.HeapGuardian;
-import com.kuronami.freeserversaver.config.HeapGuardianConfig;
+import com.kuronami.freeserversaver.FreeServerSaver;
+import com.kuronami.freeserversaver.config.FreeServerSaverConfig;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -15,7 +15,7 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
  * Records server tick durations and captures a context snapshot whenever
  * a tick exceeds the lag-spike threshold ({@link #SPIKE_THRESHOLD_MS}).
  *
- * <p>Spikes are the visible symptom of the very thing Heap Guardian is
+ * <p>Spikes are the visible symptom of the very thing Free Server Saver is
  * trying to prevent — GC pauses, sudden chunk loads, mob herd movement,
  * etc. When throttling is configured correctly, spikes should be rare.
  * When they happen anyway, the operator needs to know:
@@ -24,7 +24,7 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
  *   <li>What throttle tier was active</li>
  *   <li>How many players / how many ticks ago</li>
  * </ul>
- * to figure out whether the spike was something Heap Guardian could
+ * to figure out whether the spike was something Free Server Saver could
  * have prevented or something outside its scope (a network burst, a
  * GC that ignored our tier, etc.).
  *
@@ -43,7 +43,7 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
  *       just numbers, no entity iteration. Doing heavy work inside the
  *       handler that already fired late would extend the spike further.</li>
  *   <li>The ring buffer holds the most recent
- *       {@link HeapGuardianConfig#LAG_SPIKE_HISTORY_SIZE} entries. Old
+ *       {@link FreeServerSaverConfig#LAG_SPIKE_HISTORY_SIZE} entries. Old
  *       entries fall off; the operator can read them at any time before
  *       they age out.</li>
  * </ul>
@@ -109,7 +109,7 @@ public class LagSpikeDetector {
     @SubscribeEvent
     public void onServerTickPost(ServerTickEvent.Post event) {
         if (!armed || tickStartNanos == 0) return;
-        if (Boolean.FALSE.equals(HeapGuardianConfig.ENABLE_LAG_SPIKE_DETECTION.get())) {
+        if (Boolean.FALSE.equals(FreeServerSaverConfig.ENABLE_LAG_SPIKE_DETECTION.get())) {
             return;
         }
 
@@ -132,7 +132,7 @@ public class LagSpikeDetector {
             // breadcrumb purpose.
             playerCount(event));
 
-        int capacity = HeapGuardianConfig.LAG_SPIKE_HISTORY_SIZE.get();
+        int capacity = FreeServerSaverConfig.LAG_SPIKE_HISTORY_SIZE.get();
         synchronized (buffer) {
             buffer.addFirst(entry);
             while (buffer.size() > capacity) {
@@ -142,7 +142,7 @@ public class LagSpikeDetector {
 
         // Log too — operators reading server logs after a complaint can
         // grep the line directly without going in-game.
-        HeapGuardian.LOGGER.warn(
+        FreeServerSaver.LOGGER.warn(
             "[LagSpike] {}ms tick (heap {}%, tier {}, players {})",
             mspt,
             String.format("%.1f", entry.heapPercent()),
@@ -184,10 +184,10 @@ public class LagSpikeDetector {
         // we just check that this is the FIRST time the window is
         // entirely-or-mostly NORMAL. Since the hint is observational
         // only, occasional re-firing on a long run is fine.
-        HeapGuardian.LOGGER.warn(
+        FreeServerSaver.LOGGER.warn(
             "[LagSpike] Pattern hint: {}/{} recent spikes happened at NORMAL "
             + "tier (heap pressure was NOT high). The cause is probably outside "
-            + "Heap Guardian's reach — check for: a datapack with a per-tick "
+            + "Free Server Saver's reach — check for: a datapack with a per-tick "
             + "function, a plugin's scheduled task, a mod's tick handler, or "
             + "a mob farm overflowing entity cap. Run /freeserversaver top "
             + "entities and consider installing Spark for a profile.",

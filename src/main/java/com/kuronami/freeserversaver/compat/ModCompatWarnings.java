@@ -1,7 +1,7 @@
 package com.kuronami.freeserversaver.compat;
 
-import com.kuronami.freeserversaver.HeapGuardian;
-import com.kuronami.freeserversaver.config.HeapGuardianConfig;
+import com.kuronami.freeserversaver.FreeServerSaver;
+import com.kuronami.freeserversaver.config.FreeServerSaverConfig;
 import java.util.List;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
@@ -9,16 +9,16 @@ import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
 /**
  * Warns at server start about loaded mods that interact poorly with the
- * throttling strategy Heap Guardian uses.
+ * throttling strategy Free Server Saver uses.
  *
  * <p>Two categories:
  * <dl>
  *   <dt><strong>HEAVY_MODS</strong></dt>
  *   <dd>Tech mods with large numbers of persistent block entities
  *       (Create gearboxes, Mekanism reactors, etc.). These don't fight
- *       Heap Guardian, but their per-tick allocation rate can outrun our
+ *       Free Server Saver, but their per-tick allocation rate can outrun our
  *       recovery on a 2 GB heap. The warning gives the user a heads-up
- *       that "Heap Guardian alone may not be enough — also install
+ *       that "Free Server Saver alone may not be enough — also install
  *       FerriteCore / ModernFix for static reductions."</dd>
  *   <dt><strong>CONFLICTING_MODS</strong></dt>
  *   <dd>Other adaptive performance mods that may double-cancel events
@@ -64,7 +64,7 @@ public final class ModCompatWarnings {
      * companions. We don't try to do their job (allocation reduction,
      * data structure replacement, etc.) — those land squarely in
      * Lithium / FerriteCore / ModernFix territory. When the user has
-     * Heap Guardian without these, log a hint that the stack is
+     * Free Server Saver without these, log a hint that the stack is
      * incomplete.
      */
     private static final List<String> RECOMMENDED_COMPANION_MODS = List.of(
@@ -77,7 +77,7 @@ public final class ModCompatWarnings {
 
     @SubscribeEvent
     public static void onServerStarting(ServerStartingEvent event) {
-        if (Boolean.FALSE.equals(HeapGuardianConfig.ENABLE_MOD_COMPAT_WARNINGS.get())) {
+        if (Boolean.FALSE.equals(FreeServerSaverConfig.ENABLE_MOD_COMPAT_WARNINGS.get())) {
             return;
         }
 
@@ -85,9 +85,9 @@ public final class ModCompatWarnings {
 
         for (String id : HEAVY_MODS) {
             if (list.isLoaded(id)) {
-                HeapGuardian.LOGGER.warn(
+                FreeServerSaver.LOGGER.warn(
                     "Detected heavy mod '{}' — its block entities may allocate "
-                    + "faster than Heap Guardian can recover. Recommended companion: "
+                    + "faster than Free Server Saver can recover. Recommended companion: "
                     + "FerriteCore + ModernFix for static memory reductions.",
                     id);
             }
@@ -95,8 +95,8 @@ public final class ModCompatWarnings {
 
         for (String id : CONFLICTING_MODS) {
             if (list.isLoaded(id)) {
-                HeapGuardian.LOGGER.warn(
-                    "Detected adaptive perf mod '{}' — runs alongside Heap Guardian "
+                FreeServerSaver.LOGGER.warn(
+                    "Detected adaptive perf mod '{}' — runs alongside Free Server Saver "
                     + "without conflict, but both may adjust mob spawns / entity "
                     + "ticks. If you see surprising behavior, try disabling one.",
                     id);
@@ -104,7 +104,7 @@ public final class ModCompatWarnings {
         }
 
         // Hint about missing companion mods. Logged at INFO (not WARN)
-        // because Heap Guardian works without them — they're just the
+        // because Free Server Saver works without them — they're just the
         // standard "static optimization" layer it doesn't try to cover.
         List<String> missing = new java.util.ArrayList<>();
         for (String id : RECOMMENDED_COMPANION_MODS) {
@@ -113,10 +113,10 @@ public final class ModCompatWarnings {
             }
         }
         if (!missing.isEmpty()) {
-            HeapGuardian.LOGGER.info(
-                "Heap Guardian focuses on heap-pressure-adaptive throttling. "
+            FreeServerSaver.LOGGER.info(
+                "Free Server Saver focuses on heap-pressure-adaptive throttling. "
                 + "For complete coverage, consider also installing: {} "
-                + "(allocation reduction / memory dedup — different scope than HG).",
+                + "(allocation reduction / memory dedup — different scope than ours).",
                 String.join(", ", missing));
         }
     }

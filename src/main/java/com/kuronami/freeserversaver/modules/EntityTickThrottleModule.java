@@ -1,7 +1,7 @@
 package com.kuronami.freeserversaver.modules;
 
 import com.kuronami.freeserversaver.compat.CompatibilityCoordinator;
-import com.kuronami.freeserversaver.config.HeapGuardianConfig;
+import com.kuronami.freeserversaver.config.FreeServerSaverConfig;
 import com.kuronami.freeserversaver.monitor.ThrottleLevel;
 import com.kuronami.freeserversaver.monitor.ThrottleLevelChangedEvent;
 import com.kuronami.freeserversaver.util.BossDetection;
@@ -22,7 +22,7 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 /**
  * Distance-based entity tick throttle.
  *
- * <p>The defining intervention of Heap Guardian — and the one I was
+ * <p>The defining intervention of Free Server Saver — and the one I was
  * missing in Phase 1. Vanilla random ticks (the thing the old
  * {@code RandomTickModule} touched) are allocation-cheap; per-mob AI
  * tick is not. Modpack heap pressure comes overwhelmingly from
@@ -162,7 +162,7 @@ public class EntityTickThrottleModule {
      */
     @SubscribeEvent
     public void onEntityTickPre(EntityTickEvent.Pre event) {
-        if (Boolean.FALSE.equals(HeapGuardianConfig.ENABLE_ENTITY_TICK_THROTTLE.get())) {
+        if (Boolean.FALSE.equals(FreeServerSaverConfig.ENABLE_ENTITY_TICK_THROTTLE.get())) {
             return;
         }
         // Competitor mod check: if a distance-bucket mob-throttle mod
