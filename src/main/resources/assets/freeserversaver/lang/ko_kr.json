@@ -11,6 +11,7 @@
   "freeserversaver.help.entry.prune": "  /freeserversaver prune — 도달 불가능한 로드된 청크 식별 (flood-fill).",
   "freeserversaver.help.entry.storage": "  /freeserversaver storage — 월드 디렉터리 크기 vs Aternos 4GB 한도.",
   "freeserversaver.help.entry.pregen": "  /freeserversaver pregen <반경> — 주변 청크를 동기적으로 사전 생성 (최대 반경 16).",
+  "freeserversaver.help.entry.quarantine": "  /freeserversaver quarantine — 최근 격리된 엔티티/블록 엔티티 (10초 동안 3회 tick 예외 후 자동 discard).",
 
   "freeserversaver.tuning.title": "Heap Guardian AutoTuner:",
   "freeserversaver.tuning.offset": "  임계값 오프셋: %s 퍼센트포인트",
@@ -23,7 +24,15 @@
   "freeserversaver.idle.first_join": "환영합니다 — 온라인 동안 Aternos 유휴 타이머가 리셋됩니다.",
 
   "freeserversaver.pregen.yielded": "Chunky가 설치됨 — /chunky를 사용하세요. Aternos Heap Guardian의 pregen은 양보합니다.",
-  "freeserversaver.pregen.result": "%s개 청크를 사전 생성 (반경 %s)."
+  "freeserversaver.pregen.result": "%s개 청크를 사전 생성 (반경 %s).",
+
+  "freeserversaver.quarantine.yielded": "ExceptionGuard가 다른 tick 예외 mod에게 양보했습니다 (Neruina / Bug Fix Mod / Failsafe). 해당 mod의 보고서를 확인하세요.",
+  "freeserversaver.quarantine.empty": "ExceptionGuard: 격리 기록 없음 — 반복적으로 tick 예외를 던지는 것이 없습니다.",
+  "freeserversaver.quarantine.title": "최근 격리 (%s개, 최신순):",
+  "freeserversaver.quarantine.kind.entity": "엔티티",
+  "freeserversaver.quarantine.kind.blockentity": "블록 엔티티",
+  "freeserversaver.quarantine.entry": "  [%s] %s  %s  — %s",
+  "freeserversaver.quarantine.more": "  ... %s개의 이전 격리는 표시되지 않음",
 
   "freeserversaver.status.title": "Heap Guardian 상태:",
   "freeserversaver.status.line": "  등급: %s  |  힙: %s%%",
