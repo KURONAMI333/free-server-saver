@@ -18,10 +18,14 @@ ${mod_description}
 config="freeserversaver.mixins.json"
 
 # Hard dependency on NeoForge runtime
+# NOTE: versionRange uses neo_version (21.1.227), NOT loader_version_range.
+# loader_version_range is for the javafml loader (top of file); the NeoForge
+# dependency wants the NeoForge version range. Composing "[${loader_version_range},)"
+# produces "[[1,),)" which fails to parse and breaks the mod at load time.
 [[dependencies.${mod_id}]]
     modId="neoforge"
     type="required"
-    versionRange="[${loader_version_range},)"
+    versionRange="[${neo_version},)"
     ordering="NONE"
     side="BOTH"
 
