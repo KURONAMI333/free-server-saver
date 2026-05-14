@@ -25,7 +25,7 @@ moving on — issues compound otherwise.
 - [ ] `/freeserversaver status` shows tier + heap percentage with green
       coloring (NORMAL tier)
 - [ ] `/freeserversaver env` shows non-zero heap max + the right
-      Aternos-tier interpretation hint
+      host-tier interpretation hint
 - [ ] `/freeserversaver metrics` shows player count, loaded chunks, view
       distance
 - [ ] `/freeserversaver lagspikes` shows "no spikes" message (green)

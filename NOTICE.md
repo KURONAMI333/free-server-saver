@@ -121,7 +121,7 @@ similar mod.
 | Mod | License | What we learned |
 |---|---|---|
 | Lithium (CaffeineMC) | LGPL-3.0 | The taxonomy of "internal optimization vs adaptive control" — Lithium is the gold standard for non-behavior-changing optimization, so Free Server Saver intentionally stays out of that lane (recommended as a companion in `ModCompatWarnings`). |
-| ModernFix (embeddedt) | LGPL-3.0 | Same lane as Lithium — companion mod, not competitor. The launch-time speedup is exactly what helps Aternos's 10-minute boot limit. |
+| ModernFix (embeddedt) | LGPL-3.0 | Same lane as Lithium — companion mod, not competitor. The launch-time speedup is exactly what helps the host's 10-minute boot limit. |
 | ServerCore (Wesley1808) | GPL-3.0 (port of Paper's Aikar) | The transient-state safety-gate catalog (`SafetyGate.java`). Paper's Entity Activation Range encodes ~20 rules for "this mob is in a critical state right now, don't throttle it" — those rules are universal to the problem space, and reading their list informed ours. |
 | Where's my Brain (DAB-style) | ARR (Modrinth public docs) | Distance-bucket model: NEAR/MID/FAR/DISTANT with per-bucket tick interval multiplier. Proximity snapshot. Hysteresis deadband. The conservative "AI Culling 3-gate" (requireNoTarget / requireNoPath / requireLowMotion). |
 | Immersive Optimization (Luke100000) | GPL-3.0 | Tick scheduler model — per-mob priority field, mod `(gameTime + entityId)` to distribute work, frustum-aware throttling on single player. |

@@ -15,7 +15,7 @@ import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 /**
  * Simple synchronous chunk pre-generator for {@code /freeserversaver pregen}.
  *
- * <p>Aternos's other persistent pain point: the first player to explore
+ * <p>another common pain point: the first player to explore
  * a new area triggers chunk generation, which on a constrained server
  * produces visible stutter ("chunk loading" lag). Chunky is the mature
  * solution — multi-threaded queue, persistence, fancy commands — but
