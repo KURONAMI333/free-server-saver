@@ -1,5 +1,5 @@
 {
-  "freeserversaver.help.title": "Aternos Heap Guardian — Befehle:",
+  "freeserversaver.help.title": "Free Server Saver — Befehle:",
   "freeserversaver.help.entry.status": "  /freeserversaver status — Aktuelle Stufe und Heap-Auslastung.",
   "freeserversaver.help.entry.history": "  /freeserversaver history — Letzte 20 Stufenübergänge, farbcodiert.",
   "freeserversaver.help.entry.metrics": "  /freeserversaver metrics — Heap, Stufe, Spieler, geladene Chunks, Sichtweite.",
@@ -13,7 +13,7 @@
   "freeserversaver.help.entry.pregen": "  /freeserversaver pregen <radius> — Chunks synchron im Umkreis vorgenerieren (max. 16).",
   "freeserversaver.help.entry.quarantine": "  /freeserversaver quarantine — Kürzlich isolierte Entities/Block-Entities (auto-verworfen nach 3 Tick-Ausnahmen in 10 s).",
 
-  "freeserversaver.tuning.title": "Heap Guardian AutoTuner:",
+  "freeserversaver.tuning.title": "Free Server Saver AutoTuner:",
   "freeserversaver.tuning.offset": "  Schwellenwert-Offset: %s Prozentpunkte",
 
   "freeserversaver.prune.result": "Chunk-Bereinigung: %s isolierte Chunks identifiziert. Vanilla entlädt sie innerhalb von ~10 Ticks.",
@@ -23,7 +23,7 @@
 
   "freeserversaver.idle.first_join": "Willkommen — der Aternos-Idle-Timer ist zurückgesetzt, solange du online bist.",
 
-  "freeserversaver.pregen.yielded": "Chunky ist installiert — nutze stattdessen /chunky. Aternos Heap Guardians Pregen weicht zurück.",
+  "freeserversaver.pregen.yielded": "Chunky ist installiert — nutze stattdessen /chunky. Free Server Savers Pregen weicht zurück.",
   "freeserversaver.pregen.result": "%s Chunks vorgeneriert (Radius %s).",
 
   "freeserversaver.quarantine.yielded": "ExceptionGuard hat einem anderen Tick-Ausnahme-Mod (Neruina / Bug Fix Mod / Failsafe) Vorrang gegeben. Vorfall-Historie dort einsehbar.",
@@ -34,15 +34,15 @@
   "freeserversaver.quarantine.entry": "  [%s] %s  %s  — %s",
   "freeserversaver.quarantine.more": "  ... %s ältere Einträge nicht angezeigt",
 
-  "freeserversaver.status.title": "Heap Guardian Status:",
+  "freeserversaver.status.title": "Free Server Saver Status:",
   "freeserversaver.status.line": "  Stufe: %s  |  Heap: %s%%",
 
-  "freeserversaver.history.empty": "Heap Guardian Verlauf: (noch keine Übergänge aufgezeichnet)",
-  "freeserversaver.history.title": "Heap Guardian Verlauf (%s Einträge, neueste zuerst):",
+  "freeserversaver.history.empty": "Free Server Saver Verlauf: (noch keine Übergänge aufgezeichnet)",
+  "freeserversaver.history.title": "Free Server Saver Verlauf (%s Einträge, neueste zuerst):",
   "freeserversaver.history.entry": "  [%s] %s -> %s (Heap %s%%)",
   "freeserversaver.history.more": "  ... %s ältere Einträge nicht angezeigt",
 
-  "freeserversaver.metrics.title": "Heap Guardian Metriken:",
+  "freeserversaver.metrics.title": "Free Server Saver Metriken:",
   "freeserversaver.metrics.line.heap": "  Heap: %s%%  |  Stufe: %s",
   "freeserversaver.metrics.line.players": "  Spieler: %s  |  Geladene Chunks: %s  |  Erzwungen geladen: %s",
   "freeserversaver.metrics.line.distance": "  Sichtweite: %s  |  Simulationsdistanz: %s",

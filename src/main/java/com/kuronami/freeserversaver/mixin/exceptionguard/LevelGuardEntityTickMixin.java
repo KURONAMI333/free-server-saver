@@ -70,9 +70,15 @@ public abstract class LevelGuardEntityTickMixin {
             original.call(instance, entity);
         } catch (Throwable t) {
             // Only quarantine real entities — vanilla can pass weird
-            // things through here in edge cases.
+            // things through here in edge cases. If not an Entity,
+            // we can't quarantine — log via the system logger and
+            // swallow. Letting the exception escape would re-trigger
+            // the same crash we're trying to prevent.
             if (!(entity instanceof Entity ent)) {
-                throw new RuntimeException(t);
+                com.kuronami.freeserversaver.HeapGuardian.LOGGER.warn(
+                    "[ExceptionGuard] Non-Entity passed to guardEntityTick "
+                    + "(class={}); swallowing.", entity == null ? "null" : entity.getClass(), t);
+                return;
             }
 
             // Bosses: log via the guard (still helpful), but never discard.

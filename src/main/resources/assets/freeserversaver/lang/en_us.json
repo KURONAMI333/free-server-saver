@@ -1,5 +1,5 @@
 {
-  "freeserversaver.help.title": "Aternos Heap Guardian — commands:",
+  "freeserversaver.help.title": "Free Server Saver — commands:",
   "freeserversaver.help.entry.status": "  /freeserversaver status — Current tier and heap percentage.",
   "freeserversaver.help.entry.history": "  /freeserversaver history — Last 20 tier transitions, color-coded.",
   "freeserversaver.help.entry.metrics": "  /freeserversaver metrics — Heap, tier, players, loaded chunks, view distance.",
@@ -13,7 +13,7 @@
   "freeserversaver.help.entry.pregen": "  /freeserversaver pregen <radius> — Synchronously pre-generate chunks around your position. Max radius 16.",
   "freeserversaver.help.entry.quarantine": "  /freeserversaver quarantine — Recently quarantined entities/block-entities (auto-discarded after 3 tick exceptions in 10s).",
 
-  "freeserversaver.tuning.title": "Heap Guardian AutoTuner:",
+  "freeserversaver.tuning.title": "Free Server Saver AutoTuner:",
   "freeserversaver.tuning.offset": "  Threshold offset: %s percentage points",
 
   "freeserversaver.prune.result": "Chunk prune: %s isolated chunks identified. Vanilla will unload them within ~10 ticks.",
@@ -34,15 +34,15 @@
   "freeserversaver.quarantine.entry": "  [%s] %s  %s  — %s",
   "freeserversaver.quarantine.more": "  ... %s older quarantines not shown",
 
-  "freeserversaver.status.title": "Heap Guardian status:",
+  "freeserversaver.status.title": "Free Server Saver status:",
   "freeserversaver.status.line": "  Tier: %s  |  Heap: %s%%",
 
-  "freeserversaver.history.empty": "Heap Guardian history: (no transitions recorded yet)",
-  "freeserversaver.history.title": "Heap Guardian history (%s entries, newest first):",
+  "freeserversaver.history.empty": "Free Server Saver history: (no transitions recorded yet)",
+  "freeserversaver.history.title": "Free Server Saver history (%s entries, newest first):",
   "freeserversaver.history.entry": "  [%s] %s -> %s (heap %s%%)",
   "freeserversaver.history.more": "  ... %s older entries not shown",
 
-  "freeserversaver.metrics.title": "Heap Guardian metrics:",
+  "freeserversaver.metrics.title": "Free Server Saver metrics:",
   "freeserversaver.metrics.line.heap": "  Heap: %s%%  |  Tier: %s",
   "freeserversaver.metrics.line.players": "  Players: %s  |  Loaded chunks: %s  |  Force-loaded: %s",
   "freeserversaver.metrics.line.distance": "  View distance: %s  |  Simulation distance: %s",

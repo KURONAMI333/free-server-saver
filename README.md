@@ -40,11 +40,11 @@ When the heap drops back down, every intervention reverses automatically. **5% h
 - ❌ Skip the queue or fake server stats
 - ❌ Make your storage bigger or extend the 10-minute boot limit
 
-Heap Guardian works **within** Aternos's rules. That's why it's allowed on the mod list.
+Free Server Saver works **within** Aternos's rules. That's why it's allowed on the mod list.
 
 ## Discord notifications (opt-in)
 
-Set `enableDiscordWebhook = true` and a webhook URL in `serverconfig/freeserversaver-server.toml`, get a ping in Discord when your server hits L3 or L4. You don't have to sit watching the Aternos console — Heap Guardian tells you when things are getting tight.
+Set `enableDiscordWebhook = true` and a webhook URL in `serverconfig/freeserversaver-server.toml`, get a ping in Discord when your server hits L3 or L4. You don't have to sit watching the Aternos console — Free Server Saver tells you when things are getting tight.
 
 ## Languages
 
@@ -65,9 +65,9 @@ All require op (permission level 2).
 
 ## Companion mods (strongly recommended)
 
-Heap Guardian focuses on the _adaptive_ side — adjusting behavior under pressure. It doesn't try to do what the _static_ optimization mods already do beautifully. **For a complete low-RAM stack**:
+Free Server Saver focuses on the _adaptive_ side — adjusting behavior under pressure. It doesn't try to do what the _static_ optimization mods already do beautifully. **For a complete low-RAM stack**:
 
-- **Lithium** — Allocation reduction across the whole engine. Pair this with Heap Guardian first.
+- **Lithium** — Allocation reduction across the whole engine. Pair this with Free Server Saver first.
 - **FerriteCore** — 40-50% reduction in block-state memory.
 - **ModernFix** — Mod-loading speedup; helps you fit inside Aternos's 10-minute boot limit.
 
@@ -92,7 +92,7 @@ Aternos players report a small, well-known set of pain points. Honest scope stat
 - Network latency / ping issues — server-region geographical problem.
 - Bypass Aternos's idle timer with fake players — that's what Aternos bans (Carpet). HG works within Aternos's rules.
 
-**Cooperates rather than competes.** If you've already installed Chunky / Lithium / FerriteCore / ModernFix / Adaptive Performance Tweaks / Where's my Brain / Immersive Optimization / OptimizeMod / Tick Dynamic / Tick Tweaks, Heap Guardian detects them at startup and yields its overlapping modules. You get HG's heap-pressure-adaptive logic on top of whatever you already have, with no double-throttling and no `/tick rate` fights.
+**Cooperates rather than competes.** If you've already installed Chunky / Lithium / FerriteCore / ModernFix / Adaptive Performance Tweaks / Where's my Brain / Immersive Optimization / OptimizeMod / Tick Dynamic / Tick Tweaks, Free Server Saver detects them at startup and yields its overlapping modules. You get HG's heap-pressure-adaptive logic on top of whatever you already have, with no double-throttling and no `/tick rate` fights.
 
 ## Status
 

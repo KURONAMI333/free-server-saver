@@ -1,5 +1,5 @@
 {
-  "freeserversaver.help.title": "Aternos Heap Guardian — 명령어:",
+  "freeserversaver.help.title": "Free Server Saver — 명령어:",
   "freeserversaver.help.entry.status": "  /freeserversaver status — 현재 등급과 힙 사용률.",
   "freeserversaver.help.entry.history": "  /freeserversaver history — 최근 20개 등급 전환, 색상 구분.",
   "freeserversaver.help.entry.metrics": "  /freeserversaver metrics — 힙, 등급, 플레이어, 로드된 청크, 시야 거리.",
@@ -13,7 +13,7 @@
   "freeserversaver.help.entry.pregen": "  /freeserversaver pregen <반경> — 주변 청크를 동기적으로 사전 생성 (최대 반경 16).",
   "freeserversaver.help.entry.quarantine": "  /freeserversaver quarantine — 최근 격리된 엔티티/블록 엔티티 (10초 동안 3회 tick 예외 후 자동 discard).",
 
-  "freeserversaver.tuning.title": "Heap Guardian AutoTuner:",
+  "freeserversaver.tuning.title": "Free Server Saver AutoTuner:",
   "freeserversaver.tuning.offset": "  임계값 오프셋: %s 퍼센트포인트",
 
   "freeserversaver.prune.result": "청크 정리: %s개의 고립된 청크 식별. 약 10틱 내에 vanilla가 언로드합니다.",
@@ -23,7 +23,7 @@
 
   "freeserversaver.idle.first_join": "환영합니다 — 온라인 동안 Aternos 유휴 타이머가 리셋됩니다.",
 
-  "freeserversaver.pregen.yielded": "Chunky가 설치됨 — /chunky를 사용하세요. Aternos Heap Guardian의 pregen은 양보합니다.",
+  "freeserversaver.pregen.yielded": "Chunky가 설치됨 — /chunky를 사용하세요. Free Server Saver의 pregen은 양보합니다.",
   "freeserversaver.pregen.result": "%s개 청크를 사전 생성 (반경 %s).",
 
   "freeserversaver.quarantine.yielded": "ExceptionGuard가 다른 tick 예외 mod에게 양보했습니다 (Neruina / Bug Fix Mod / Failsafe). 해당 mod의 보고서를 확인하세요.",
@@ -34,15 +34,15 @@
   "freeserversaver.quarantine.entry": "  [%s] %s  %s  — %s",
   "freeserversaver.quarantine.more": "  ... %s개의 이전 격리는 표시되지 않음",
 
-  "freeserversaver.status.title": "Heap Guardian 상태:",
+  "freeserversaver.status.title": "Free Server Saver 상태:",
   "freeserversaver.status.line": "  등급: %s  |  힙: %s%%",
 
-  "freeserversaver.history.empty": "Heap Guardian 기록: (전환 기록 없음)",
-  "freeserversaver.history.title": "Heap Guardian 기록 (총 %s개, 최신순):",
+  "freeserversaver.history.empty": "Free Server Saver 기록: (전환 기록 없음)",
+  "freeserversaver.history.title": "Free Server Saver 기록 (총 %s개, 최신순):",
   "freeserversaver.history.entry": "  [%s] %s -> %s (힙 %s%%)",
   "freeserversaver.history.more": "  ... %s개 이전 기록 생략",
 
-  "freeserversaver.metrics.title": "Heap Guardian 지표:",
+  "freeserversaver.metrics.title": "Free Server Saver 지표:",
   "freeserversaver.metrics.line.heap": "  힙: %s%%  |  등급: %s",
   "freeserversaver.metrics.line.players": "  플레이어: %s  |  로드된 청크: %s  |  강제 로드: %s",
   "freeserversaver.metrics.line.distance": "  시야 거리: %s  |  시뮬레이션 거리: %s",

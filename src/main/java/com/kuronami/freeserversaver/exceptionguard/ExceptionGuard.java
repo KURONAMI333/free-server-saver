@@ -78,6 +78,17 @@ public final class ExceptionGuard {
     /** Recent quarantine events (newest first), capped at {@link #HISTORY_CAP}. */
     private static final Deque<QuarantineEntry> HISTORY = new ArrayDeque<>();
 
+    /**
+     * Wall-clock ms of the last housekeeping sweep. Without sweeping we'd
+     * leak Map entries forever for entities that throw once and then despawn
+     * naturally — the entry never reaches the threshold so it's never
+     * removed by {@link #recordEntityException}. The sweep runs lazily
+     * (next exception triggers it, never a background thread).
+     */
+    private static long lastSweepMs = 0L;
+    /** Sweep at most every 60 seconds; cheap, but no reason to do more often. */
+    private static final long SWEEP_INTERVAL_MS = 60_000L;
+
     private ExceptionGuard() {}
 
     /**
@@ -105,6 +116,7 @@ public final class ExceptionGuard {
      */
     public static boolean recordEntityException(UUID entityId, String descriptor, Throwable t) {
         long now = System.currentTimeMillis();
+        maybeSweep(now);
         Deque<Long> hits = ENTITY_HITS.computeIfAbsent(entityId, k -> new ArrayDeque<>(THRESHOLD));
         prune(hits, now);
         hits.addLast(now);
@@ -129,6 +141,7 @@ public final class ExceptionGuard {
      */
     public static boolean recordBlockEntityException(BlockPos pos, String descriptor, Throwable t) {
         long now = System.currentTimeMillis();
+        maybeSweep(now);
         Deque<Long> hits = BLOCK_HITS.computeIfAbsent(pos.immutable(), k -> new ArrayDeque<>(THRESHOLD));
         prune(hits, now);
         hits.addLast(now);
@@ -158,6 +171,27 @@ public final class ExceptionGuard {
         while (!hits.isEmpty() && hits.peekFirst() < cutoff) {
             hits.pollFirst();
         }
+    }
+
+    /**
+     * Housekeeping: walk both Maps and remove entries whose deque is
+     * empty (after pruning by the WINDOW). Bounded to run at most every
+     * {@link #SWEEP_INTERVAL_MS} ms; idempotent and cheap when the maps
+     * are small. Called from the record() methods so the sweep happens
+     * on-demand — no background thread needed.
+     */
+    private static void maybeSweep(long now) {
+        if (now - lastSweepMs < SWEEP_INTERVAL_MS) return;
+        lastSweepMs = now;
+        sweepMap(ENTITY_HITS, now);
+        sweepMap(BLOCK_HITS, now);
+    }
+
+    private static <K> void sweepMap(Map<K, Deque<Long>> map, long now) {
+        map.entrySet().removeIf(e -> {
+            prune(e.getValue(), now);
+            return e.getValue().isEmpty();
+        });
     }
 
     private static void addHistory(QuarantineEntry entry) {
