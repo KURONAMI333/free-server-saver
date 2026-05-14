@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.At;
  * <p>Vanilla {@code guardEntityTick} already has a try/catch — but its
  * catch builds a {@link net.minecraft.CrashReport} and rethrows as a
  * {@link net.minecraft.ReportedException}, which crashes the server.
- * For an unattended Aternos host that's the wrong behavior: the offender
+ * For an unattended low-RAM host that's the wrong behavior: the offender
  * is one stuck zombie, but the whole server goes down with it.
  *
  * <p>Wrapping the {@code accept} call lets us catch the same exception

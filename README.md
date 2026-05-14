@@ -1,6 +1,6 @@
 # Free Server Saver
 
-**Lag reducer for free Minecraft servers — Aternos, Falixnodes, Minehut, and any low-RAM hosting.**
+**Lag reducer for free Minecraft servers (Falixnodes, Minehut, self-hosted), and any low-RAM hosting.**
 
 If you play on a free server, you've seen it:
 
@@ -13,7 +13,7 @@ Those aren't ping problems. They're **garbage collection pauses** — your host 
 
 **Free Server Saver polls your server's heap usage every 2 seconds and gradually scales back AI ticks, mob spawns, and view distance _before_ the heap fills up.** No GC pause, no rubber-banding, no disconnects.
 
-> **Tested target**: Aternos free tier (~2.5GB RAM), but works on any low-RAM Minecraft server — Falixnodes, Minehut, self-hosted, old PCs.
+> **Tested target**: free tier (~2.5GB RAM), but works on any low-RAM Minecraft server — Falixnodes, Minehut, self-hosted, old PCs.
 
 ## How it works
 
@@ -36,15 +36,15 @@ When the heap drops back down, every intervention reverses automatically. **5% h
 - **Crops, leaves, snow, fire** — random ticks are NEVER touched (use Lithium for those)
 
 ### What it doesn't do (and won't ever)
-- ❌ Spawn fake players to bypass Aternos's idle timer (that's Carpet, and Aternos bans it)
+- ❌ Spawn fake players to bypass the host's idle timer (that's Carpet, and many free hosts ban it)
 - ❌ Skip the queue or fake server stats
 - ❌ Make your storage bigger or extend the 10-minute boot limit
 
-Free Server Saver works **within** Aternos's rules. That's why it's allowed on the mod list.
+Free Server Saver works **within** the host's rules. That's why it's allowed on the mod list.
 
 ## Discord notifications (opt-in)
 
-Set `enableDiscordWebhook = true` and a webhook URL in `serverconfig/freeserversaver-server.toml`, get a ping in Discord when your server hits L3 or L4. You don't have to sit watching the Aternos console — Free Server Saver tells you when things are getting tight.
+Set `enableDiscordWebhook = true` and a webhook URL in `serverconfig/freeserversaver-server.toml`, get a ping in Discord when your server hits L3 or L4. You don't have to sit watching the free-host console — Free Server Saver tells you when things are getting tight.
 
 ## Languages
 
@@ -69,13 +69,13 @@ Free Server Saver focuses on the _adaptive_ side — adjusting behavior under pr
 
 - **Lithium** — Allocation reduction across the whole engine. Pair this with Free Server Saver first.
 - **FerriteCore** — 40-50% reduction in block-state memory.
-- **ModernFix** — Mod-loading speedup; helps you fit inside Aternos's 10-minute boot limit.
+- **ModernFix** — Mod-loading speedup; helps you fit inside the host's 10-minute boot limit.
 
 The startup log will hint about these if you're missing any.
 
 ## What it solves vs what it doesn't
 
-Aternos players report a small, well-known set of pain points. Honest scope statement:
+operators on low-RAM hosts report a small, well-known set of pain points. Honest scope statement:
 
 **What Free Server Saver addresses:**
 - Mobs teleporting / players disconnecting (GC pause → TPS death) ✓
@@ -90,7 +90,7 @@ Aternos players report a small, well-known set of pain points. Honest scope stat
 
 **What Free Server Saver does NOT do:**
 - Network latency / ping issues — server-region geographical problem.
-- Bypass Aternos's idle timer with fake players — that's what Aternos bans (Carpet). Free Server Saver works within Aternos's rules.
+- Bypass the host's idle timer with fake players — that's what many free hosts ban (Carpet). Free Server Saver works within the host's rules.
 
 **Cooperates rather than competes.** If you've already installed Chunky / Lithium / FerriteCore / ModernFix / Adaptive Performance Tweaks / Where's my Brain / Immersive Optimization / OptimizeMod / Tick Dynamic / Tick Tweaks, Free Server Saver detects them at startup and yields its overlapping modules. You get our heap-pressure-adaptive logic on top of whatever you already have, with no double-throttling and no `/tick rate` fights.
 

@@ -16,7 +16,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 /**
  * Sends throttle-level transitions to a Discord webhook.
  *
- * <p>The Aternos use case here is "I'm not watching the console, but I
+ * <p>The free-host use case here is "I'm not watching the console, but I
  * want a Discord ping when my server is in trouble." Vanilla and the
  * existing perf-mod ecosystem give the operator zero visibility once
  * the world is running — Free Server Saver's whole point is to act early,
@@ -161,7 +161,7 @@ public class DiscordWebhookModule {
             .uri(URI.create(url))
             .timeout(HTTP_TIMEOUT)
             .header("Content-Type", "application/json")
-            .header("User-Agent", "AternosFreeServerSaver/0.1.0")
+            .header("User-Agent", "FreeServerSaver/0.1.0")
             .POST(HttpRequest.BodyPublishers.ofString(payload, StandardCharsets.UTF_8))
             .build();
 

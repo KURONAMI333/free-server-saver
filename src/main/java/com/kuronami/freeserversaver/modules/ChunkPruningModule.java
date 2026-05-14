@@ -19,14 +19,14 @@ import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 
 /**
- * Flood-fill chunk pruning, targeted at Aternos's 4GB world-size cap.
+ * Flood-fill chunk pruning, targeted at the 4 GB world-size cap common to free hosts.
  *
- * <p>Aternos limits every server to 4GB of compressed world data. On a
+ * <p>free host boot limits every server to 4GB of compressed world data. On a
  * long-running modpack server, chunk files (.mca) accumulate
  * faster than players visit them — every Wither raid, every nether
  * trip, every accidental Elytra glide leaves more chunks loaded into
  * RAM and eventually written to disk. The 4GB ceiling is the most
- * frequently complained-about Aternos limit.
+ * frequently complained-about free host boot limit.
  *
  * <p>This module reduces the count of <em>currently loaded</em> chunks
  * by identifying chunks that aren't anchored by any player or vanilla

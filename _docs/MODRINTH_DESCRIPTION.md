@@ -8,7 +8,7 @@ the "above the fold" preview on search results.
 
 # Free Server Saver
 
-**Lag reducer for low-RAM Minecraft servers — Aternos, Falixnodes, Minehut, self-hosted, anything stuck on 2-4 GB of RAM.**
+**Lag reducer for low-RAM Minecraft servers (Falixnodes, Minehut, self-hosted), self-hosted, anything stuck on 2-4 GB of RAM.**
 
 If you've ever seen any of this on your server, it's the same root cause:
 
@@ -47,7 +47,7 @@ When the heap recovers, every change reverses automatically.
 
 ## Also addresses
 
-- **4 GB world cap** — `/freeserversaver storage` and `/freeserversaver prune` for Aternos's hard ceiling
+- **4 GB world cap** — `/freeserversaver storage` and `/freeserversaver prune` for the host's hard ceiling
 - **10-minute startup limit** — boot-time history + early warning if you're approaching it
 - **Metaspace OOM** — RAM Boost extends heap, not Metaspace. We watch Metaspace separately and warn before the crash
 - **Chunk-generation lag** — `/freeserversaver pregen <radius>` for spawn-area pre-gen (yields to Chunky if installed)
@@ -72,12 +72,12 @@ The startup log shows which modules yielded and why. No double-throttling, no `/
 | `status` | Current tier + heap percentage |
 | `metrics` | Heap, tier, players, chunks, view distance |
 | `history` | Last 20 tier transitions, color-coded |
-| `env` | JVM heap/CPU snapshot from server start, with Aternos-tier interpretation |
+| `env` | JVM heap/CPU snapshot from server start, with low-RAM hosts-tier interpretation |
 | `lagspikes` | Recent 100ms+ ticks with heap state at the time |
 | `top entities` | Top-10 entity types by count |
 | `inspect chunks` | Per-dimension loaded / forced / player counts |
 | `prune` | Identify unreachable loaded chunks (flood-fill) |
-| `storage` | World directory size vs Aternos's 4 GB cap |
+| `storage` | World directory size vs the host's 4 GB cap |
 | `pregen <radius>` | Pre-generate chunks around you |
 
 ## Languages
@@ -89,7 +89,7 @@ The translations are machine-generated as a starting point. Native-speaker corre
 ## What it does NOT do
 
 - ❌ Network ping issues — that's geographical, no mod can help
-- ❌ Bypass Aternos's idle-shutdown timer with fake players — that's exactly what Aternos bans (Carpet). Free Server Saver works within Aternos's rules
+- ❌ Bypass the host's idle-shutdown timer with fake players — that's exactly what many free hosts ban (Carpet). Free Server Saver works within the host's rules
 
 ## Requirements
 
@@ -108,7 +108,7 @@ The translations are machine-generated as a starting point. Native-speaker corre
 For a complete low-RAM stack, install alongside:
 - **Lithium** — allocation-cheap optimizations across the engine
 - **FerriteCore** — 40–50 % block-state memory reduction
-- **ModernFix** — mod-loading speedup; helps with that 10-minute Aternos boot limit
+- **ModernFix** — mod-loading speedup; helps with that 10-minute free-host boot limit
 
 Free Server Saver intentionally stays out of their lane. They handle static optimization, we handle adaptive response.
 
@@ -116,7 +116,7 @@ Free Server Saver intentionally stays out of their lane. They handle static opti
 
 MIT. See `NOTICE.md` in the GitHub repo for full attribution to the MIT-licensed mods whose design patterns we adapted (Adaptive Performance Tweaks, ChunkPurge, Server Stasis) and the LGPL/GPL/ARR mods we studied for design context (Lithium, ModernFix, ServerCore, Where's my Brain, Immersive Optimization, DynView, OptimizeMod, Mobtimizations, Hibernateforge).
 
-**Unofficial and not affiliated with Aternos GmbH.** "Aternos" is referenced only as the most common deployment target.
+**Unofficial community mod.** Not affiliated with any hosting provider.
 
 ---
 
@@ -138,4 +138,4 @@ MIT. See `NOTICE.md` in the GitHub repo for full attribution to the MIT-licensed
 - `utility`
 - `low-ram` (if it exists)
 
-In the description body (above), free-text mentions of "Aternos / Falixnodes / Minehut" are picked up by Modrinth's full-text search.
+In the description body (above), free-text mentions of "free-host / Falixnodes / Minehut" are picked up by Modrinth's full-text search.

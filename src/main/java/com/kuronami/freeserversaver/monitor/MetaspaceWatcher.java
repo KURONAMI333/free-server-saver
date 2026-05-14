@@ -13,19 +13,19 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 /**
  * Tracks JVM Metaspace usage and warns when it approaches the configured
  * cap. Metaspace is where the JVM stores class metadata — every loaded
- * mod class contributes. On Aternos free tier, large modpacks
+ * mod class contributes. On free tier, large modpacks
  * (Craftoria / ATM10 / FTB derivatives) frequently exhaust Metaspace
  * even when heap usage looks fine.
  *
- * <p>Symptoms reported on r/aternos:
+ * <p>Symptoms reported on Reddit / community reports:
  * <ul>
  *   <li>"{@code java.lang.OutOfMemoryError: Metaspace}" crash</li>
  *   <li>{@code spark}'s memory profile shows "heap is empty" — because
  *       it's metadata, not heap</li>
- *   <li>Aternos's RAM Boost via Medal <strong>does not help</strong>
+ *   <li>RAM Boost via Medal <strong>does not help</strong>
  *       — that boost extends {@code -Xmx} (heap), not
  *       {@code -XX:MaxMetaspaceSize}</li>
- *   <li>Aternos's only official advice: "remove mods or switch to
+ *   <li>the typical official advice: "remove mods or switch to
  *       exaroton"</li>
  * </ul>
  *
@@ -122,7 +122,7 @@ public class MetaspaceWatcher {
             FreeServerSaver.LOGGER.error(
                 "[Metaspace] CRITICAL: {}% used ({} MB / {} MB). Server will "
                 + "crash with 'OutOfMemoryError: Metaspace' soon. RAM Boost via "
-                + "Aternos RAM Boost does NOT help — it only extends heap. The fix is fewer "
+                + "RAM Boost does NOT help — it only extends heap. The fix is fewer "
                 + "mods or moving to a paid host like exaroton.",
                 String.format("%.1f", pct),
                 usage.getUsed() / 1_048_576L,
@@ -131,8 +131,8 @@ public class MetaspaceWatcher {
         } else if (pct >= WARN_THRESHOLD_PCT && lastWarnedPct < WARN_THRESHOLD_PCT) {
             FreeServerSaver.LOGGER.warn(
                 "[Metaspace] {}% used ({} MB / {} MB) — approaching capacity. "
-                + "Aternos's free tier doesn't expose Metaspace tuning, and "
-                + "Aternos RAM Boost doesn't help this. Consider trimming mods "
+                + "free tier doesn't expose Metaspace tuning, and "
+                + "RAM Boost doesn't help this. Consider trimming mods "
                 + "before the next OOM crash.",
                 String.format("%.1f", pct),
                 usage.getUsed() / 1_048_576L,
