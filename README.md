@@ -44,7 +44,7 @@ Free Server Saver works **within** the host's rules. That's why it's allowed on 
 
 ## Discord notifications (opt-in)
 
-Set `enableDiscordWebhook = true` and a webhook URL in `serverconfig/freeserversaver-server.toml`, get a ping in Discord when your server hits L3 or L4. You don't have to sit watching the free-host console — Free Server Saver tells you when things are getting tight.
+Set `enableDiscordWebhook = true` and a webhook URL in `serverconfig/fss-server.toml`, get a ping in Discord when your server hits L3 or L4. You don't have to sit watching the free-host console — Free Server Saver tells you when things are getting tight.
 
 ## Languages
 
@@ -54,14 +54,23 @@ Free Server Saver's chat output is translated into 9 languages: English, 日本�
 
 ## Commands
 
+Short form `/fss` (the full alias `/freeserversaver` also works). All require op (permission level 2). Run `/fss help` in-game for the full list with descriptions.
+
 | Command | What it shows |
 |---------|---------------|
-| `/freeserversaver status` | Current tier + heap percentage |
-| `/freeserversaver history` | Last 20 tier transitions, color-coded |
-| `/freeserversaver metrics` | Heap, tier, players, loaded chunks, view distance |
-| `/freeserversaver inspect chunks` | Per-dimension chunk load counts |
-
-All require op (permission level 2).
+| `help` | All subcommands with descriptions |
+| `status` | Current tier + heap percentage |
+| `history` | Last 20 tier transitions, color-coded |
+| `metrics` | Heap, tier, players, loaded chunks, view distance |
+| `env` | JVM heap/CPU snapshot from server start, with RAM Boost detection |
+| `lagspikes` | Recent 100ms+ ticks with heap state at the time |
+| `top entities` | Top-10 entity types by count |
+| `inspect chunks` | Per-dimension loaded / forced / player counts |
+| `tuning` | Current AutoTuner threshold offset |
+| `prune` | Identify unreachable loaded chunks (flood-fill) |
+| `storage` | World directory size vs the host's 4 GB cap |
+| `pregen <radius>` | Pre-generate chunks around you |
+| `quarantine` | Recently quarantined entities / block-entities |
 
 ## Companion mods (strongly recommended)
 
@@ -93,10 +102,6 @@ operators on low-RAM hosts report a small, well-known set of pain points. Honest
 - Bypass the host's idle timer with fake players — that's what many free hosts ban (Carpet). Free Server Saver works within the host's rules.
 
 **Cooperates rather than competes.** If you've already installed Chunky / Lithium / FerriteCore / ModernFix / Adaptive Performance Tweaks / Where's my Brain / Immersive Optimization / OptimizeMod / Tick Dynamic / Tick Tweaks, Free Server Saver detects them at startup and yields its overlapping modules. You get our heap-pressure-adaptive logic on top of whatever you already have, with no double-throttling and no `/tick rate` fights.
-
-## Status
-
-**v0.1.0 — built, not yet in-game verified.** The mod compiles cleanly and the design is internally consistent, but no `runClient` session has happened yet. See `VERIFICATION_CHECKLIST.md` for the test plan to run before declaring v0.1.0 released.
 
 ## Building
 
