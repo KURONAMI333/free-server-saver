@@ -11,7 +11,7 @@ copy; this file is the same content with formatting friendly to CurseForge.
 
 # Free Server Saver
 
-**Lag reducer for low-RAM Minecraft servers (Falixnodes, Minehut, self-hosted), self-hosted, anything stuck on 2-4 GB of RAM.**
+**Lag reducer for low-RAM Minecraft servers (Falixnodes, Minehut, self-hosted) — anything stuck on 2-4 GB of RAM.**
 
 ## The problem
 
@@ -50,11 +50,12 @@ When the heap recovers, every change reverses automatically.
 
 ## Also addresses
 
-- 4 GB world cap (free-host hard ceiling) — `/freeserversaver storage` to watch, `/freeserversaver prune` to identify pruneable chunks
+- 4 GB world cap (free-host hard ceiling) — `/fss storage` to watch, `/fss prune` to identify pruneable chunks
 - 10-minute startup limit — boot-time history + early warning
 - Metaspace OOM — RAM Boost extends heap, not Metaspace. We monitor it separately
-- Chunk-generation lag — `/freeserversaver pregen <radius>` for spawn-area pre-gen
+- Chunk-generation lag — `/fss pregen <radius>` for spawn-area pre-gen
 - Mob-farm detection — opt-in scan that flags chunks with 30+ same-type mobs
+- Stuck-entity crashes — entities / block-entities that throw the same tick exception repeatedly are auto-quarantined before they crash an unattended server (yields entirely to Neruina / Bug Fix Mod / Failsafe if installed; bosses are never discarded)
 
 ## Plays well with everything
 
@@ -69,19 +70,21 @@ The startup log shows which modules yielded and why. No double-throttling, no `/
 
 ## Commands
 
-All under `/freeserversaver`, op-only (permission level 2):
+All under `/fss` (or the full alias `/freeserversaver`), op-only (permission level 2):
 
 - `help` — all subcommands with descriptions
 - `status` — current tier + heap percentage
 - `metrics` — heap, tier, players, chunks, view distance
 - `history` — last 20 tier transitions, color-coded
-- `env` — JVM heap/CPU snapshot from server start, with low-RAM hosts-tier interpretation
+- `env` — JVM heap/CPU snapshot from server start, with RAM Boost detection
 - `lagspikes` — recent 100ms+ ticks with heap state at the time
 - `top entities` — top 10 entity types by count
 - `inspect chunks` — per-dimension loaded / forced / player counts
+- `tuning` — current AutoTuner threshold offset
 - `prune` — identify unreachable loaded chunks (flood-fill)
 - `storage` — world directory size vs the host's 4 GB cap
 - `pregen <radius>` — pre-generate chunks around you
+- `quarantine` — recently quarantined entities / block-entities
 
 ## Languages
 
@@ -101,10 +104,6 @@ Translations are machine-generated as a starting point. Native-speaker correctio
 - JDK 21
 
 (1.21.2+ port pending — vanilla's random tick logic changed in 1.21.2 and we want to validate first.)
-
-## Status
-
-v0.1.0 — code complete, in-game verification pending. Once that's done, full release.
 
 ## Companion mods (strongly recommended)
 

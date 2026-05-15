@@ -40,11 +40,12 @@ When the heap recovers, every change reverses automatically.
 
 ## Also addresses
 
-- **4 GB world cap** — `/freeserversaver storage` and `/freeserversaver prune` for the host's hard ceiling
+- **4 GB world cap** — `/fss storage` and `/fss prune` for the host's hard ceiling
 - **10-minute startup limit** — boot-time history + early warning if you're approaching it
 - **Metaspace OOM** — RAM Boost extends heap, not Metaspace. We watch Metaspace separately and warn before the crash
-- **Chunk-generation lag** — `/freeserversaver pregen <radius>` for spawn-area pre-gen (yields to Chunky if installed)
+- **Chunk-generation lag** — `/fss pregen <radius>` for spawn-area pre-gen (yields to Chunky if installed)
 - **Mob-farm detection** — opt-in scan that flags chunks with 30+ same-type mobs
+- **Stuck-entity crashes** — entities / block-entities that throw the same tick exception repeatedly are auto-quarantined before they crash an unattended server (yields entirely to Neruina / Bug Fix Mod / Failsafe if one is installed; bosses are never discarded)
 
 ## Plays well with everything
 
@@ -57,7 +58,9 @@ When the heap recovers, every change reverses automatically.
 
 The startup log shows which modules yielded and why. No double-throttling, no `/tick rate` fights, no surprises.
 
-## Commands (`/freeserversaver`, server-op only)
+## Commands (`/fss`, server-op only)
+
+The short form is `/fss`; `/freeserversaver` works too as the full alias.
 
 | Command | What it shows |
 |---|---|
@@ -65,13 +68,15 @@ The startup log shows which modules yielded and why. No double-throttling, no `/
 | `status` | Current tier + heap percentage |
 | `metrics` | Heap, tier, players, chunks, view distance |
 | `history` | Last 20 tier transitions, color-coded |
-| `env` | JVM heap/CPU snapshot from server start, with low-RAM hosts-tier interpretation |
+| `env` | JVM heap/CPU snapshot from server start, with RAM Boost detection |
 | `lagspikes` | Recent 100ms+ ticks with heap state at the time |
 | `top entities` | Top-10 entity types by count |
 | `inspect chunks` | Per-dimension loaded / forced / player counts |
+| `tuning` | Current AutoTuner threshold offset |
 | `prune` | Identify unreachable loaded chunks (flood-fill) |
 | `storage` | World directory size vs the host's 4 GB cap |
 | `pregen <radius>` | Pre-generate chunks around you |
+| `quarantine` | Recently quarantined entities / block-entities |
 
 ## Languages
 
@@ -91,10 +96,6 @@ The translations are machine-generated as a starting point. Native-speaker corre
 - JDK 21
 
 (1.21.2+ port pending — vanilla's random tick logic changed in 1.21.2 and we want to validate first.)
-
-## Status
-
-**v0.1.0** — code complete, in-game verification pending. Once that's done, full release.
 
 ## Companion mods (strongly recommended)
 
