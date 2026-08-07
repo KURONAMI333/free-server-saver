@@ -16,178 +16,180 @@ import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.entity.projectile.FireworkRocketEntity;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.entity.projectile.ThrownTrident;
-import net.minecraft.world.phys.Vec3;
 
 /**
- * Transient state checks — "what is happening to this entity right now"
- * that means we shouldn't throttle it this tick, regardless of distance
- * or boss-status.
+ * Answers one question for {@code EntityTickThrottleModule}: may this
+ * entity's tick be stretched right now, or would that be visible to a
+ * player?
  *
  * <p>Distinct from {@link BossDetection}, which answers "what KIND of
- * entity is this." BossDetection is about identity; SafetyGate is about
- * temporary state. A regular zombie that's currently attacking a player
- * must keep ticking even though it isn't a boss.
+ * entity is this." BossDetection is about identity and is stable for the
+ * lifetime of the entity; SafetyGate is about the current tick and its
+ * answer changes constantly. A regular zombie that's mid-swing at a
+ * player must keep ticking even though it isn't a boss.
  *
- * <p>This catalog is derived from reading ServerCore's
- * {@code ActivationRange.java} (Paper / Aikar's Entity Activation Range
- * patch, GPL-3.0). The behavioral rules are the same as Paper's because
- * the problem space is the same — what state makes a mob "important
- * right now." Implementation here is independent.
+ * <h3>The four reasons to leave an entity alone</h3>
+ * <ol>
+ *   <li><strong>Real-time physics.</strong> Projectiles and effect
+ *       entities compute their trajectory from per-tick deltas. Skip a
+ *       tick and the arc is wrong, not just late.</li>
+ *   <li><strong>In motion.</strong> Anything with meaningful velocity is
+ *       mid-fall, mid-knockback or mid-flight. Position error is
+ *       proportional to the interval we skip.</li>
+ *   <li><strong>Timed state.</strong> Fuses, potion durations, hit-stun
+ *       and fire ticks are countdowns the player can see. Stretching the
+ *       tick stretches the countdown.</li>
+ *   <li><strong>Player intent.</strong> The player leashed it, or their
+ *       presence is what the entity is reacting to.</li>
+ * </ol>
  *
- * <h3>Why two classes?</h3>
- * <p>The split makes adding new rules cheap: a new boss class only
- * touches {@link BossDetection}; a new transient state (e.g. "mob is
- * sleeping" if a future MC adds that) only touches {@link SafetyGate}.
- * The hot-path call site in {@code EntityTickThrottleModule} reads as
- * a clean ladder of "is it a boss? is it in a critical state? is it
- * far enough?"
+ * <p>Everything here runs once per entity per tick, so each check is a
+ * field read or an {@code instanceof}. Nothing allocates and nothing
+ * queries the level.
  */
 public final class SafetyGate {
 
-    /** Minimum movement delta to consider an entity "actively moving." */
-    private static final double MOVING_THRESHOLD = 0.001;
+    /**
+     * Squared speed above which an entity counts as "in motion", in
+     * blocks per tick. 0.005 b/t is 0.1 blocks per second — an entity
+     * slower than this cannot leave its current block inside any throttle
+     * interval this mod applies, so stretching its tick is invisible.
+     *
+     * <p>One threshold covers mobs, dropped items and XP orbs. They fail
+     * in the same way (drift, missed pickup radius) and there is no
+     * reason for the cutoff to differ between them.
+     */
+    private static final double MOTION_THRESHOLD_SQ = 0.005 * 0.005;
 
-    /** Mob is considered "in motion" when its delta-movement squared exceeds this. */
-    private static final double MOB_MOTION_THRESHOLD_SQ = 0.005 * 0.005;
-
-    /** Newly spawned entities (under this tickCount) always run full ticks. */
-    private static final int NEW_ENTITY_TICK_FLOOR = 200; // ~10 seconds
+    /**
+     * Ticks of grace after an entity enters the world. Five
+     * starvation-floor windows (the floor is 20 ticks) — long enough for
+     * a mob to finish its first pathfind and settle on a goal, short
+     * enough that a runaway spawner is under control within five seconds
+     * rather than ten.
+     */
+    private static final int SPAWN_GRACE_TICKS = 100;
 
     private SafetyGate() {}
 
     /**
-     * True for entity classes that should never have their tick cancelled
-     * regardless of distance. Different from {@link BossDetection#isBoss}
-     * — that's for big-HP combat targets; this is for entities whose
-     * behavior would visibly break if their tick rate dropped at all.
+     * True when this entity must run a full tick. The caller skips its
+     * throttle decision entirely and lets vanilla tick the entity.
      *
-     * <p>Players are obviously excluded (they're the camera). Projectiles
-     * are short-lived and need exact-tick physics. Lightning, TNT,
-     * fireworks, end crystals are short-lived effect entities — throttling
-     * them would visibly stutter explosions and animations.
-     *
-     * <p>EnderDragonPart is the dragon's body segments — they're a
-     * separate Entity from the EnderDragon itself, and tick-throttling
-     * them while leaving the dragon ticking creates visual desync.
+     * <p>Ordered cheapest-first: an int compare, then two
+     * {@code instanceof} groups, then the {@link LivingEntity} branch
+     * that most entities in a loaded chunk never reach.
      */
-    public static boolean isAlwaysExcludedClass(Entity entity) {
-        // Note: EnderDragonPart is intentionally not listed — its tick is
-        // driven from EnderDragon.tick(), so excluding EnderDragon
-        // (via BossDetection.isBoss) implicitly protects all parts.
-        // The 1.21.1 mapping for EnderDragonPart isn't a stable public
-        // class anyway, which would make the import fragile across
-        // minor version updates.
-        return entity instanceof Player
-            || entity instanceof ThrowableProjectile
+    public static boolean shouldSkipThrottle(Entity entity) {
+        return entity.tickCount < SPAWN_GRACE_TICKS
+            || entity.isOnPortalCooldown()
+            || needsRealTimePhysics(entity)
+            || isMoving(entity)
+            || isHeldByPlayer(entity)
+            || hasLivingStateWorthProtecting(entity);
+    }
+
+    /**
+     * Entity classes whose whole behavior is a per-tick trajectory or a
+     * short-lived animation. Players lead the chain because the check is
+     * free and they are the most common entity that must never be
+     * touched.
+     */
+    private static boolean needsRealTimePhysics(Entity entity) {
+        if (entity instanceof Player) {
+            return true;
+        }
+        // Ballistic: position is integrated per tick, so a skipped tick
+        // changes where it lands rather than when.
+        if (entity instanceof ThrowableProjectile
             || entity instanceof Fireball
-            || entity instanceof EyeOfEnder
             || entity instanceof ThrownTrident
+            || entity instanceof EyeOfEnder) {
+            return true;
+        }
+        // Short-lived effects: the entity exists for a countdown and then
+        // is gone. Stretching the countdown stretches the explosion.
+        return entity instanceof PrimedTnt
             || entity instanceof FireworkRocketEntity
-            || entity instanceof PrimedTnt
             || entity instanceof LightningBolt;
     }
 
     /**
-     * Returns true if the entity is in a transient state where throttling
-     * would visibly affect gameplay even if it's an ordinary mob far from
-     * any player. The caller skips the throttle decision in that case.
+     * Velocity test, applied to the entity kinds where drift is visible:
+     * mobs (they walk, fall and take knockback) and the two pickup types
+     * (a throttled item drifts past the player's collection radius and
+     * reads as a lost drop).
+     *
+     * <p>Deliberately not applied to every entity — most non-living
+     * entities that move are already covered by
+     * {@link #needsRealTimePhysics}, and the ones that aren't (boats,
+     * minecarts) are player-driven and rare enough not to matter.
      */
-    public static boolean isInCriticalState(Entity entity) {
-        // Newborn entities: don't touch until they've settled. Saves us
-        // from throttling spawner output before it's even moved.
-        if (entity.tickCount < NEW_ENTITY_TICK_FLOOR) {
-            return true;
+    private static boolean isMoving(Entity entity) {
+        if (entity instanceof Mob || entity instanceof ItemEntity || entity instanceof ExperienceOrb) {
+            return entity.getDeltaMovement().lengthSqr() > MOTION_THRESHOLD_SQ;
         }
-
-        // Portal travel — throttling mid-portal corrupts the teleport.
-        if (entity.isOnPortalCooldown()) {
-            return true;
-        }
-
-        // Player-leashed entity must follow the player smoothly.
-        if (entity instanceof Leashable leashable
-            && leashable.getLeashData() != null
-            && leashable.getLeashData().leashHolder instanceof Player) {
-            return true;
-        }
-
-        // LivingEntity states: hit-stun (hurtTime), active potion effects,
-        // jumping, climbing, fire — all visible to the player if interrupted.
-        if (entity instanceof LivingEntity living) {
-            if (living.hurtTime > 0) {
-                return true;
-            }
-            if (living.getRemainingFireTicks() > 0) {
-                return true;
-            }
-            if (living.onClimbable()) {
-                return true;
-            }
-            // Note: living.jumping is package-private in some mappings;
-            // we use isFallFlying() as a proxy for "in motion vertically"
-            // since that's the common case throttling would visibly break.
-            if (living.isFallFlying()) {
-                return true;
-            }
-            if (!living.getActiveEffects().isEmpty()) {
-                // Potion effect tick must run on schedule — throttling
-                // means slow effect ticking instead of N seconds, which
-                // breaks PvP balance.
-                return true;
-            }
-
-            // Mob-specific transient states.
-            if (living instanceof Mob mob) {
-                // Combat: an aggro'd mob must respond in real time.
-                if (mob.getTarget() != null) {
-                    return true;
-                }
-                // Pathfinding in progress — WMB's "requireNoPath" gate.
-                // A mob actively navigating shouldn't have its tick
-                // interval expanded, or the path will visibly stutter.
-                if (mob.getNavigation().isInProgress()) {
-                    return true;
-                }
-                // Active motion (WMB's "requireLowMotion" inverted).
-                // A mob with significant velocity is jumping, falling,
-                // being knocked back, or running — none of which
-                // tolerate skipped ticks gracefully.
-                if (mob.getDeltaMovement().lengthSqr() > MOB_MOTION_THRESHOLD_SQ) {
-                    return true;
-                }
-                // Creeper with lit fuse — the explosion timer is the
-                // entire identity of this entity right now.
-                if (mob instanceof Creeper creeper && creeper.isIgnited()) {
-                    return true;
-                }
-                // Baby / love-mode animals — short critical windows.
-                if (mob instanceof Animal animal && (animal.isBaby() || animal.isInLove())) {
-                    return true;
-                }
-            }
-        }
-
-        // Moving item entities / XP orbs — throttling makes them fail
-        // pickup-range checks and players "miss" drops they should have
-        // collected.
-        if (entity instanceof ItemEntity || entity instanceof ExperienceOrb) {
-            Vec3 motion = entity.getDeltaMovement();
-            if (Math.abs(motion.x) > MOVING_THRESHOLD
-                || Math.abs(motion.z) > MOVING_THRESHOLD
-                || motion.y > MOVING_THRESHOLD) {
-                return true;
-            }
-        }
-
         return false;
     }
 
     /**
-     * One-shot combined gate — true if the entity should be left alone
-     * for any reason at all. Used by callers that don't care about
-     * which specific rule triggered.
+     * A leashed entity is pulled by the player's own movement, so it has
+     * to resolve its position on the player's schedule, not ours. Only a
+     * player holder counts — fence-post leashes have no such constraint.
      */
-    public static boolean shouldSkipThrottle(Entity entity) {
-        return isAlwaysExcludedClass(entity) || isInCriticalState(entity);
+    private static boolean isHeldByPlayer(Entity entity) {
+        if (!(entity instanceof Leashable leashable)) {
+            return false;
+        }
+        Leashable.LeashData leash = leashable.getLeashData();
+        return leash != null && leash.leashHolder instanceof Player;
+    }
+
+    /**
+     * States that only exist on {@link LivingEntity} and, below that,
+     * only on {@link Mob}. Split out so the common case (an item lying on
+     * the ground, an armour stand) never pays for these reads.
+     */
+    private static boolean hasLivingStateWorthProtecting(Entity entity) {
+        if (!(entity instanceof LivingEntity living)) {
+            return false;
+        }
+
+        // Countdowns the player watches tick down. Stretching our tick
+        // stretches the effect duration, which changes PvP outcomes.
+        if (living.hurtTime > 0
+            || living.getRemainingFireTicks() > 0
+            || !living.getActiveEffects().isEmpty()) {
+            return true;
+        }
+
+        // Vertical situations where a stale position is visible as
+        // clipping through the ladder or stalling in the air. (Vanilla's
+        // `jumping` flag is package-private, so elytra flight stands in
+        // for the powered case.)
+        if (living.onClimbable() || living.isFallFlying()) {
+            return true;
+        }
+
+        if (!(living instanceof Mob mob)) {
+            return false;
+        }
+
+        // A mob that has locked on, or is walking a path, is the case
+        // players actually notice: throttling turns a chase into a
+        // stutter. Both are single field/flag reads.
+        if (mob.getTarget() != null || mob.getNavigation().isInProgress()) {
+            return true;
+        }
+
+        // Breeding and growth are short windows the player is usually
+        // standing right next to. Animals and monsters are disjoint, so
+        // this branch also skips the fuse check below for free.
+        if (mob instanceof Animal animal) {
+            return animal.isBaby() || animal.isInLove();
+        }
+
+        // A lit creeper is nothing but its fuse.
+        return mob instanceof Creeper creeper && creeper.isIgnited();
     }
 }

@@ -2,6 +2,24 @@
 
 All notable changes to Free Server Saver are recorded here.
 
+## [0.1.1]
+
+### Changed
+- Rewrote the entity safety gate (the check that decides when a mob must
+  not have its AI tick stretched). Same coverage, reorganised around four
+  reasons — real-time physics, motion, timed state, player intent — and
+  ordered so the common case exits after one integer compare.
+- Newly spawned entities now run full ticks for 5 seconds instead of 10.
+  A runaway spawner comes under control twice as fast, and 5 seconds is
+  still past a mob's first pathfind.
+- Dropped items and XP orbs now use the same "in motion" threshold as
+  mobs (0.1 blocks/second) instead of a separate per-axis one.
+
+### Docs
+- `NOTICE.md`: corrected the ChunkPurge entry (the flood-fill shipped in
+  0.1.0) and the Mobtimizations license, and restated the
+  attribution claim in terms of the shipped code.
+
 ## [0.1.0]
 
 Initial public release.
