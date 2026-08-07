@@ -42,9 +42,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
 Source: https://github.com/Android25/ChunkPurge
 License: MIT (Copyright 2014 Francis)
 
-Patterns adapted (planned for a later phase, not in v0.1.0): flood-fill
-identification of chunks isolated from any chunk watchers (players,
-force-load tickets, spawn area).
+Patterns adapted: flood-fill identification of chunks isolated from any
+chunk watcher (players, force-load tickets, spawn area). Implemented in
+`ChunkPruningModule`, which reports the isolated set and leaves the
+actual unload to vanilla's ticket system.
 
 ```
 Permission is hereby granted, free of charge, to any person obtaining a
@@ -122,16 +123,18 @@ similar mod.
 |---|---|---|
 | Lithium (CaffeineMC) | LGPL-3.0 | The taxonomy of "internal optimization vs adaptive control" — Lithium is the gold standard for non-behavior-changing optimization, so Free Server Saver intentionally stays out of that lane (recommended as a companion in `ModCompatWarnings`). |
 | ModernFix (embeddedt) | LGPL-3.0 | Same lane as Lithium — companion mod, not competitor. The launch-time speedup is exactly what helps the host's 10-minute boot limit. |
-| ServerCore (Wesley1808) | GPL-3.0 (port of Paper's Aikar) | The transient-state safety-gate catalog (`SafetyGate.java`). Paper's Entity Activation Range encodes ~20 rules for "this mob is in a critical state right now, don't throttle it" — those rules are universal to the problem space, and reading their list informed ours. |
+| ServerCore (Wesley1808) | GPL-3.0 (port of Paper's Aikar) | That the "don't throttle a mob in a critical state" problem has a known answer at all. Paper's Entity Activation Range has encoded such rules for over a decade, so `SafetyGate` covers comparable ground — but its rule set, thresholds and structure are derived from the vanilla entity API and this mod's own throttle model, not from ServerCore's file. |
 | Where's my Brain (DAB-style) | ARR (Modrinth public docs) | Distance-bucket model: NEAR/MID/FAR/DISTANT with per-bucket tick interval multiplier. Proximity snapshot. Hysteresis deadband. The conservative "AI Culling 3-gate" (requireNoTarget / requireNoPath / requireLowMotion). |
 | Immersive Optimization (Luke100000) | GPL-3.0 | Tick scheduler model — per-mob priority field, mod `(gameTime + entityId)` to distribute work, frustum-aware throttling on single player. |
 | OptimizeMod | MIT | Public docs only. Same distance-bucket family. |
-| Mobtimizations (Corosauce) | LGPL-3.0 | Mixin-based AI goal tweaks. Out of our scope for now; read for design context. |
+| Mobtimizations (Corosauce) | All Rights Reserved | Mixin-based AI goal tweaks. Out of our scope; read for design context only. |
 | DynView (LDTteam) | GPL-3.0 | Server-side dynamic view distance via PlayerList — same approach Free Server Saver's ChunkUnloadModule uses, just TPS-triggered instead of heap-triggered. |
 | Hibernateforge (Thadah) | EUPL v1.2 | Server-empty hibernation. Not used (EUPL's copyleft scope is awkward to mix), but the pattern of letting vanilla commands do the heavy lifting was confirmed. |
 
-The clean-room rule we followed: each pattern was either described in
-the source mod's public documentation, identifiable by reading its
-overall architecture, or so universal to the problem space (e.g.
-hysteresis on a threshold) that it isn't owned by any single mod. The
-actual code in `free-server-saver/` is original.
+What is being claimed here is about the shipped code, not about a
+process: no source file in `free-server-saver/` reproduces code from any
+of the mods in this section. What was taken is at the level of "this
+problem has a known shape" — hysteresis on a threshold, distance
+bucketing, a catalog of states that must not be interrupted — which no
+single mod owns. Implementations, thresholds and structure are this
+mod's own, written against the vanilla API.
