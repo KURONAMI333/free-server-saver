@@ -107,7 +107,7 @@ Free Server Saver intentionally stays out of their lane. They handle static opti
 
 ## License & attribution
 
-MIT. See NOTICE.md in the GitHub repo for full attribution.
+All Rights Reserved (free to put in any modpack, no permission or credit needed). See NOTICE.md in the GitHub repo for full attribution.
 
 UNOFFICIAL community mod. Not affiliated with any hosting provider.
 
