@@ -113,7 +113,7 @@ Requires JDK 21. NeoForge 1.21.1 only — random tick logic changed in 1.21.2+ i
 
 ## License
 
-MIT — see `LICENSE`.
+All Rights Reserved — see `LICENSE`. Modpack inclusion welcome, no credit required.
 
 Design patterns adapted (study, not copy) from these MIT/LGPL/GPL mods (full attribution in `NOTICE.md`):
 

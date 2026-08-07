@@ -115,7 +115,7 @@ Free Server Saver intentionally stays out of their lane. They handle static opti
 
 ## License & attribution
 
-MIT. See `NOTICE.md` in the GitHub repo for full attribution to the MIT-licensed mods whose design patterns we adapted (Adaptive Performance Tweaks, ChunkPurge, Server Stasis) and the LGPL/GPL/ARR mods we studied for design context (Lithium, ModernFix, ServerCore, Where's my Brain, Immersive Optimization, DynView, OptimizeMod, Mobtimizations, Hibernateforge).
+All Rights Reserved (free to put in any modpack, no permission or credit needed). See `NOTICE.md` in the GitHub repo for full attribution to the MIT-licensed mods whose design patterns we adapted (Adaptive Performance Tweaks, ChunkPurge, Server Stasis) and the LGPL/GPL/ARR mods we studied for design context (Lithium, ModernFix, ServerCore, Where's my Brain, Immersive Optimization, DynView, OptimizeMod, Mobtimizations, Hibernateforge).
 
 **Unofficial community mod.** Not affiliated with any hosting provider.
 
@@ -128,7 +128,7 @@ MIT. See `NOTICE.md` in the GitHub repo for full attribution to the MIT-licensed
 - **Loaders**: NeoForge
 - **Game versions**: 1.21.1
 - **Environments**: Server-side (client can have it too but it does nothing client-side)
-- **License**: MIT
+- **License**: All Rights Reserved
 - **Source URL**: https://github.com/KURONAMI333/free-server-saver
 - **Issue tracker**: https://github.com/KURONAMI333/free-server-saver/issues
 

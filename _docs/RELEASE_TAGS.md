@@ -12,7 +12,7 @@ and CURSEFORGE_DESCRIPTION.md.
 | Slug | `free-server-saver` |
 | Mod ID | `freeserversaver` |
 | Version | `0.1.0` |
-| License | MIT |
+| License | All Rights Reserved |
 | Source | https://github.com/KURONAMI333/free-server-saver |
 | Issues | https://github.com/KURONAMI333/free-server-saver/issues |
 
