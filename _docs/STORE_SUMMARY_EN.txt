@@ -1,0 +1,1 @@
+Monitor JVM heap pressure and progressively throttle expensive server work to help low-memory worlds stay responsive.
