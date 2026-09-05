@@ -41,4 +41,6 @@ The emergency tier can remove eligible distant mobs, and exception quarantine ca
 
 All Rights Reserved. Modpack inclusion is allowed without permission or credit. This is an unofficial community mod and is not affiliated with any hosting provider.
 
-[Source](https://github.com/KURONAMI333/free-server-saver) · [Issues](https://github.com/KURONAMI333/free-server-saver/issues)
+Bugs and questions: comment on the CurseForge page, or DM @kuronami333 on X.
+
+[Source](https://github.com/KURONAMI333/free-server-saver)
