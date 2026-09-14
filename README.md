@@ -123,3 +123,11 @@ Design patterns adapted (study, not copy) from these MIT/LGPL/GPL mods (full att
 - ServerCore (Wesley1808) — Paper-style Entity Activation Range safety gates
 - DAB / Where's my Brain — distance-bucket AI throttling
 - Immersive Optimization (Luke100000) — tick scheduler model
+
+## Downloads and support
+
+Downloads: [GitHub Releases](https://github.com/KURONAMI333/free-server-saver/releases/tag/v0.1.1).
+
+For bugs and questions, DM [@kuronami333 on X](https://x.com/kuronami333).
+
+[Source](https://github.com/KURONAMI333/free-server-saver) · [License](LICENSE)

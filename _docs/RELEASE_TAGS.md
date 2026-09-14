@@ -14,7 +14,7 @@ and CURSEFORGE_DESCRIPTION.md.
 | Version | `0.1.0` |
 | License | All Rights Reserved |
 | Source | https://github.com/KURONAMI333/free-server-saver |
-| Issues | https://github.com/KURONAMI333/free-server-saver/issues |
+| Support | https://x.com/kuronami333 |
 
 ## Modrinth
 
